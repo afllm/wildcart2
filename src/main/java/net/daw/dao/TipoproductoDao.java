@@ -17,7 +17,7 @@ public class TipoproductoDao {
 		this.ob = ob;
 	}
 
-	public TipoproductoBean get(int id) throws Exception {
+	public TipoproductoBean get(int id, int expand) throws Exception {
 		String strSQL = "SELECT * FROM " + ob + " WHERE id=?";
 		TipoproductoBean oTipoproductoBean;
 		ResultSet oResultSet = null;
@@ -28,8 +28,7 @@ public class TipoproductoDao {
 			oResultSet = oPreparedStatement.executeQuery();
 			if (oResultSet.next()) {
 				oTipoproductoBean = new TipoproductoBean();
-				oTipoproductoBean.setId(oResultSet.getInt("id"));
-				oTipoproductoBean.setDesc(oResultSet.getString("desc"));
+				oTipoproductoBean.fill(oResultSet, oConnection, expand);
 			} else {
 				oTipoproductoBean = null;
 			}
@@ -136,7 +135,7 @@ public class TipoproductoDao {
 		return iResult;
 	}
 
-	public ArrayList<TipoproductoBean> getpage(int iRpp, int iPage) throws Exception {
+	public ArrayList<TipoproductoBean> getpage(int iRpp, int iPage, int expand) throws Exception {
 		String strSQL = "SELECT * FROM " + ob;
 		ArrayList<TipoproductoBean> alTipoproductoBean;
 		if (iRpp > 0 && iRpp < 100000 && iPage > 0 && iPage < 100000000) {
@@ -149,8 +148,7 @@ public class TipoproductoDao {
 				alTipoproductoBean = new ArrayList<TipoproductoBean>();
 				while (oResultSet.next()) {
 					TipoproductoBean oTipoproductoBean = new TipoproductoBean();
-					oTipoproductoBean.setId(oResultSet.getInt("id"));
-					oTipoproductoBean.setDesc(oResultSet.getString("desc"));
+					oTipoproductoBean.fill(oResultSet, oConnection, expand);
 					alTipoproductoBean.add(oTipoproductoBean);
 				}
 			} catch (SQLException e) {

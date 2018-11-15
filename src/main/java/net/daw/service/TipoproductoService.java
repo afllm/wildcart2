@@ -40,7 +40,7 @@ public class TipoproductoService {
 			oConnectionPool = ConnectionFactory.getConnection(ConnectionConstants.connectionPool);
 			oConnection = oConnectionPool.newConnection();
 			TipoproductoDao oTipoproductoDao = new TipoproductoDao(oConnection, ob);
-			TipoproductoBean oTipoproductoBean = oTipoproductoDao.get(id);
+			TipoproductoBean oTipoproductoBean = oTipoproductoDao.get(id,1);
 			Gson oGson = new Gson();
 			oReplyBean = new ReplyBean(200, oGson.toJson(oTipoproductoBean));
 		} catch (Exception ex) {
@@ -150,7 +150,7 @@ public class TipoproductoService {
 			oConnectionPool = ConnectionFactory.getConnection(ConnectionConstants.connectionPool);
 			oConnection = oConnectionPool.newConnection();
 			TipoproductoDao oTipoproductoDao = new TipoproductoDao(oConnection, ob);
-			ArrayList<TipoproductoBean> alTipoproductoBean = oTipoproductoDao.getpage(iRpp, iPage);
+			ArrayList<TipoproductoBean> alTipoproductoBean = oTipoproductoDao.getpage(iRpp, iPage,1);
 			Gson oGson = new Gson();
 			oReplyBean = new ReplyBean(200, oGson.toJson(alTipoproductoBean));
 		} catch (Exception ex) {

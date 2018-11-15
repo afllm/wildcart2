@@ -5,18 +5,41 @@
  */
 package net.daw.bean;
 
+import com.google.gson.annotations.Expose;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import net.daw.dao.TipoproductoDao;
+
 /**
  *
  * @author a044531896d
  */
 public class ProductoBean {
+    @Expose
     private int id;
+    @Expose
     private String codigo;
+    @Expose
     private String desc;
+    @Expose
     private int existencias;
+    @Expose
     private float precio;
+    @Expose
     private String foto;
+    @Expose(serialize=false)
     private int id_tipoProducto;
+    @Expose(deserialize=false)
+    private TipoproductoBean obj_tipoProducto;
+    
+
+    public TipoproductoBean getObj_tipoProducto() {
+        return obj_tipoProducto;
+    }
+
+    public void setObj_tipoProducto(TipoproductoBean obj_tipoProducto) {
+        this.obj_tipoProducto = obj_tipoProducto;
+    }
 
     public int getId() {
         return id;
@@ -74,6 +97,23 @@ public class ProductoBean {
         this.id_tipoProducto = id_tipoProducto;
     }
     
+    public ProductoBean fill(ResultSet oResultSet, Connection oConnection, Integer expand) throws Exception{
+            this.setId(oResultSet.getInt("id"));
+            this.setCodigo(oResultSet.getString("codigo"));
+            this.setDesc(oResultSet.getString("desc"));
+            this.setExistencias(oResultSet.getInt("existencias"));
+            this.setPrecio(oResultSet.getFloat("precio"));
+            this.setFoto(oResultSet.getString("foto"));
+            if(expand > 0){
+               TipoproductoDao oTipoProductoDao = new TipoproductoDao(oConnection, "tipoproducto");
+               this.setObj_tipoProducto(oTipoProductoDao.get(oResultSet.getInt("id_tipoProducto"), expand - 1));
+            }else{
+                this.setId(oResultSet.getInt("id_tipoProducto"));
+            }
+        
+        return this;
+        
+    }
     
     
 }

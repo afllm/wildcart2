@@ -207,16 +207,23 @@ public class UsuarioService {
                 Gson oGson = (new GsonBuilder()).excludeFieldsWithoutExposeAnnotation().create();
                 oConnectionPool = ConnectionFactory.getConnection(ConnectionConstants.connectionPool);
                 oConnection = oConnectionPool.newConnection();
+                String[] dni = {"9654123F", "25896321P", "96325812H", "75395182R", "98741236L"};
+                String[] nombre = {"Carlos", "Victor", "Manuel", "Maria", " Lucia"};
+                String[] ape1 = {"Martinez", "Garcia", "Perez", "Gonzalez", "Marquez"};
+                String[] ape2 = {"Martinez", "Garcia", "Perez", "Gonzalez", "Marquez"};
+                String[] login = {"bemu", "poka", "moci", "pofu", "mita"};
+                String[] pass = {"12345", "aeiou", "qwert", "abcde", "00000"};
+                int[] id_tipoUsuario = {1, 2};
                 UsuarioDao oUsuarioDao = new UsuarioDao(oConnection, ob);
                 UsuarioBean oUsuarioBean = new UsuarioBean();
                 for (int i = 1; i <= number; i++) {
-                    oUsuarioBean.setDni("765934875A");
-                    oUsuarioBean.setNombre("Rigoberto");
-                    oUsuarioBean.setApe1("Pérez");
-                    oUsuarioBean.setApe2("Gómez");
-                    oUsuarioBean.setLogin("ripego");
-                    oUsuarioBean.setPass("hola");
-                    oUsuarioBean.setId_tipoUsuario(2);
+                    oUsuarioBean.setDni(dni[randomMath(dni.length)]);
+                oUsuarioBean.setNombre(nombre[randomMath(nombre.length)]);
+                oUsuarioBean.setApe1(ape1[randomMath(ape1.length)]);
+                oUsuarioBean.setApe2(ape2[randomMath(ape2.length)]);
+                oUsuarioBean.setLogin(login[randomMath(login.length)]);
+                oUsuarioBean.setPass(pass[randomMath(pass.length)]);
+                oUsuarioBean.setId_tipoUsuario(id_tipoUsuario[randomMath(id_tipoUsuario.length)]);
                     oUsuarioBean = oUsuarioDao.create(oUsuarioBean);
                 }
                 oReplyBean = new ReplyBean(200, oGson.toJson(number));
@@ -230,6 +237,10 @@ public class UsuarioService {
         }
         return oReplyBean;
     }
+    
+    private int randomMath(int number) {
+		return (int) (Math.random() * number);
+	}
 
     public ReplyBean login() throws Exception {
         ReplyBean oReplyBean;

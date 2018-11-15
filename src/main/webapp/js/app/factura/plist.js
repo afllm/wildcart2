@@ -37,7 +37,7 @@ moduleFactura.controller('facturaPlistController', ['$scope', 'toolService', '$h
             $http({
                 method: 'GET',
                 withCredentials: true,
-                url: `http://localhost:8081/trolleyes/json?ob=factura&op=get&id=${id}`
+                url: `/json?ob=factura&op=get&id=${id}`
             }).then(function (response) {
                 //$location.url(`/producto/plist/${id}`, false);
                 test.push(response.data.message);
@@ -93,7 +93,7 @@ moduleFactura.controller('facturaPlistController', ['$scope', 'toolService', '$h
             $http({
                 method: 'GET',
                 withCredentials: true,
-                url: `http://localhost:8081/trolleyes/json?ob=factura&op=getpage&rpp=${numRegistros}&page=${page}`
+                url: `/json?ob=factura&op=getpage&rpp=${numRegistros}&page=${page}`
             }).then(function (response) {
                 data = response.data.message;
                 numRegistrosRecibido = response.data.message.length;

@@ -1,13 +1,10 @@
 'use strict'
 
-moduleTipousuario.controller('tipousuarioPlistController', ['$scope', '$http', '$location', 'toolService', '$routeParams',
+moduleUsuario.controller('usuarioPlistController', ['$scope', '$http', '$location', 'toolService', '$routeParams',
     function ($scope, $http, $location, toolService, $routeParams) {
-        
-        $scope.ob="tipousuario";
-        
-        
-        $scope.totalPages = 1;
 
+        $scope.totalPages = 1;
+        
         if (!$routeParams.order) {
             $scope.orderURLServidor = "";
             $scope.orderURLCliente = "";
@@ -34,7 +31,7 @@ moduleTipousuario.controller('tipousuarioPlistController', ['$scope', '$http', '
 
 
         $scope.resetOrder = function () {
-            $location.url($scope.ob + `/plist/` + $scope.rpp + `/` + $scope.page);
+            $location.url(`usuario/plist/` + $scope.rpp + `/` + $scope.page);
         }
 
 
@@ -46,13 +43,13 @@ moduleTipousuario.controller('tipousuarioPlistController', ['$scope', '$http', '
                 $scope.orderURLServidor = $scope.orderURLServidor + "-" + order + "," + align;
                 $scope.orderURLCliente = $scope.orderURLCliente + "-" + order + "," + align;
             }
-            $location.url($scope.ob + `/plist/` + $scope.rpp + `/` + $scope.page + `/` + $scope.orderURLCliente);
+            $location.url(`usuario/plist/` + $scope.rpp + `/` + $scope.page + `/` + $scope.orderURLCliente);
         }
-
+        
         //getcount
         $http({
             method: 'GET',
-            url: '/json?ob='+$scope.ob+'&op=getcount'
+            url: '/json?ob=usuario&op=getcount'
         }).then(function (response) {
             $scope.status = response.status;
             $scope.ajaxDataUsuariosNumber = response.data.message;
@@ -69,7 +66,7 @@ moduleTipousuario.controller('tipousuarioPlistController', ['$scope', '$http', '
 
         $http({
             method: 'GET',
-            url: '/json?ob='+$scope.ob+'&op=getpage&rpp=' + $scope.rpp + '&page=' + $scope.page + $scope.orderURLServidor
+            url: '/json?ob=usuario&op=getpage&rpp=' + $scope.rpp + '&page=' + $scope.page + $scope.orderURLServidor
         }).then(function (response) {
             $scope.status = response.status;
             $scope.ajaxDataUsuarios = response.data.message;
@@ -81,8 +78,8 @@ moduleTipousuario.controller('tipousuarioPlistController', ['$scope', '$http', '
 
 
         $scope.update = function () {
-            $location.url($scope.ob + `/plist/` + $scope.rpp + `/` + $scope.page + '/' + $scope.orderURLCliente);
-        }
+            $location.url(`usuario/plist/` + $scope.rpp + `/` + $scope.page + '/' + $scope.orderURLCliente);
+        };
 
 
 

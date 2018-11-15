@@ -1,7 +1,7 @@
-'use strict'
+'use strict';
 
 moduleCommon.controller('homeController', ['$scope', '$location', 'toolService',
-    function ($scope, $location, toolService) {
+    function ($scope, $location, toolService,) {
 
         $scope.ruta = $location.path();
 

@@ -37,7 +37,7 @@ moduleTipoproducto.controller('tipoproductoPlistController', ['$scope', 'toolSer
             $http({
                 method: 'GET',
                 withCredentials: true,
-                url: `http://localhost:8081/trolleyes/json?ob=tipoproducto&op=get&id=${id}`
+                url: `/json?ob=tipoproducto&op=get&id=${id}`
             }).then(function (response) {
                 //$location.url(`/producto/plist/${id}`, false);
                 test.push(response.data.message);
@@ -93,7 +93,7 @@ moduleTipoproducto.controller('tipoproductoPlistController', ['$scope', 'toolSer
             $http({
                 method: 'GET',
                 withCredentials: true,
-                url: `http://localhost:8081/trolleyes/json?ob=tipoproducto&op=getpage&rpp=${numRegistros}&page=${page}`
+                url: `/json?ob=tipoproducto&op=getpage&rpp=${numRegistros}&page=${page}`
             }).then(function (response) {
                 data = response.data.message;
                 numRegistrosRecibido = response.data.message.length;
