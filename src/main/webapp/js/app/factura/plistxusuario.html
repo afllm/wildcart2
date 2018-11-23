@@ -4,7 +4,13 @@
     <div class="row">
         <main role="main" class="col-md-9 ml-sm-auto col-lg-12 px-4" style="margin-top: 50px">
             <div class="d-flex justify-content-between flex-wrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                <h1 class="h2"><i class="fas far fa-file fa-1x"></i> {{nombre2}} {{ape1}}</h1>
+                <h1 class="h2">{{nombre2}} {{ape1}} - Facturas</h1>
+                <div class="btn-toolbar mb-2 mb-md-0">
+                    <button type="button" class="btn btn-light" ng-click="resetOrder()">
+                        <i class="fas fa-sync"></i>
+                    </button>
+                    <a href="factura/newxusuario/{{id}}" class="btn btn-light fas fa-user-plus" role="button"></a>
+                </div>
                 <div class="btn-toolbar mb-2 mb-md-0">
                     <div class="btn-group" style="width:400px;">
                         <p class="mt-2" style="width:200px;">Selecciona RPP: </p>
@@ -17,29 +23,8 @@
                             <option value="50">50</option>
                         </select>
                     </div>
-              
-                    <button type="button" class="btn btn-light  ml-3" ng-click="resetOrder()">
-                        <i class="fas fa-sync-alt"></i>
-                    </button>
                 </div>
             </div>
-            <!--            <div class="row">
-                            <div class="col-6">
-                                <nav aria-label="paginacion">
-                                    <ul class="pagination">
-                                        <li class="page-item">
-                                            <a class="page-link" ng-show="page > 1" href="usuario/plist/{{rpp}}/{{page - 1}}/{{order}}/{{align}}">Previous</a>
-                                        </li>
-                                        <li class="page-item" ng-class="{'active':(p == page)}" ng-repeat="p in list">
-                                            <a class="page-link" href="usuario/plist/{{rpp}}/{{p}}/{{order}}/{{align}}">{{p}}</a>
-                                        </li>
-                                        <li class="page-item">
-                                            <a class="page-link" ng-show="page != totalPages" href="usuario/plist/{{rpp}}/{{page--1}}/{{order}}/{{align}}">Next</a>
-                                        </li>
-                                    </ul>
-                                </nav>
-                            </div>
-                        </div>-->
             <div class="row">
                 <div class="col-6">
                     <nav aria-label="paginacion">
@@ -61,10 +46,6 @@
                             </li>
                         </ul>
                     </nav>
-                </div>
-                <div class="col-6 new">
-                   <a href="{{ob}}/newxusuario/{{id}}" class="btn btn-outline-secondary btn-sm active float-right" role="button" aria-pressed="true">Crear nueva factura</a>
- 
                 </div>
             </div>
 
