@@ -40,8 +40,8 @@ moduleTipoproducto.controller('tipoproductoEditController', ['$scope', '$http', 
 
             $http({
                 method: 'POST',
-                url: '/json?ob=tipoproducto&op=update',
-                params: json
+                url: 'json?ob=tipoproducto&op=update',
+                params: {json: JSON.stringify(json)}
             }).then(function (response) {
                 $scope.status = response.status;
                 $scope.ajaxDataTipoproductos = response.data.message;

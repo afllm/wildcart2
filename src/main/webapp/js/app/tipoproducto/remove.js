@@ -37,7 +37,7 @@ moduleTipoproducto.controller('tipoproductoRemoveController', ['$scope', '$http'
             }).then(function (response) {
                 $scope.status = response.status;
                 $scope.ajaxDataTipoproducto = response.data.message;
-                $scope.resultado="Eliminado con éxito";
+                $scope.resultado="Eliminado";
             }, function (response) {
                 $scope.status = response.status;
                 $scope.ajaxDataTipoproducto = response.data.message || 'Request failed';

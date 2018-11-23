@@ -17,11 +17,11 @@ moduleTipoproducto.controller('tipoproductoNewController', ['$scope', '$http', '
             $http({
                 method: 'POST',
                 url: 'json?ob=tipoproducto&op=create',
-                params: {desc:$scope.desc}
+                params: {json: JSON.stringify({desc:$scope.desc})}
             }).then(function (response) {
                 $scope.status = response.status;
                 $scope.ajaxDataTipoproductos = response.data.message;
-                $scope.resultado = "Creado con éxito";
+                $scope.resultado = "Creado";
             }, function (response) {
                 $scope.status = response.status;
                 $scope.ajaxDataTipoproductos = response.data.message || 'Request failed';

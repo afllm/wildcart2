@@ -18,9 +18,11 @@ moduleProducto.controller('productoViewController', ['$scope', '$http', '$locati
             }).then(function (response) {
                 $scope.status = response.status;
                 $scope.ajaxDataProductos = response.data.message;
+                $scope.resultado="Creado";
             }, function (response) {
                 $scope.status = response.status;
                 $scope.ajaxDataProductos = response.data.message || 'Request failed';
+                $scope.resultado="No se pudo crear";
             });
         }
 

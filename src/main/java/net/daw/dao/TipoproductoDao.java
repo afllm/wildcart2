@@ -5,7 +5,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import net.daw.bean.TipoproductoBean;
+import net.daw.helper.SqlBuilder;
 
 public class TipoproductoDao {
     Connection oConnection;
@@ -135,9 +137,10 @@ public class TipoproductoDao {
 		return iResult;
 	}
 
-	public ArrayList<TipoproductoBean> getpage(int iRpp, int iPage, int expand) throws Exception {
+	public ArrayList<TipoproductoBean> getpage(int iRpp, int iPage, HashMap<String, String> hmOrder, Integer expand) throws Exception {
 		String strSQL = "SELECT * FROM " + ob;
-		ArrayList<TipoproductoBean> alTipoproductoBean;
+                strSQL += SqlBuilder.buildSqlOrder(hmOrder);
+                ArrayList<TipoproductoBean> alTipoproductoBean;
 		if (iRpp > 0 && iRpp < 100000 && iPage > 0 && iPage < 100000000) {
 			strSQL += " LIMIT " + (iPage - 1) * iRpp + ", " + iRpp;
 			ResultSet oResultSet = null;
@@ -148,7 +151,7 @@ public class TipoproductoDao {
 				alTipoproductoBean = new ArrayList<TipoproductoBean>();
 				while (oResultSet.next()) {
 					TipoproductoBean oTipoproductoBean = new TipoproductoBean();
-					oTipoproductoBean.fill(oResultSet, oConnection, expand);
+                                        oTipoproductoBean.fill(oResultSet, oConnection, expand);
 					alTipoproductoBean.add(oTipoproductoBean);
 				}
 			} catch (SQLException e) {

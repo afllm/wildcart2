@@ -36,7 +36,7 @@ moduleUsuario.controller('usuarioRemoveController', ['$scope', '$http', '$locati
             }).then(function (response) {
                 $scope.status = response.status;
                 $scope.ajaxDataUsuarios = response.data.message;
-                $scope.resultado="Eliminado con éxito";
+                $scope.resultado="Eliminado";
             }, function (response) {
                 $scope.status = response.status;
                 $scope.ajaxDataUsuarios = response.data.message || 'Request failed';

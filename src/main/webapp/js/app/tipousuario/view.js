@@ -1,7 +1,7 @@
 'use strict'
 
-moduleTipousuario.controller('tipousuarioViewController', ['$scope', '$http', '$location', 'toolService', '$routeParams', '$window',
-    function ($scope, $http, $location, toolService, $routeParams, $window) {
+moduleTipousuario.controller('tipousuarioViewController', ['$scope', '$http', '$location', 'toolService', '$routeParams', '$window', 'sessionService',
+    function ($scope, $http, $location, toolService, $routeParams, $window, oSessionService) {
 
         $scope.totalPages = 1;
         $scope.conectado = false;

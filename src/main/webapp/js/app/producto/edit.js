@@ -51,7 +51,7 @@ moduleProducto.controller('productoEditController', ['$scope', '$http', '$locati
 
             $http({
                 method: 'POST',
-                url: '/json?ob=producto&op=update',
+                url: 'json?ob=producto&op=update',
                 params: {json: JSON.stringify(json)}
             }).then(function (response) {
                 $scope.status = response.status;

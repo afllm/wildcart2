@@ -57,7 +57,7 @@ moduleUsuario.controller('usuarioEditController', ['$scope', '$http', '$location
             }).then(function (response) {
                 $scope.status = response.status;
                 $scope.ajaxDataUsuarios = response.data.message;
-                $scope.resultado = "Actualizado con éxito";
+                $scope.resultado = "Actualizado";
             }, function (response) {
                 $scope.status = response.status;
                 $scope.ajaxDataUsuarios = response.data.message || 'Request failed';

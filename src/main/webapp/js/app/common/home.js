@@ -11,14 +11,5 @@ moduleCommon.controller('homeController', ['$scope', '$location', 'toolService',
             $scope.usuarioConectado = oSessionService.getUserName();
             $scope.conectado = true;
         }
-        
-        $scope.desconectar = function (){
-            $http({
-                method: 'GET',
-                url: 'json?ob=usuario&op=logout'
-            }).then(function () {
-                $location.url('/');
-            });
-        }
 
     }]);

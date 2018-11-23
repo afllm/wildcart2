@@ -25,12 +25,12 @@ moduleProducto.controller('productoNewController', ['$scope', '$http', '$locatio
 
             $http({
                 method: 'POST',
-                url: '/json?ob=producto&op=create',
+                url: 'json?ob=producto&op=create',
                 params: {json: JSON.stringify(json)}
             }).then(function (response) {
                 $scope.status = response.status;
                 $scope.ajaxDataProductos = response.data.message;
-                $scope.resultado = "Creado con éxito";
+                $scope.resultado = "Creado";
             }, function (response) {
                 $scope.status = response.status;
                 $scope.ajaxDataProductos = response.data.message || 'Request failed';

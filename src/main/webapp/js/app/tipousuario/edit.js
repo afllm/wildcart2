@@ -40,8 +40,8 @@ moduleTipousuario.controller('tipousuarioEditController', ['$scope', '$http', '$
 
             $http({
                 method: 'POST',
-                url: '/json?ob=tipousuario&op=update',
-                params: json
+                url: 'json?ob=tipousuario&op=update',
+                params: {json: JSON.stringify(json)}
             }).then(function (response) {
                 $scope.status = response.status;
                 $scope.ajaxDataTipousuarios = response.data.message;

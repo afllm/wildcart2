@@ -31,7 +31,7 @@ moduleUsuario.controller('usuarioNewController', ['$scope', '$http', '$location'
             }).then(function (response) {
                 $scope.status = response.status;
                 $scope.ajaxDataUsuarios = response.data.message;
-                $scope.resultado = "Creado con éxito";
+                $scope.resultado = "Creado";
             }, function (response) {
                 $scope.status = response.status;
                 $scope.ajaxDataUsuarios = response.data.message || 'Request failed';

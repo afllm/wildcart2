@@ -18,10 +18,10 @@ moduleTipousuario.controller('tipousuarioRemoveController', ['$scope', '$http', 
                 url: 'json?ob=tipousuario&op=get&id=' + $scope.id
             }).then(function (response) {
                 $scope.status = response.status;
-                $scope.ajaxDataTipousuarios = response.data.message;
+                $scope.ajaxDataTipousuario = response.data.message;
             }, function (response) {
                 $scope.status = response.status;
-                $scope.ajaxDataTipousuarios = response.data.message || 'Request failed';
+                $scope.ajaxDataTipousuario = response.data.message || 'Request failed';
             });
         }
 

@@ -1,7 +1,7 @@
 'use strict'
 
-moduleTipoproducto.controller('tipoproductoViewController', ['$scope', '$http', '$location', 'toolService', '$routeParams', '$window',
-    function ($scope, $http, $location, toolService, $routeParams, $window) {
+moduleTipoproducto.controller('tipoproductoViewController', ['$scope', '$http', '$location', 'toolService', '$routeParams', '$window', 'sessionService',
+    function ($scope, $http, $location, toolService, $routeParams, $window, oSessionService) {
 
         $scope.totalPages = 1;
         $scope.conectado = false;
@@ -18,9 +18,11 @@ moduleTipoproducto.controller('tipoproductoViewController', ['$scope', '$http', 
             }).then(function (response) {
                 $scope.status = response.status;
                 $scope.ajaxDataTipoProductos = response.data.message;
+                $scope.resultado="Creado";
             }, function (response) {
                 $scope.status = response.status;
                 $scope.ajaxDataTipoProductos = response.data.message || 'Request failed';
+                $scope.resultado="No se pudo crear";
             });
         }
 

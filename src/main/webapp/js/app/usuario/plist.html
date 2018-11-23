@@ -118,6 +118,7 @@
                         <th>
                             Operaciones
                         </th>
+                        <th>Fra</th>
                     </tr>
                     <tr ng-repeat="fila in ajaxDataUsuarios">
                         <td>{{fila.id}}</td>
@@ -132,6 +133,8 @@
                             <a href="usuario/edit/{{fila.id}}" class="btn btn-light fas fa-edit" role="button"></a>
                             <a href="usuario/remove/{{fila.id}}" class="btn btn-light fas fa-trash" role="button"></a>
                         </td>
+                        <td><button type="button" class="btn btn-light icon" ng-click="factura(fila.id)" 
+                                    ng-disabled="{{fila.link_factura}}==0">{{fila.link_factura}}</button></td>
                     </tr>
                 </table>
             </div>

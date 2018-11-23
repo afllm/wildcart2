@@ -5,7 +5,15 @@
  */
 package net.daw.bean;
 
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 import java.util.Date;
+
+import com.google.gson.annotations.Expose;
+
+import net.daw.dao.UsuarioDao;
 
 /**
  *
@@ -13,10 +21,24 @@ import java.util.Date;
  */
 public class FacturaBean {
 
+    @Expose
     private int id;
-    private Date fecha;
+    @Expose
+    private String fecha;
+    @Expose
     private double iva;
+    @Expose(serialize = false)
     private int id_usuario;
+    @Expose(deserialize = false)
+    private UsuarioBean obj_usuario;
+
+    public int getId_usuario() {
+        return id_usuario;
+    }
+
+    public void setId_usuario(int id_usuario) {
+        this.id_usuario = id_usuario;
+    }
 
     public int getId() {
         return id;
@@ -26,11 +48,11 @@ public class FacturaBean {
         this.id = id;
     }
 
-    public Date getFecha() {
+    public String getFecha() {
         return fecha;
     }
 
-    public void setFecha(Date fecha) {
+    public void setFecha(String fecha) {
         this.fecha = fecha;
     }
 
@@ -42,12 +64,26 @@ public class FacturaBean {
         this.iva = iva;
     }
 
-    public int getId_usuario() {
-        return id_usuario;
+    public UsuarioBean getObj_usuario() {
+        return obj_usuario;
     }
 
-    public void setId_usuario(int id_usuario) {
-        this.id_usuario = id_usuario;
+    public void setObj_usuario(UsuarioBean obj_usuario) {
+        this.obj_usuario = obj_usuario;
+    }
+
+    public FacturaBean fill(ResultSet oResultSet, Connection oConnection, Integer expand) throws SQLException, Exception {
+        this.setId(oResultSet.getInt("id"));
+        this.setFecha(oResultSet.getString("fecha"));
+        this.setIva(oResultSet.getDouble("iva"));
+        if (expand > 0) {
+            UsuarioDao oUsuarioDao = new UsuarioDao(oConnection, "usuario");
+            this.setObj_usuario(oUsuarioDao.get(oResultSet.getInt("id_usuario"), expand - 1));
+            System.out.println(obj_usuario.getId());
+        } else {
+            this.setId(oResultSet.getInt("id_usuario"));
+        }
+        return this;
     }
 
 }
