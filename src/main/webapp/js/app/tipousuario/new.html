@@ -1,0 +1,30 @@
+<header ng-include="'js/app/header.html'"></header>
+<div class="container-fluid">
+    <div class="row">
+        <main role="main" class="col-md-9 ml-sm-auto col-lg-12 px-4" style="margin-top: 50px">
+            <div class="d-flex justify-content-between flex-wrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                <h1 class="h2">Nuevo tipo de usuario</h1>
+
+            </div>
+            <div class="form-responsive container" >
+                <h3 ng-show="btnNew">Datos del nuevo tipo de usuario</h3>
+
+                <form name="userForm" ng-show="btnNew">
+                    <div class="form-group">
+                        <label>Descripcion</label>
+                        <input type="text" class="form-control" id="desc" name="desc" ng-model="desc" ng-required="true" />
+                        <div ng-show="!userForm.desc.$valid" class="alert alert-danger" role="alert">
+                            Descripcion obligatoria
+                        </div>
+                    </div>
+                    <button ng-show="btnNew" type="button" class="btn btn-light" ng-click="nuevo()" ng-disabled="userForm.$invalid">Confirmar nuevo tipo de usuario</button>
+                </form>
+                
+                <h3>{{resultado}}</h3>
+                <button type="button" class="btn btn-light" ng-click="goBack()">Volver</button>
+
+            </div>
+        </main>
+    </div>
+</div>
+<footer class="footer" ng-include="'js/app/footer.html'"></footer>

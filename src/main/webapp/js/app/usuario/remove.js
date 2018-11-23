@@ -1,7 +1,7 @@
 'use strict'
 
-moduleUsuario.controller('usuarioRemoveController', ['$scope', '$http', '$location', 'toolService', '$routeParams', '$window',
-    function ($scope, $http, $location, toolService, $routeParams, $window) {
+moduleUsuario.controller('usuarioRemoveController', ['$scope', '$http', '$location', 'toolService', '$routeParams', '$window', 'sessionService',
+    function ($scope, $http, $location, toolService, $routeParams, $window, oSessionService) {
 
         $scope.totalPages = 1;
         $scope.btnBorrar=true;
@@ -14,7 +14,7 @@ moduleUsuario.controller('usuarioRemoveController', ['$scope', '$http', '$locati
 
             $http({
                 method: 'GET',
-                url: '/json?ob=usuario&op=get&id=' + $scope.id
+                url: 'json?ob=usuario&op=get&id=' + $scope.id
             }).then(function (response) {
                 $scope.status = response.status;
                 $scope.ajaxDataUsuarios = response.data.message;
@@ -32,7 +32,7 @@ moduleUsuario.controller('usuarioRemoveController', ['$scope', '$http', '$locati
             $scope.btnBorrar=false;
             $http({
                 method: 'GET',
-                url: '/json?ob=usuario&op=remove&id=' + $scope.id
+                url: 'json?ob=usuario&op=remove&id=' + $scope.id
             }).then(function (response) {
                 $scope.status = response.status;
                 $scope.ajaxDataUsuarios = response.data.message;
@@ -43,6 +43,20 @@ moduleUsuario.controller('usuarioRemoveController', ['$scope', '$http', '$locati
                 $scope.resultado="No se pudo eliminar";
             });
         };
+        
+        if (oSessionService.getUserName() !== "") {
+            $scope.usuarioConectado = oSessionService.getUserName();
+            $scope.conectado = true;
+        }
+
+        $scope.logout = function () {
+            $http({
+                method: 'GET',
+                url: 'json?ob=usuario&op=logout'
+            }).then(function () {
+                $location.url('/');
+            });
+        }
 
         $scope.isActive = toolService.isActive;
 

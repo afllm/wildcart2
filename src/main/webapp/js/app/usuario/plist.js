@@ -1,9 +1,10 @@
 'use strict'
 
-moduleUsuario.controller('usuarioPlistController', ['$scope', '$http', '$location', 'toolService', '$routeParams',
-    function ($scope, $http, $location, toolService, $routeParams) {
+moduleUsuario.controller('usuarioPlistController', ['$scope', '$http', '$location', 'toolService', '$routeParams', 'sessionService',
+    function ($scope, $http, $location, toolService, $routeParams, oSessionService) {
 
         $scope.totalPages = 1;
+        $scope.conectado = false;
         
         if (!$routeParams.order) {
             $scope.orderURLServidor = "";
@@ -49,7 +50,7 @@ moduleUsuario.controller('usuarioPlistController', ['$scope', '$http', '$locatio
         //getcount
         $http({
             method: 'GET',
-            url: '/json?ob=usuario&op=getcount'
+            url: 'json?ob=usuario&op=getcount'
         }).then(function (response) {
             $scope.status = response.status;
             $scope.ajaxDataUsuariosNumber = response.data.message;
@@ -66,7 +67,7 @@ moduleUsuario.controller('usuarioPlistController', ['$scope', '$http', '$locatio
 
         $http({
             method: 'GET',
-            url: '/json?ob=usuario&op=getpage&rpp=' + $scope.rpp + '&page=' + $scope.page + $scope.orderURLServidor
+            url: 'json?ob=usuario&op=getpage&rpp=' + $scope.rpp + '&page=' + $scope.page + $scope.orderURLServidor
         }).then(function (response) {
             $scope.status = response.status;
             $scope.ajaxDataUsuarios = response.data.message;
@@ -104,7 +105,19 @@ moduleUsuario.controller('usuarioPlistController', ['$scope', '$http', '$locatio
         }
 
 
+        if (oSessionService.getUserName() !== "") {
+            $scope.usuarioConectado = oSessionService.getUserName();
+            $scope.conectado = true;
+        }
 
+        $scope.logout = function () {
+            $http({
+                method: 'GET',
+                url: 'json?ob=usuario&op=logout'
+            }).then(function () {
+                $location.url('/');
+            });
+        }
 
         $scope.isActive = toolService.isActive;
 

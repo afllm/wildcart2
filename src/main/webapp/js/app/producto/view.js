@@ -1,9 +1,10 @@
 'use strict'
 
-moduleProducto.controller('productoRemoveController', ['$scope', '$http', '$location', 'toolService', '$routeParams', '$window',
-    function ($scope, $http, $location, toolService, $routeParams, $window) {
+moduleProducto.controller('productoViewController', ['$scope', '$http', '$location', 'toolService', '$routeParams', '$window', 'sessionService',
+    function ($scope, $http, $location, toolService, $routeParams, $window, oSessionService) {
 
         $scope.totalPages = 1;
+        $scope.conectado = false;
         
         if (!$routeParams.id) {
             $scope.idError = true;
@@ -13,7 +14,7 @@ moduleProducto.controller('productoRemoveController', ['$scope', '$http', '$loca
 
             $http({
                 method: 'GET',
-                url: '/json?ob=producto&op=get&id=' + $scope.id
+                url: 'json?ob=producto&op=get&id=' + $scope.id
             }).then(function (response) {
                 $scope.status = response.status;
                 $scope.ajaxDataProductos = response.data.message;
@@ -26,6 +27,11 @@ moduleProducto.controller('productoRemoveController', ['$scope', '$http', '$loca
         $scope.goBack = function () {
             $window.history.back();
         };
+        
+        if (oSessionService.getUserName() !== "") {
+            $scope.usuarioConectado = oSessionService.getUserName();
+            $scope.conectado = true;
+        }
         
         $scope.isActive = toolService.isActive;
 

@@ -1,11 +1,11 @@
 'use strict'
 
-moduleUsuario.controller('usuarioLoginController', ['$scope', '$http', '$location', 'toolService', '$routeParams', '$window',
-    function ($scope, $http, $location, toolService, $routeParams, $window) {
+moduleUsuario.controller('usuarioLoginController', ['$scope', '$http', '$location', 'toolService', '$routeParams', '$window', 'sessionService',
+    function ($scope, $http, $location, toolService, $routeParams, $window, oSessionService) {
 
         $scope.totalPages = 1;
         $scope.btnLogin = true;
-      
+        $scope.conectado = false;
 
         $scope.goBack = function () {
             $window.history.back();
@@ -21,16 +21,19 @@ moduleUsuario.controller('usuarioLoginController', ['$scope', '$http', '$locatio
 
             $http({
                 method: 'POST',
-                url: '/json?ob=usuario&op=login',
-                params: json,
+                url: 'json?ob=usuario&op=login',
+                params: json
             }).then(function (response) {
                 $scope.status = response.status;
                 $scope.ajaxDataUsuarios = response.data.message;
-                $scope.resultado = "Logueado con éxito";
+                $scope.resultado = "Conectado";
+                $scope.conectado = true;
+                oSessionService.setUserName(response.data.message.nombre + " " + response.data.message.ape1);
+                $scope.usuarioConectado = oSessionService.getUserName();
             }, function (response) {
                 $scope.status = response.status;
                 $scope.ajaxDataUsuarios = response.data.message || 'Request failed';
-                $scope.resultado = "No se pudo loguear";
+                $scope.resultado = "No se pudo conectar";
             });
         };
 

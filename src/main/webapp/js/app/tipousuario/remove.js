@@ -1,12 +1,12 @@
 'use strict'
 
-moduleProducto.controller('productoRemoveController', ['$scope', '$http', '$location', 'toolService', '$routeParams', '$window', 'sessionService',
+moduleTipousuario.controller('tipousuarioRemoveController', ['$scope', '$http', '$location', 'toolService', '$routeParams', '$window', 'sessionService',
     function ($scope, $http, $location, toolService, $routeParams, $window, oSessionService) {
 
         $scope.totalPages = 1;
         $scope.btnBorrar=true;
         $scope.conectado = false;
-
+        
         if (!$routeParams.id) {
             $scope.idError = true;
         } else {
@@ -15,13 +15,13 @@ moduleProducto.controller('productoRemoveController', ['$scope', '$http', '$loca
 
             $http({
                 method: 'GET',
-                url: 'json?ob=producto&op=get&id=' + $scope.id
+                url: 'json?ob=tipousuario&op=get&id=' + $scope.id
             }).then(function (response) {
                 $scope.status = response.status;
-                $scope.ajaxDataProductos = response.data.message;
+                $scope.ajaxDataTipousuarios = response.data.message;
             }, function (response) {
                 $scope.status = response.status;
-                $scope.ajaxDataProductos = response.data.message || 'Request failed';
+                $scope.ajaxDataTipousuarios = response.data.message || 'Request failed';
             });
         }
 
@@ -33,14 +33,14 @@ moduleProducto.controller('productoRemoveController', ['$scope', '$http', '$loca
             $scope.btnBorrar=false;
             $http({
                 method: 'GET',
-                url: 'json?ob=producto&op=remove&id=' + $scope.id
+                url: 'json?ob=tipousuario&op=remove&id=' + $scope.id
             }).then(function (response) {
                 $scope.status = response.status;
-                $scope.ajaxDataProductos = response.data.message;
-                $scope.resultado="Eliminado";
+                $scope.ajaxDataTipousuario = response.data.message;
+                $scope.resultado="Eliminado con éxito";
             }, function (response) {
                 $scope.status = response.status;
-                $scope.ajaxDataProductos = response.data.message || 'Request failed';
+                $scope.ajaxDataTipousuario = response.data.message || 'Request failed';
                 $scope.resultado="No se pudo eliminar";
             });
         };
@@ -49,7 +49,7 @@ moduleProducto.controller('productoRemoveController', ['$scope', '$http', '$loca
             $scope.usuarioConectado = oSessionService.getUserName();
             $scope.conectado = true;
         }
-
+        
         $scope.isActive = toolService.isActive;
 
         
@@ -59,8 +59,5 @@ moduleProducto.controller('productoRemoveController', ['$scope', '$http', '$loca
 
 
 ]);
-
-
-
 
 

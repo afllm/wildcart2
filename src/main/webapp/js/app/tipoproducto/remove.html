@@ -7,21 +7,24 @@
                 
             </div>
             <div class="table-responsive container" >
-                    <h3>Datos del tipo de producto</h3>
+                    <h3>Datos del tipo de producto a eliminar</h3>
                     <table class="table table-striped table-sm" ng-show="!idError">
                         <tr>
-                        <th>Id</th><td>{{ajaxDataTipoProductos.id}}</td>
+                        <th>Id</th><td>{{ajaxDataTipoproducto.id}}</td>
                         </tr>
                       
                         <tr>
-                        <th>Descripción</th><td>{{ajaxDataTipoProductos.desc}}</td>
+                        <th>Descripción</th><td>{{ajaxDataTipoproducto.desc}}</td>
                         </tr>
                         
                     </table>
                     <h2 ng-show="idError">Ha habido un error. vuelva a intentarlo</h2>
+                    <h3>{{resultado}}</h3>
                     <button type="button" class="btn btn-light" ng-click="goBack()">
                                 Volver
                             </button>
+                     <button ng-show="!idError && btnBorrar" type="button" class="btn btn-light" 
+                             ng-click="borrar()">Confirmar eliminación</button> 
                 </div>
         </main>
     </div>

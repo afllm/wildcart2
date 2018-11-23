@@ -1,9 +1,10 @@
 'use strict'
 
-moduleProducto.controller('productoPlistController', ['$scope', '$http', '$location', 'toolService', '$routeParams',
-    function ($scope, $http, $location, toolService, $routeParams) {
+moduleProducto.controller('productoPlistController', ['$scope', '$http', '$location', 'toolService', '$routeParams', 'sessionService',
+    function ($scope, $http, $location, toolService, $routeParams, oSessionService) {
 
         $scope.totalPages = 1;
+        $scope.conectado = false;
         
         if (!$routeParams.order) {
             $scope.orderURLServidor = "";
@@ -49,7 +50,7 @@ moduleProducto.controller('productoPlistController', ['$scope', '$http', '$locat
         //getcount
         $http({
             method: 'GET',
-            url: '/json?ob=producto&op=getcount'
+            url: 'json?ob=producto&op=getcount'
         }).then(function (response) {
             $scope.status = response.status;
             $scope.ajaxDataProductosNumber = response.data.message;
@@ -66,7 +67,7 @@ moduleProducto.controller('productoPlistController', ['$scope', '$http', '$locat
 
         $http({
             method: 'GET',
-            url: '/json?ob=producto&op=getpage&rpp=' + $scope.rpp + '&page=' + $scope.page + $scope.orderURLServidor
+            url: 'json?ob=producto&op=getpage&rpp=' + $scope.rpp + '&page=' + $scope.page + $scope.orderURLServidor
         }).then(function (response) {
             $scope.status = response.status;
             $scope.ajaxDataProductos = response.data.message;
@@ -103,8 +104,10 @@ moduleProducto.controller('productoPlistController', ['$scope', '$http', '$locat
             }
         }
 
-
-
+        if (oSessionService.getUserName() !== "") {
+            $scope.usuarioConectado = oSessionService.getUserName();
+            $scope.conectado = true;
+        }
 
         $scope.isActive = toolService.isActive;
 

@@ -7,9 +7,9 @@
 
             </div>
             <div class="form-responsive container" >
-                <h3 ng-show="!idError && btnLogin">Datos del nuevo usuario</h3>
+                <h3 ng-show="btnLogin">Introduzca su usuario y contrase√±a</h3>
 
-                <form name="userForm" ng-show="!idError && btnLogin">
+                <form name="userForm" ng-show="btnLogin">
                     <div class="form-group">
                         <label>Login</label>
                         <input type="text" class="form-control" id="login" name="login" ng-model="login" ng-required="true" />
@@ -22,10 +22,10 @@
                         <input type="password" class="form-control" ng-class="{' is-invalid': userForm.pass.$invalid && !userForm.pass.$pristine}"
                                id="pass" name="pass" ng-model="pass" ng-minlength="5" ng-required="true"/>
                         <div ng-show="userForm.pass.$error.minlength" class="alert alert-danger" role="alert">
-                            La longitud de la constraseÒa es demasiado corta
+                            La longitud de la constrase√±a es demasiado corta
                         </div>
                         <div ng-show="!userForm.pass.$valid" class="alert alert-danger" role="alert">
-                            ContraseÒa obligatoria
+                            Contrase√±a obligatoria
                         </div>
                     </div>
                     <button ng-show="!idError && btnLogin" type="button" class="btn btn-light" ng-click="entrar()" ng-disabled="userForm.$invalid">Entrar</button>

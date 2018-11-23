@@ -9,13 +9,15 @@ var wildcart = angular.module('MyApp', [
     'usuarioControllers',
     'tipoproductoControllers',
     'facturaControllers',
-    'productoControllers'
+    'productoControllers',
+    'directives'
 ]);
 
 
 var moduleCommon = angular.module ('commonControllers',[]);
 var moduleService = angular.module ('services',[]);
 var moduleComponent = angular.module ('components',[]);
+var moduleDirectives = angular.module('directives', []);
 var moduleTipousuario = angular.module ('tipousuarioControllers',[]);
 var moduleUsuario = angular.module ('usuarioControllers',[]);
 var moduleProducto = angular.module ('productoControllers',[]);

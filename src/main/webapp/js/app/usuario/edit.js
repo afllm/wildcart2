@@ -1,11 +1,12 @@
 'use strict'
 
-moduleUsuario.controller('usuarioEditController', ['$scope', '$http', '$location', 'toolService', '$routeParams', '$window',
-    function ($scope, $http, $location, toolService, $routeParams, $window) {
+moduleUsuario.controller('usuarioEditController', ['$scope', '$http', '$location', 'toolService', '$routeParams', '$window', 'sessionService',
+    function ($scope, $http, $location, toolService, $routeParams, $window, oSessionService) {
 
         $scope.totalPages = 1;
         $scope.btnUpdate = true;
-
+        $scope.conectado = false;
+        $scope.resultado = "---";
         if (!$routeParams.id) {
             $scope.idError = true;
         } else {
@@ -14,7 +15,7 @@ moduleUsuario.controller('usuarioEditController', ['$scope', '$http', '$location
 
             $http({
                 method: 'GET',
-                url: '/json?ob=usuario&op=get&id=' + $scope.id
+                url: 'json?ob=usuario&op=get&id=' + $scope.id
             }).then(function (response) {
                 $scope.status = response.status;
                 $scope.id = response.data.message.id;
@@ -23,7 +24,7 @@ moduleUsuario.controller('usuarioEditController', ['$scope', '$http', '$location
                 $scope.ape1 = response.data.message.ape1;
                 $scope.ape2 = response.data.message.ape2;
                 $scope.login = response.data.message.login;
-                $scope.pass = response.data.message.pass;
+                //$scope.pass = "";
                 $scope.obj_tipoUsuario_desc = response.data.message.obj_tipoUsuario.desc;
                 $scope.obj_tipoUsuario_id = response.data.message.obj_tipoUsuario.id;
             }, function (response) {
@@ -46,13 +47,12 @@ moduleUsuario.controller('usuarioEditController', ['$scope', '$http', '$location
                 ape1: $scope.ape1,
                 ape2: $scope.ape2,
                 login: $scope.login,
-                pass: $scope.pass,
                 id_tipoUsuario: $scope.obj_tipoUsuario_id
             }
 
             $http({
                 method: 'POST',
-                url: '/json?ob=usuario&op=update',
+                url: 'json?ob=usuario&op=update',
                 params: {json: JSON.stringify(json)}
             }).then(function (response) {
                 $scope.status = response.status;
@@ -64,6 +64,20 @@ moduleUsuario.controller('usuarioEditController', ['$scope', '$http', '$location
                 $scope.resultado = "No se pudo actualizar";
             });
         };
+        
+        if (oSessionService.getUserName() !==""){
+            $scope.usuarioConectado = oSessionService.getUserName();
+            $scope.conectado = true;
+        }
+        
+        $scope.logout = function (){
+            $http({
+                method: 'GET',
+                url: 'json?ob=usuario&op=logout'
+            }).then(function () {
+                $location.url('/');
+            });
+        }
 
         $scope.isActive = toolService.isActive;
 

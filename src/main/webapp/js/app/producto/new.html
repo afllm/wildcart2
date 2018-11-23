@@ -7,7 +7,7 @@
 
             </div>
             <div class="form-responsive container" >
-                <h3 ng-show="!idError && btnNew">Producto a actualizar</h3>
+                <h3 ng-show="!idError && btnNew">Datos del nuevo producto</h3>
 
                 <form name="userForm" ng-show="!idError && btnNew">
                     <div class="form-group" ng-class="{ 'has-error' : userForm.codigo.$invalid && !userForm.codigo.$pristine }">
@@ -50,7 +50,7 @@
                         <input type="text" class="form-control" id="obj_tipoProducto_desc" name="obj_tipoProducto_desc" ng-disabled="true" ng-model="obj_tipoProducto_desc"
                                />
                     </div>-->
-                    <button ng-show="!idError && btnNew" type="button" class="btn btn-light" ng-click="nuevo()" ng-disabled="userForm.$invalid">Confirmar cambios</button>
+                    <button ng-show="!idError && btnNew" type="button" class="btn btn-light" ng-click="nuevo()" ng-disabled="userForm.$invalid">Confirmar nuevo producto</button>
                 </form>
                 <h3 ng-show="idError">Ha habido un error. Vuelva a intentarlo</h3>
                 <h3>{{resultado}}</h3>

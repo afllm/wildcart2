@@ -1,0 +1,34 @@
+<header ng-include="'js/app/header.html'"></header>
+<div class="container-fluid">
+    <div class="row">
+        <main role="main" class="col-md-9 ml-sm-auto col-lg-12 px-4" style="margin-top: 50px">
+            <div class="d-flex justify-content-between flex-wrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                <h1 class="h2">Información del tipo de producto</h1>
+
+            </div>
+            <div class="form-responsive container" >
+                <h3 ng-show="!idError && btnUpdate">Tipo de producto a actualizar</h3>
+
+                <form name="userForm" ng-show="!idError && btnUpdate">
+                    <div class="form-group">
+                        <label>ID</label>
+                        <input type="text" class="form-control" id="id" name="id" ng-disabled="true" ng-model="id" />
+                    </div>
+                    <div class="form-group">
+                        <label>Descripcion</label>
+                        <input type="text" class="form-control" id="desc" name="desc" ng-model="desc" ng-required="true" />
+                        <div ng-show="!userForm.desc.$valid" class="alert alert-danger" role="alert">
+                            Descripcion obligatoria
+                        </div>
+                    </div>
+                    <button ng-show="!idError && btnUpdate" type="button" class="btn btn-light" ng-click="editar()" ng-disabled="userForm.$invalid">Confirmar cambios</button>
+                </form>
+                <h3 ng-show="idError">Ha habido un error. vuelva a intentarlo</h3>
+                <h3>{{resultado}}</h3>
+                <button type="button" class="btn btn-light" ng-click="goBack()">Volver</button>
+                
+            </div>
+        </main>
+    </div>
+</div>
+<footer class="footer" ng-include="'js/app/footer.html'"></footer>

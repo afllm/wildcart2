@@ -1,9 +1,10 @@
 'use strict'
 
-moduleUsuario.controller('usuarioViewController', ['$scope', '$http', '$location', 'toolService', '$routeParams', '$window',
-    function ($scope, $http, $location, toolService, $routeParams, $window) {
+moduleUsuario.controller('usuarioViewController', ['$scope', '$http', '$location', 'toolService', '$routeParams', '$window', 'sessionService',
+    function ($scope, $http, $location, toolService, $routeParams, $window, oSessionService) {
 
         $scope.totalPages = 1;
+        $scope.conectado = false;
 
         if (!$routeParams.id) {
             $scope.idError = true;
@@ -13,7 +14,7 @@ moduleUsuario.controller('usuarioViewController', ['$scope', '$http', '$location
 
             $http({
                 method: 'GET',
-                url: '/json?ob=usuario&op=get&id=' + $scope.id
+                url: 'json?ob=usuario&op=get&id=' + $scope.id
             }).then(function (response) {
                 $scope.status = response.status;
                 $scope.ajaxDataUsuarios = response.data.message;
@@ -26,6 +27,20 @@ moduleUsuario.controller('usuarioViewController', ['$scope', '$http', '$location
         $scope.goBack = function () {
             $window.history.back();
         };
+        
+        if (oSessionService.getUserName() !== "") {
+            $scope.usuarioConectado = oSessionService.getUserName();
+            $scope.conectado = true;
+        }
+
+        $scope.logout = function () {
+            $http({
+                method: 'GET',
+                url: 'json?ob=usuario&op=logout'
+            }).then(function () {
+                $location.url('/');
+            });
+        }
 
         $scope.isActive = toolService.isActive;
 

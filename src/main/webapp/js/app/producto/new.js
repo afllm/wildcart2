@@ -1,10 +1,11 @@
 'use strict'
 
-moduleProducto.controller('productoNewController', ['$scope', '$http', '$location', 'toolService', '$routeParams', '$window',
-    function ($scope, $http, $location, toolService, $routeParams, $window) {
+moduleProducto.controller('productoNewController', ['$scope', '$http', '$location', 'toolService', '$routeParams', '$window', 'sessionService',
+    function ($scope, $http, $location, toolService, $routeParams, $window, oSessionService) {
 
         $scope.totalPages = 1;
         $scope.btnNew = true;
+        $scope.conectado = false;
         
         $scope.goBack = function () {
             $window.history.back();
@@ -36,6 +37,11 @@ moduleProducto.controller('productoNewController', ['$scope', '$http', '$locatio
                 $scope.resultado = "No se pudo crear";
             });
         };
+        
+         if (oSessionService.getUserName() !== "") {
+            $scope.usuarioConectado = oSessionService.getUserName();
+            $scope.conectado = true;
+        }
 
         $scope.isActive = toolService.isActive;
 
