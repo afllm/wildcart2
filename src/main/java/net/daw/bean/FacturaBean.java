@@ -12,6 +12,7 @@ import java.sql.SQLException;
 import java.util.Date;
 
 import com.google.gson.annotations.Expose;
+import net.daw.dao.LineaDao;
 
 import net.daw.dao.UsuarioDao;
 
@@ -31,6 +32,8 @@ public class FacturaBean {
     private int id_usuario;
     @Expose(deserialize = false)
     private UsuarioBean obj_usuario;
+    @Expose(deserialize = false)
+    private int link_factura;
 
     public int getId_usuario() {
         return id_usuario;
@@ -72,6 +75,16 @@ public class FacturaBean {
         this.obj_usuario = obj_usuario;
     }
 
+    public int getLink_factura() {
+        return link_factura;
+    }
+
+    public void setLink_factura(int link_factura) {
+        this.link_factura = link_factura;
+    }
+    
+    
+
     public FacturaBean fill(ResultSet oResultSet, Connection oConnection, Integer expand) throws SQLException, Exception {
         this.setId(oResultSet.getInt("id"));
         this.setFecha(oResultSet.getString("fecha"));
@@ -79,10 +92,13 @@ public class FacturaBean {
         if (expand > 0) {
             UsuarioDao oUsuarioDao = new UsuarioDao(oConnection, "usuario");
             this.setObj_usuario(oUsuarioDao.get(oResultSet.getInt("id_usuario"), expand - 1));
-            System.out.println(obj_usuario.getId());
+            
         } else {
             this.setId(oResultSet.getInt("id_usuario"));
         }
+        
+        LineaDao oLineaDao = new LineaDao(oConnection, "linea");
+        this.setLink_factura(oLineaDao.getcountxlinea(this.getId()));
         return this;
     }
 

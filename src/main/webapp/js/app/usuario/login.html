@@ -31,7 +31,7 @@
                     <button ng-show="!idError && btnLogin" type="button" class="btn btn-light" ng-click="entrar()" ng-disabled="userForm.$invalid">Entrar</button>
                 </form>
                 <h3 ng-show="idError">Ha habido un error. vuelva a intentarlo</h3>
-                <h3>{{resultado}}</h3>
+                <h3 ng-show="!btnLogin">{{resultado}}</h3>
                 <button type="button" class="btn btn-light" ng-click="goBack()">Volver</button>
 
             </div>

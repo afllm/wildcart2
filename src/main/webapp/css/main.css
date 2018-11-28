@@ -1,12 +1,25 @@
 /* Sticky footer styles
 -------------------------------------------------- */
+*{
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
+}
 html {
   position: relative;
   min-height: 100%;
 }
+
+body, html{
+    heigt:100%;
+    width: 100%;
+    color: dimgray;
+    background-color: floralwhite;
+}
 body {
   /* Margin bottom by footer height */
-  margin-bottom: 60px;
+ margin-bottom: 60px;
+ margin: 0 auto;
+ 
 }
 .footer {
   position: absolute;

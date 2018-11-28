@@ -16,7 +16,7 @@ moduleUsuario.controller('usuarioLoginController', ['$scope', '$http', '$locatio
 
             var json = {
                 user: $scope.login,
-                pass: $scope.pass
+                pass: forge_sha256($scope.pass)
             };
 
             $http({
@@ -27,15 +27,20 @@ moduleUsuario.controller('usuarioLoginController', ['$scope', '$http', '$locatio
                 $scope.status = response.status;
                 $scope.ajaxDataUsuarios = response.data.message;
                 $scope.resultado = "Conectado";
-                $scope.conectado = true;
                 oSessionService.setUserName(response.data.message.nombre + " " + response.data.message.ape1);
                 $scope.usuarioConectado = oSessionService.getUserName();
             }, function (response) {
                 $scope.status = response.status;
                 $scope.ajaxDataUsuarios = response.data.message || 'Request failed';
-                $scope.resultado = "No se pudo conectar";
+                $scope.resultado = "No se pudo conectar FUN RESP";
             });
         };
+
+        if (oSessionService.getUserName() !== "") {
+            $scope.usuarioConectado = oSessionService.getUserName();
+            $scope.conectado = true;
+        }
+
 
         $scope.isActive = toolService.isActive;
 

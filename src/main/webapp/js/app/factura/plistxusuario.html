@@ -99,7 +99,10 @@
                     </button>
                         <button type="button" class="btn btn-light" ng-click="remove(fila.id)">
                         <i class="fas fa-trash-alt"></i>
-                    </button></td>
+                    </button>
+                        <button type="button" class="btn btn-light icon" ng-click="linea(fila.id)"
+                                ng-disabled="{{fila.link_factura}}==0">{{fila.link_factura}}</button>
+                        </td>
                     </tr>
                 </table>
 

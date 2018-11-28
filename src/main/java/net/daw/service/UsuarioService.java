@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import net.daw.bean.ReplyBean;
 import net.daw.bean.UsuarioBean;
 import net.daw.connection.publicinterface.ConnectionInterface;
@@ -34,6 +35,7 @@ public class UsuarioService {
     public UsuarioService(HttpServletRequest oRequest) {
         super();
         this.oRequest = oRequest;
+        
         ob = oRequest.getParameter("ob");
     }
 
@@ -232,19 +234,21 @@ public class UsuarioService {
         Connection oConnection;
         String strLogin = oRequest.getParameter("user");
         String strPassword = oRequest.getParameter("pass");
+        Integer iRes=null;
         try {
             oConnectionPool = ConnectionFactory.getConnection(ConnectionConstants.connectionPool);
             oConnection = oConnectionPool.newConnection();
             UsuarioDao oUsuarioDao = new UsuarioDao(oConnection, ob);
-
-            UsuarioBean oUsuarioBean = oUsuarioDao.login(strLogin, strPassword);
-            if (oUsuarioBean.getId() > 0) {
-                oRequest.getSession().setAttribute("user", oUsuarioBean);
+            iRes = oUsuarioDao.login(strLogin, strPassword);
+            if (iRes != 0) {
+                UsuarioBean oUsuarioBean = oUsuarioDao.get(iRes, 1);
                 Gson oGson = (new GsonBuilder()).excludeFieldsWithoutExposeAnnotation().create();
                 oReplyBean = new ReplyBean(200, oGson.toJson(oUsuarioBean));
+                
             } else {
                 //throw new Exception("ERROR Bad Authentication: Service level: get page: " + ob + " object");
                 oReplyBean = new ReplyBean(401, "Bad Authentication");
+                
             }
         } catch (Exception ex) {
             throw new Exception("ERROR: Service level: login method: " + ob + " object", ex);
