@@ -27,6 +27,7 @@ public class ProductoService {
         super();
         this.oRequest = oRequest;
         ob = oRequest.getParameter("ob");
+        
     }
     protected Boolean checkPermission(String strMethodName) {
         UsuarioBean oUsuarioBean = (UsuarioBean) oRequest.getSession().getAttribute("user");

@@ -5,6 +5,7 @@ moduleUsuario.controller('usuarioRemoveController', ['$scope', '$http', '$locati
 
         $scope.totalPages = 1;
         $scope.btnBorrar=true;
+        $scope.conectado = false;
 
         if (!$routeParams.id) {
             $scope.idError = true;
@@ -40,7 +41,7 @@ moduleUsuario.controller('usuarioRemoveController', ['$scope', '$http', '$locati
             }, function (response) {
                 $scope.status = response.status;
                 $scope.ajaxDataUsuarios = response.data.message || 'Request failed';
-                $scope.resultado="No se pudo eliminar";
+                $scope.resultado="No se pudo eliminar: "+$scope.ajaxDataUsuarios;
             });
         };
         
@@ -48,16 +49,7 @@ moduleUsuario.controller('usuarioRemoveController', ['$scope', '$http', '$locati
             $scope.usuarioConectado = oSessionService.getUserName();
             $scope.conectado = true;
         }
-
-        $scope.logout = function () {
-            $http({
-                method: 'GET',
-                url: 'json?ob=usuario&op=logout'
-            }).then(function () {
-                $location.url('/');
-            });
-        }
-
+        
         $scope.isActive = toolService.isActive;
 
         

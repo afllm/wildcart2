@@ -1,22 +1,21 @@
 'use strict'
 
-moduleFactura.controller("facturaRemoveController", ['$scope', '$http', '$routeParams', '$window', 'sessionService',
-    function ($scope, $http, $routeParams, $window, oSessionService) {
-        if (oSessionService.getUserName() !== "") {
-            $scope.nombre = oSessionService.getUserName();
-            $scope.validlog = true;
-        }
-        $scope.ob = "factura";
+moduleFactura.controller("facturaRemoveController", ['$scope', '$http', '$routeParams', 'toolService', '$window', 'sessionService',
+    function ($scope, $http, $routeParams, toolService, $window, oSessionService) {
+        
+        $scope.btnBorrar=true;
+        $scope.conectado = false;
 
         if (!$routeParams.id) {
-            $scope.id = 1;
+            $scope.idError = true;
         } else {
+            $scope.idError = false;
             $scope.id = $routeParams.id;
         }
 
         $http({
             method: 'GET',
-            url: 'json?ob=' + $scope.ob + '&op=get&id=' + $scope.id
+            url: 'json?ob=factura&op=get&id=' + $scope.id
         }).then(function (response) {
             $scope.status = response.status;
             $scope.ajaxDataUsuarios = response.data.message;
@@ -24,29 +23,32 @@ moduleFactura.controller("facturaRemoveController", ['$scope', '$http', '$routeP
             $scope.status = response.status;
             $scope.ajaxDataUsuarios = response.data.message || 'Request failed';
         });
-
-        $scope.visualizar = false;
-        $scope.error = false;
-
-        $scope.remove = function () {
+        
+        $scope.borrar = function () {
             $http({
                 method: "GET",
-                url: 'json?ob=' + $scope.ob + '&op=remove&id=' + $scope.id
-
+                url: 'json?ob=factura&op=remove&id=' + $scope.id
             }).then(function (response) {
-                console.log(response);
-                $scope.visualizar = true;
+                $scope.status = response.status;
+                $scope.ajaxDataUsuarios = response.data.message;
+                $scope.resultado="Eliminada";
             }), function (response) {
-                console.log(response);
-                $scope.error = true;
+                $scope.status = response.status;
+                $scope.ajaxDataUsuarios = response.data.message || 'Request failed';
+                $scope.resultado="No se pudo eliminar: "+$scope.ajaxDataUsuarios;
             }
         }
 
-        $scope.volver = function () {
+        $scope.goBack = function () {
             $window.history.back();
         }
+        
+        if (oSessionService.getUserName() !== "") {
+            $scope.usuarioConectado = oSessionService.getUserName();
+            $scope.conectado = true;
+        }
        
-
+       $scope.isActive = toolService.isActive;
     }
 
 ]);

@@ -197,23 +197,23 @@ public class UsuarioDao {
 
     }
 
-    public Integer login(String strUserName, String strPassword) throws Exception {
+    public UsuarioBean login(String strUserName, String strPassword) throws Exception {
         String strSQL = "SELECT * FROM " + ob + " WHERE login=? AND pass=?";
         UsuarioBean oUsuarioBean;
         ResultSet oResultSet = null;
         PreparedStatement oPreparedStatement = null;
-        int iRes = 0;
+        //int iRes = 0;
         try {
             oPreparedStatement = oConnection.prepareStatement(strSQL);
             oPreparedStatement.setString(1, strUserName);
             oPreparedStatement.setString(2, strPassword);
             oResultSet = oPreparedStatement.executeQuery();
+            oUsuarioBean = new UsuarioBean();
             if (oResultSet.next()) {
-                //oUsuarioBean = new UsuarioBean();
-                //oUsuarioBean.fill(oResultSet, oConnection, 1);
-                iRes = oResultSet.getInt(1);
+                oUsuarioBean.fill(oResultSet, oConnection, 1);
+                //iRes = oResultSet.getInt(1);
             } else {
-                iRes = 0;
+                oUsuarioBean.setId(0);
             }
         } catch (SQLException e) {
             throw new Exception("Error en Dao get de " + ob, e);
@@ -225,6 +225,6 @@ public class UsuarioDao {
                 oPreparedStatement.close();
             }
         }
-        return iRes;
+        return oUsuarioBean;
     }
 }

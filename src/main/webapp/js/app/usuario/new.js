@@ -44,14 +44,7 @@ moduleUsuario.controller('usuarioNewController', ['$scope', '$http', '$location'
             $scope.conectado = true;
         }
 
-        $scope.logout = function () {
-            $http({
-                method: 'GET',
-                url: 'json?ob=usuario&op=logout'
-            }).then(function () {
-                $location.url('/');
-            });
-        }
+        
 
         $scope.isActive = toolService.isActive;
 

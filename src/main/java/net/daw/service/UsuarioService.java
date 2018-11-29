@@ -234,14 +234,15 @@ public class UsuarioService {
         Connection oConnection;
         String strLogin = oRequest.getParameter("user");
         String strPassword = oRequest.getParameter("pass");
-        Integer iRes=null;
+        //Integer iRes=null;
         try {
             oConnectionPool = ConnectionFactory.getConnection(ConnectionConstants.connectionPool);
             oConnection = oConnectionPool.newConnection();
             UsuarioDao oUsuarioDao = new UsuarioDao(oConnection, ob);
-            iRes = oUsuarioDao.login(strLogin, strPassword);
-            if (iRes != 0) {
-                UsuarioBean oUsuarioBean = oUsuarioDao.get(iRes, 1);
+            UsuarioBean oUsuarioBean = oUsuarioDao.login(strLogin, strPassword);
+            //iRes = oUsuarioDao.login(strLogin, strPassword);
+            if (oUsuarioBean.getId() > 0) {
+                oRequest.getSession().setAttribute("user", oUsuarioBean);
                 Gson oGson = (new GsonBuilder()).excludeFieldsWithoutExposeAnnotation().create();
                 oReplyBean = new ReplyBean(200, oGson.toJson(oUsuarioBean));
                 

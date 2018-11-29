@@ -18,11 +18,10 @@ moduleTipoproducto.controller('tipoproductoViewController', ['$scope', '$http', 
             }).then(function (response) {
                 $scope.status = response.status;
                 $scope.ajaxDataTipoProductos = response.data.message;
-                $scope.resultado="Creado";
             }, function (response) {
                 $scope.status = response.status;
                 $scope.ajaxDataTipoProductos = response.data.message || 'Request failed';
-                $scope.resultado="No se pudo crear";
+                $scope.resultado="Error: "+$scope.ajaxDataTipoProductos;
             });
         }
 

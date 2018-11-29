@@ -44,7 +44,7 @@ public class ProductoDao {
 				oProductoBean= null;
 			}
 		} catch (SQLException e) {
-			throw new Exception("Error en Dao get de " + ob, e);
+			throw new Exception("Error en Dao get de " + ob+": "+e.getMessage(), e);
 		} finally {
 			if (oResultSet != null) {
 				oResultSet.close();

@@ -18,10 +18,10 @@ moduleTipoproducto.controller('tipoproductoRemoveController', ['$scope', '$http'
                 url: 'json?ob=tipoproducto&op=get&id=' + $scope.id
             }).then(function (response) {
                 $scope.status = response.status;
-                $scope.ajaxDataTipoproductos = response.data.message;
+                $scope.ajaxDataTipoproducto = response.data.message;
             }, function (response) {
                 $scope.status = response.status;
-                $scope.ajaxDataTipoproductos = response.data.message || 'Request failed';
+                $scope.ajaxDataTipoproducto = response.data.message || 'Request failed';
             });
         }
 

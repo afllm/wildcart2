@@ -1,47 +1,36 @@
 "use strict";
 
-moduleFactura.controller("facturaEditController", [
-    "$scope",
-    "$http",
-    "$routeParams",
-    "toolService",
-    "$window",
-    'sessionService',
-    function ($scope, $http, $routeParams, toolService, $window, oSessionService) {
+moduleFactura.controller("facturaEditController", ['$scope', '$http', '$location', 'toolService', '$routeParams', '$window', 'sessionService',
+    function ($scope, $http, $location, toolService, $routeParams, $window, oSessionService) {
 
-        $scope.ob = "factura";
-        if (oSessionService.getUserName() !== "") {
-            $scope.nombre = oSessionService.getUserName();
-            $scope.validlog = true;
-        }
-
+        $scope.btnUpdate = true;
+        $scope.conectado = false;
         if (!$routeParams.id) {
-            $scope.id = 1;
+            $scope.idError = true;
         } else {
+            $scope.idError = false;
             $scope.id = $routeParams.id;
+            $http({
+                method: "GET",
+                url: 'json?ob=factura&op=get&id=' + $scope.id
+            }).then(function (response) {
+                console.log(response);
+                $scope.id = response.data.message.id;
+                $scope.fecha = response.data.message.fecha;
+                $scope.iva = response.data.message.iva;
+                $scope.obj_usuario_id = response.data.message.obj_usuario.id;
+                $scope.obj_usuario_nombre = response.data.message.obj_usuario.nombre;
+            }), function (response) {
+                $scope.status = response.status;
+                $scope.ajaxDataUsuarios = response.data.message || 'Request failed';
+            };
+
         }
-
-        $http({
-            method: "GET",
-            url: 'json?ob=' + $scope.ob + '&op=get&id=' + $scope.id
-        }).then(function (response) {
-            console.log(response);
-            $scope.id = response.data.message.id;
-            $scope.fecha = response.data.message.fecha;
-            $scope.iva = response.data.message.iva;
-            $scope.obj_usuario_id = response.data.message.obj_usuario.id;
-            $scope.obj_usuario_nombre = response.data.message.obj_usuario.nombre;
-
-
-        }), function (response) {
-            console.log(response);
-        };
-
-        $scope.isActive = toolService.isActive;
-
-        $scope.update = function () {
-            $scope.visualizar = false;
-            $scope.error = false;
+        
+        
+        $scope.editar = function () {
+             $scope.btnUpdate = false;
+             
             var json = {
                 id: $scope.id,
                 fecha: $scope.fecha,
@@ -50,26 +39,30 @@ moduleFactura.controller("facturaEditController", [
 
             }
             $http({
-                method: 'GET',
-                header: {
-                    'Content-Type': 'application/json;charset=utf-8'
-                },
-                url: 'json?ob=' + $scope.ob + '&op=update',
+                method: 'POST',
+                url: 'json?ob=factura&op=update',
                 params: {json: JSON.stringify(json)}
             }).then(function (response) {
-                console.log(response);
-                $scope.visualizar = true;
+                $scope.status = response.status;
+                $scope.ajaxDataUsuarios = response.data.message;
+                $scope.resultado = "Actualizado";
             }), function (response) {
-                console.log(response);
-                $scope.error = true;
+                $scope.status = response.status;
+                $scope.ajaxDataUsuarios = response.data.message || 'Request failed';
+                $scope.resultado = "No se pudo actualizar: "+$scope.ajaxDataUsuarios;
             }
         }
 
-        $scope.volver = function () {
+        $scope.goBack = function () {
             $window.history.back();
         }
 
-       
+         if (oSessionService.getUserName() !==""){
+            $scope.usuarioConectado = oSessionService.getUserName();
+            $scope.conectado = true;
+        }
+        
+        $scope.isActive = toolService.isActive;
 
     }
 ]);

@@ -7,6 +7,7 @@ moduleUsuario.controller('usuarioEditController', ['$scope', '$http', '$location
         $scope.btnUpdate = true;
         $scope.conectado = false;
         $scope.resultado = "---";
+
         if (!$routeParams.id) {
             $scope.idError = true;
         } else {
@@ -69,20 +70,9 @@ moduleUsuario.controller('usuarioEditController', ['$scope', '$http', '$location
             $scope.usuarioConectado = oSessionService.getUserName();
             $scope.conectado = true;
         }
-        
-        $scope.logout = function (){
-            $http({
-                method: 'GET',
-                url: 'json?ob=usuario&op=logout'
-            }).then(function () {
-                $location.url('/');
-            });
-        }
 
         $scope.isActive = toolService.isActive;
-
-
-
+        
     }
 
 

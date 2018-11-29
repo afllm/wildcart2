@@ -36,7 +36,7 @@
               <label>Usuario</label>
                   <input type="text" class="form-control" id="obj_usuario_id" name="obj_usuario_id" ng-model="obj_usuario_id"/>
             </div>
-            <button ng-click="update()" type="button" class="btn btn-primary btn-block" ng-disabled="userForm.$invalid">Modificar factura</button>
+            <button ng-click="editar()" type="button" class="btn btn-primary btn-block" ng-disabled="userForm.$invalid">Modificar factura</button>
           </form>  
               <div class="alert alert-danger" role="alert" ng-show="(error)">
                 Error al editar la factura.

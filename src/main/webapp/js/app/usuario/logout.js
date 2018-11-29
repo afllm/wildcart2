@@ -3,6 +3,8 @@
 moduleUsuario.controller('usuarioLogoutController', ['$scope', '$http', '$location', 'toolService', '$routeParams', '$window', 'sessionService',
     function ($scope, $http, $location, toolService, $routeParams, $window, oSessionService) {
 
+        $scope.conectado = false;
+        
         if (oSessionService.getUserName() !== "") {
             $scope.usuarioConectado = oSessionService.getUserName();
             $scope.conectado = true;

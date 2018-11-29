@@ -3,22 +3,16 @@
 
 moduleFactura.controller('facturanewxusuarioController', ['$scope', '$http', '$location', 'toolService', '$routeParams', '$window', 'sessionService',
     function ($scope, $http, $location, toolService, $routeParams, $window, oSessionService) {
-        if (oSessionService.getUserName() !== "") {
-            $scope.nombre = oSessionService.getUserName();
-            $scope.validlog = true;
-        }
+        
+        $scope.btnNew = true;
+        $scope.conectado = false;
+        $scope.id = null;
         
         if (!$routeParams.id) {
             $scope.id_usuario= 0;  
         } else {
             $scope.id_usuario= $routeParams.id;
         }
-        
-        $scope.ob = "factura";
-        $scope.id = null;
- 
-
-        $scope.isActive = toolService.isActive;
         
            $http({
             method: 'GET',
@@ -33,35 +27,41 @@ moduleFactura.controller('facturanewxusuarioController', ['$scope', '$http', '$l
         });
 
         $scope.update = function () {
-            $scope.visualizar = false;
-            $scope.error = false;
+            $scope.btnNew = false;
+            
             var json = {
-                id: null,
                 fecha: $scope.fecha,
                 iva: $scope.iva,
                 id_usuario: $scope.id_usuario
             };
 
             $http({
-                method: 'GET',
-                header: {
-                    'Content-Type': 'application/json;charset=utf-8'
-                },
-                url: 'json?ob=' + $scope.ob + '&op=create',
+                method: 'POST',
+                url: 'json?ob=factura&op=create',
                 params: {json: JSON.stringify(json)}
             }).then(function (response) {
                 console.log(response);
-                $scope.visualizar = true;
+                $scope.status = response.status;
+                $scope.ajaxDataUsuarios = response.data.message;
+                $scope.resultado = "Creado";
             }), function (response) {
                 console.log(response);
-                $scope.error = true;
+                $scope.status = response.status;
+                $scope.ajaxDataUsuarios = response.data.message || 'Request failed';
+                $scope.resultado = "No se pudo crear: "+$scope.ajaxDataUsuarios;
             }
         }
 
-        $scope.volver = function () {
+        $scope.goBack = function () {
             $window.history.back();
         };
+        
+         if (oSessionService.getUserName() !== "") {
+            $scope.usuarioConectado = oSessionService.getUserName();
+            $scope.conectado = true;
+        }
 
-
+         $scope.isActive = toolService.isActive;
+         
     }
 ]);

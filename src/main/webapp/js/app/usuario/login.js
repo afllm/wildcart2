@@ -26,13 +26,13 @@ moduleUsuario.controller('usuarioLoginController', ['$scope', '$http', '$locatio
             }).then(function (response) {
                 $scope.status = response.status;
                 $scope.ajaxDataUsuarios = response.data.message;
-                $scope.resultado = "Conectado";
+                $scope.resultado = "Bienvenido "+$scope.ajaxDataUsuarios.nombre;
                 oSessionService.setUserName(response.data.message.nombre + " " + response.data.message.ape1);
                 $scope.usuarioConectado = oSessionService.getUserName();
             }, function (response) {
                 $scope.status = response.status;
                 $scope.ajaxDataUsuarios = response.data.message || 'Request failed';
-                $scope.resultado = "No se pudo conectar FUN RESP";
+                $scope.resultado = "No se pudo conectar: "+$scope.ajaxDataUsuarios;
             });
         };
 

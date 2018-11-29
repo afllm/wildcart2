@@ -2,9 +2,12 @@
 
 moduleFactura.controller("facturaViewController", ['$scope', '$http', '$routeParams', '$window', 'sessionService',
     function ($scope, $http, $routeParams, $window, oSessionService) {
+
+        $scope.conectado = false;
+
         if (oSessionService.getUserName() !== "") {
-            $scope.nombre = oSessionService.getUserName();
-            $scope.validlog = true;
+            $scope.usuarioConectado = oSessionService.getUserName();
+            $scope.conectado = true;
         }
         $scope.ob = "factura";
 
@@ -27,10 +30,10 @@ moduleFactura.controller("facturaViewController", ['$scope', '$http', '$routePar
 
 
 
-        $scope.volver = function () {
+        $scope.goBack = function () {
             $window.history.back();
         };
-       
+
 
     }
 

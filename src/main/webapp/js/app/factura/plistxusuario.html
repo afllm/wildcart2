@@ -84,22 +84,21 @@
                             </button>
                         </th>
                      
-                        <th>                         
+                        <th>
+                            Operaciones
                         </th>
+                        <th>Filas</th>
                     </tr>
                     <tr ng-repeat="fila in ajaxDataUsuarios">
                         <td>{{fila.id}}</td>
                         <td>{{fila.fecha}}</td>
                         <td>{{fila.iva}}</td>
-                        <td><button type="button" class="btn btn-light" ng-click="view(fila.id)">
-                        <i class="fas fa-eye"></i>
-                    </button>
-                        <button type="button" class="btn btn-light " ng-click="edit(fila.id)">
-                        <i class="fas fa-edit"></i>
-                    </button>
-                        <button type="button" class="btn btn-light" ng-click="remove(fila.id)">
-                        <i class="fas fa-trash-alt"></i>
-                    </button>
+                        <td>
+                            <a href="factura/view/{{fila.id}}" class="btn btn-light fas fa-eye" role="button"></a>
+                            <a href="factura/edit/{{fila.id}}" class="btn btn-light fas fa-edit" role="button"></a>
+                            <a href="factura/remove/{{fila.id}}" class="btn btn-light fas fa-trash" role="button"></a>
+                        </td>
+                        <td>
                         <button type="button" class="btn btn-light icon" ng-click="linea(fila.id)"
                                 ng-disabled="{{fila.link_factura}}==0">{{fila.link_factura}}</button>
                         </td>
