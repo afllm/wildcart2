@@ -1,46 +1,33 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package net.daw.service;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import java.io.IOException;
 import java.io.Serializable;
 
 import java.sql.Connection;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import net.daw.bean.CarritoBean;
 import net.daw.bean.ProductoBean;
 import net.daw.bean.ReplyBean;
-import net.daw.bean.UsuarioBean;
 import net.daw.connection.publicinterface.ConnectionInterface;
 import net.daw.constant.ConnectionConstants;
 import net.daw.dao.ProductoDao;
-import net.daw.dao.UsuarioDao;
 import net.daw.factory.ConnectionFactory;
 import net.daw.helper.EncodingHelper;
-import net.daw.helper.ParameterCook;
 
-/**
- *
- * @author Ramón
- */
-public class CarritoService implements Serializable{
+public class CarritoService implements Serializable {
 
     HttpServletRequest oRequest;
     String ob = null;
     Gson oGson = new Gson();
+    ReplyBean oReplyBean;
+    ArrayList<CarritoBean> carrito = null;
 
     public CarritoService(HttpServletRequest oRequest) {
         super();
@@ -50,16 +37,12 @@ public class CarritoService implements Serializable{
 
     //Sirve para añadir  al carrito
     //La informacion del carrito de compras se guarda en una sesion
-    public ReplyBean add() throws ServletException, IOException {
+    public ReplyBean add() throws Exception {
+        ConnectionInterface oConnectionPool = null;
+        //Obtenemos la sesion actual
+        HttpSession sesion = oRequest.getSession();
 
-        ReplyBean oReplyBean;
-        ArrayList<CarritoBean> carrito=null;
-        
         try {
-            //Obtenemos la sesion actual
-            HttpSession sesion = oRequest.getSession();
-
-            ConnectionInterface oConnectionPool = null;
             Connection oConnection;
 
             //Si no existe la sesion creamos al carrito
@@ -110,21 +93,76 @@ public class CarritoService implements Serializable{
 
         } catch (Exception ex) {
             Logger.getLogger(CarritoService.class.getName()).log(Level.SEVERE, null, ex);
-            oReplyBean = new ReplyBean(500, "Error en add carrito: "+ex.getMessage());
+            oReplyBean = new ReplyBean(500, "Error en add carrito: " + ex.getMessage());
+        }
+        finally {
+            oConnectionPool.disposeConnection();
         }
         return oReplyBean;
     }
 
     public ReplyBean show() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        //Obtenemos la sesion actual
+        HttpSession sesion = oRequest.getSession();
+
+        if (sesion.getAttribute("carrito") == null) {
+            oReplyBean = new ReplyBean(200, EncodingHelper.quotate("Carrito vacio"));
+        } else {
+            oReplyBean = new ReplyBean(200, oGson.toJson(sesion.getAttribute("carrito")));
+        }
+
+        return oReplyBean;
     }
 
-    public ReplyBean remove() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public ReplyBean empty() {
+        HttpSession sesion = oRequest.getSession();
+
+        if (sesion.getAttribute("carrito") == null) {
+            oReplyBean = new ReplyBean(200, EncodingHelper.quotate("El carrito ya esta vacio"));
+        } else {
+            sesion.setAttribute("carrito", null);
+            oReplyBean = new ReplyBean(200, EncodingHelper.quotate("Carrito vacio"));
+        }
+
+        return oReplyBean;
     }
 
     public ReplyBean reduce() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        
+        HttpSession sesion = oRequest.getSession();
+
+        if (sesion.getAttribute("carrito") == null) {
+            oReplyBean = new ReplyBean(200, EncodingHelper.quotate("No hay carrito"));
+        } else {
+            carrito = (ArrayList<CarritoBean>) sesion.getAttribute("carrito");
+            Integer id = Integer.parseInt(oRequest.getParameter("prod"));
+
+            
+            int indice=-1;
+            
+            for (int i = 0; i < carrito.size(); i++) {
+                if (id == carrito.get(i).getObj_producto().getId()) {
+                    indice = i;
+                    break;
+                }
+            }
+            
+            if (indice == -1) {
+                oReplyBean = new ReplyBean(200, EncodingHelper.quotate("El producto no esta en el carrito"));
+            } else {
+                int cantidad = carrito.get(indice).getCantidad();
+                if (carrito.get(indice).getCantidad()>1 ) {
+                    carrito.get(indice).setCantidad(cantidad-1);
+                }else{
+                   carrito.remove(indice);
+                }
+            }
+            
+            sesion.setAttribute("carrito", carrito);
+
+            oReplyBean = new ReplyBean(200, oGson.toJson(carrito));
+        }
+        return oReplyBean;
     }
 
     public ReplyBean buy() {

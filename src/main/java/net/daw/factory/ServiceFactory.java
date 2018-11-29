@@ -208,8 +208,8 @@ public class ServiceFactory {
                     case "show":
                         oReplyBean = oCarritoService.show();
                         break;
-                    case "remove":
-                        oReplyBean = oCarritoService.remove();
+                    case "empty":
+                        oReplyBean = oCarritoService.empty();
                         break;
                     case "reduce":
                         oReplyBean = oCarritoService.reduce();
