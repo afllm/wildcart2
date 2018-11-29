@@ -47,5 +47,7 @@ wildcart.config(['$routeProvider', function ($routeProvider) {
         $routeProvider.when('/linea/edit/:id', {templateUrl: 'js/app/linea/edit.html', controller: 'lineaEditController'});
         $routeProvider.when('/linea/new', {templateUrl: 'js/app/linea/new.html', controller: 'lineaNewController'});
         
+        $routeProvider.when('/carrito/plist/:rpp?/:page?/:order?', {templateUrl: 'js/app/carrito/plist.html', controller: 'carritoPlistController'});
+        
         $routeProvider.otherwise({redirectTo: '/'});
     }]);
