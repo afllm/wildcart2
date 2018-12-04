@@ -4,10 +4,14 @@ moduleCarrito.controller('carritoPlistController', ['$scope', '$http', '$locatio
     function ($scope, $http, $location, toolService, $routeParams, oSessionService) {
 
         $scope.totalPages = 1;
-        $scope.conectado = false; 
-        $scope.ajaxDataAdd=0;
-        $scope.ajaxDataReduce=0;
-        
+        $scope.conectado = false;
+        $scope.ajaxDataAddRed;
+
+
+
+
+
+
         if (!$routeParams.order) {
             $scope.orderURLServidor = "";
             $scope.orderURLCliente = "";
@@ -31,48 +35,52 @@ moduleCarrito.controller('carritoPlistController', ['$scope', '$http', '$locatio
                 $scope.page = 1;
             }
         }
-        
-        $scope.add = function (id) {            
-            
+
+        //llamada al show de carrito para llenar el ajaxDataAddRed
+        $http({
+            method: 'GET',
+            url: 'json?ob=carrito&op=show'
+        }).then(function (response) {
+            $scope.status = response.status;
+            $scope.ajaxDataAddRed = response.data.message;
+        }, function (response) {
+            $scope.status = response.status;
+            $scope.ajaxDataAddRed = response.data.message || 'Request failed';
+        });
+
+
+
+
+        $scope.add = function (id) {
             $http({
                 method: 'GET',
-                url: 'json?ob=carrito&op=add&prod='+id
+                url: 'json?ob=carrito&op=add&prod=' + id
             }).then(function (response) {
                 $scope.status = response.status;
-                $scope.ajaxDataAdd = response.data.message;                
-                for(var i=0;i<$scope.ajaxDataAdd.length;i++){
-                    if($scope.ajaxDataAdd[i]['obj_producto'][id]===id){
-                       $scope.cantidad= $scope.ajaxDataAdd[i]['cantidad'];
-                    }
-                }              
+                $scope.ajaxDataAddRed = response.data.message;
             }, function (response) {
                 $scope.status = response.status;
-                $scope.ajaxDataAdd = response.data.message || 'Request failed';
+                $scope.ajaxDataAddRed = response.data.message || 'Request failed';
             });
         };
-        
-        $scope.reduce = function (id) {            
-            
+
+
+        $scope.reduce = function (id) {
             $http({
                 method: 'GET',
-                url: 'json?ob=carrito&op=add&prod='+id
+                url: 'json?ob=carrito&op=reduce&prod=' + id
             }).then(function (response) {
                 $scope.status = response.status;
-                $scope.ajaxDataReduce = response.data.message;
-                for(var i=0;i<$scope.ajaxDataReduce.length;i++){
-                    if($scope.ajaxDataReduce[i]['obj_producto'][id]===id){
-                       $scope.cantidad= $scope.ajaxDataReduce[i]['cantidad'];
-                    }
-                }   
+                $scope.ajaxDataAddRed = response.data.message;
             }, function (response) {
                 $scope.status = response.status;
-                $scope.ajaxDataReduce = response.data.message || 'Request failed';
+                $scope.ajaxDataAddRed = response.data.message || 'Request failed';
             });
         };
 
 
         $scope.resetOrder = function () {
-            $location.url(`producto/plist/` + $scope.rpp + `/` + $scope.page);
+            $location.url(`carrito/plist/` + $scope.rpp + `/` + $scope.page);
         }
 
 
@@ -84,9 +92,9 @@ moduleCarrito.controller('carritoPlistController', ['$scope', '$http', '$locatio
                 $scope.orderURLServidor = $scope.orderURLServidor + "-" + order + "," + align;
                 $scope.orderURLCliente = $scope.orderURLCliente + "-" + order + "," + align;
             }
-            $location.url(`producto/plist/` + $scope.rpp + `/` + $scope.page + `/` + $scope.orderURLCliente);
+            $location.url(`carrito/plist/` + $scope.rpp + `/` + $scope.page + `/` + $scope.orderURLCliente);
         }
-        
+
         //getcount
         $http({
             method: 'GET',
@@ -119,7 +127,7 @@ moduleCarrito.controller('carritoPlistController', ['$scope', '$http', '$locatio
 
 
         $scope.update = function () {
-            $location.url(`producto/plist/` + $scope.rpp + `/` + $scope.page + '/' + $scope.orderURLCliente);
+            $location.url(`carrito/plist/` + $scope.rpp + `/` + $scope.page + '/' + $scope.orderURLCliente);
         };
 
 
@@ -150,6 +158,22 @@ moduleCarrito.controller('carritoPlistController', ['$scope', '$http', '$locatio
         }
 
         $scope.isActive = toolService.isActive;
+
+
+        //se ejecuta en cada span de cantidad, cuando se carga
+        $scope.sacaMuelas = function (idProd) {
+            //tengo que recorrer ajaxDataAddRed y buscar el producto idProd
+            //si lo encuentro entonces devolver la cantidad
+            var arrayLength = $scope.ajaxDataAddRed.length;
+            for (var i = 0; i < arrayLength; i++) {
+                if ($scope.ajaxDataAddRed !== null && $scope.ajaxDataAddRed !=="Carrito vacio") {
+                    if ($scope.ajaxDataAddRed[i].obj_producto.id === idProd) {
+                        return $scope.ajaxDataAddRed[i].cantidad;
+                    }
+                }
+            }
+            return 0;
+        }
 
 
 

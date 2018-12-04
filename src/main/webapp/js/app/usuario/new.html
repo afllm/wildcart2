@@ -7,9 +7,9 @@
 
             </div>
             <div class="form-responsive container" >
-                <h3 ng-show="!idError && btnNew">Datos del nuevo usuario</h3>
+                <h3 ng-show="btnNew">Datos del nuevo usuario</h3>
 
-                <form name="userForm" ng-show="!idError && btnNew">
+                <form name="userForm" ng-show="btnNew">
                     <div class="form-group" ng-class="{ 'has-error' : userForm.dni.$invalid && !userForm.dni.$pristine }">
                         <label>DNI</label>
                         <input type="text" class="form-control" id="dni" name="dni" ng-model="dni" ng-required="true" ng-pattern="/^[0-9]{8}[TRWAGMYFPDXBNJZSQVHLCKET]$/"
