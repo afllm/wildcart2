@@ -1,41 +1,52 @@
 <header ng-include="'js/app/header.html'"></header>
-<div class="container-fluid">
-    <div class="row">
-        <main role="main" class="col-md-9 ml-sm-auto col-lg-12 px-4" style="margin-top: 50px">
-            <div class="d-flex justify-content-between flex-wrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                <h1 class="h2">Login de usuario</h1>
-
+<div class="container-fluid mb-5">
+    <div class="row" style="margin-top: 80px">
+        <div class="col-12">
+            <div class="row">
+                <div class="col-12 mx-auto">
+                    <h3>Login</h3>
+                </div>
             </div>
-            <div class="form-responsive container" >
-                <h3 ng-show="btnLogin">Introduzca su usuario y contraseña</h3>
-
-                <form name="userForm" ng-show="btnLogin">
-                    <div class="form-group">
-                        <label>Login</label>
-                        <input type="text" class="form-control" id="login" name="login" ng-model="login" ng-required="true" />
-                        <div ng-show="!userForm.login.$valid" class="alert alert-danger" role="alert">
-                            Login obligatorio
+            <hr />
+            <div class="row" ng-show="!btnLogin">
+                <div class="col-4 mx-auto">
+                    <form name="userForm">
+                        <div class="form-group">
+                            <label>Login</label>
+                            <input type="text" class="form-control" id="login" name="login" ng-model="login" ng-required="true" />
+                            <div ng-show="!userForm.login.$valid && userForm.login.$dirty" class="alert alert-danger" role="alert">
+                                Login obligatorio
+                            </div>
                         </div>
-                    </div>
-                    <div class="form-group row">
-                        <label>Password</label>
-                        <input type="password" class="form-control" ng-class="{' is-invalid': userForm.pass.$invalid && !userForm.pass.$pristine}"
-                               id="pass" name="pass" ng-model="pass" ng-minlength="5" ng-required="true"/>
-                        <div ng-show="userForm.pass.$error.minlength" class="alert alert-danger" role="alert">
-                            La longitud de la constraseña es demasiado corta
+                        <div class="form-group">
+                            <label>Contraseña</label>
+                            <input type="password" class="form-control" ng-class="{' is-invalid': userForm.pass.$invalid && !userForm.pass.$pristine}"
+                                   id="pass" name="pass" ng-model="pass" ng-required="true"/>
+                            <div ng-show="!userForm.pass.$valid && userForm.pass.$dirty" class="alert alert-danger" role="alert">
+                                La contraseña es obligatoria.
+                            </div>
                         </div>
-                        <div ng-show="!userForm.pass.$valid" class="alert alert-danger" role="alert">
-                            Contraseña obligatoria
+                        <div class="d-flex justify-content-between flex-wrap">
+                            <button ng-click="entrar()" type="button" class="btn btn-primary" ng-disabled="userForm.$invalid">Login</button>
+                            <button type="button" class="btn btn-secondary" ng-click="goBack()">Volver</button>
                         </div>
-                    </div>
-                    <button ng-show="!idError && btnLogin" type="button" class="btn btn-light" ng-click="entrar()" ng-disabled="userForm.$invalid">Entrar</button>
-                </form>
-                <h3 ng-show="idError">Ha habido un error. vuelva a intentarlo</h3>
-                <h3 ng-show="!btnLogin">{{resultado}}</h3>
-                <button type="button" class="btn btn-light" ng-click="goBack()">Volver</button>
-
+                    </form>
+                </div>
             </div>
-        </main>
+            <div class="row" ng-show="btnLogin && !conectado">
+                <div class="col-4 mx-auto">
+                    <div class="alert alert-danger mt-5 pb-2 mb-3" role="alert">
+                        <p class="text-center">{{resultado}}<p><p> <button type="button" class="btn btn-light" ng-click="goBack()">Volver</button>
+                    </div>
+                </div>
+            </div>
+            <div class="row" ng-show="btnLogin && conectado">
+                <div class="col-4 mx-auto">
+                    <div class="alert alert-success d-flex justify-content-between flex-wrap align-items-center pt-3 pb-2 mb-3" role="alert">
+                        <p class="text-center">{{resultado}}<p> <button type="button" class="btn btn-light" ng-click="goBack()">Volver</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
-<footer class="footer" ng-include="'js/app/footer.html'"></footer>

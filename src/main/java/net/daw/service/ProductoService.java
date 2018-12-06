@@ -47,7 +47,7 @@ public class ProductoService {
             oConnectionPool = ConnectionFactory.getConnection(ConnectionConstants.connectionPool);
             oConnection = oConnectionPool.newConnection();
             ProductoDao oProductoDao = new ProductoDao(oConnection, ob);
-            ProductoBean oProductoBean = oProductoDao.get(id, 2);
+            ProductoBean oProductoBean = oProductoDao.get(id, 1);//solo tiene una expansion
             Gson oGson = new Gson();
             oReplyBean = new ReplyBean(200, oGson.toJson(oProductoBean));
         } catch (Exception ex) {
@@ -143,8 +143,8 @@ public class ProductoService {
         try {
             String strJsonFromClient = oRequest.getParameter("json");
             Gson oGson = (new GsonBuilder()).excludeFieldsWithoutExposeAnnotation().create();
-           ProductoBean oProductoBean = new ProductoBean();
-            oProductoBean = oGson.fromJson(strJsonFromClient, ProductoBean.class);
+           //ProductoBean oProductoBean = new ProductoBean();
+            ProductoBean oProductoBean = oGson.fromJson(strJsonFromClient, ProductoBean.class);
             oConnectionPool = ConnectionFactory.getConnection(ConnectionConstants.connectionPool);
             oConnection = oConnectionPool.newConnection();
             ProductoDao oProductoDao = new ProductoDao(oConnection, ob);

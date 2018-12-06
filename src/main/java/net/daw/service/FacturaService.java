@@ -126,7 +126,7 @@ public class FacturaService {
                 oConnectionPool = ConnectionFactory.getConnection(ConnectionConstants.connectionPool);
                 oConnection = oConnectionPool.newConnection();
                 FacturaDao oFacturaDao = new FacturaDao(oConnection, ob);
-                int registros = oFacturaDao.getcountCliente(id_usuario);
+                int registros = oFacturaDao.getcountxusuario(id_usuario);
                 Gson oGson = new Gson();
                 oReplyBean = new ReplyBean(200, oGson.toJson(registros));
             } catch (Exception ex) {
@@ -149,8 +149,8 @@ public class FacturaService {
             try {
                 String strJsonFromClient = oRequest.getParameter("json");
                 Gson oGson = new Gson();
-                FacturaBean oFacturaBean = new FacturaBean();
-                oFacturaBean = oGson.fromJson(strJsonFromClient, FacturaBean.class);
+                //FacturaBean oFacturaBean = new FacturaBean();
+                FacturaBean oFacturaBean = oGson.fromJson(strJsonFromClient, FacturaBean.class);
                 oConnectionPool = ConnectionFactory.getConnection(ConnectionConstants.connectionPool);
                 oConnection = oConnectionPool.newConnection();
                 FacturaDao oFacturaDao = new FacturaDao(oConnection, ob);
@@ -176,8 +176,8 @@ public class FacturaService {
             try {
                 String strJsonFromClient = oRequest.getParameter("json");
                 Gson oGson = new Gson();
-                FacturaBean oFacturaBean = new FacturaBean();
-                oFacturaBean = oGson.fromJson(strJsonFromClient, FacturaBean.class);
+                //FacturaBean oFacturaBean = new FacturaBean();
+                FacturaBean oFacturaBean = oGson.fromJson(strJsonFromClient, FacturaBean.class);
                 oConnectionPool = ConnectionFactory.getConnection(ConnectionConstants.connectionPool);
                 oConnection = oConnectionPool.newConnection();
                 FacturaDao oFacturaDao = new FacturaDao(oConnection, ob);

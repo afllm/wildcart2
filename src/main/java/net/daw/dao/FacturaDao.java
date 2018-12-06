@@ -13,7 +13,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import net.daw.bean.FacturaBean;
-import net.daw.bean.TipousuarioBean;
+import net.daw.bean.UsuarioBean;
 import net.daw.helper.SqlBuilder;
 
 /**
@@ -101,7 +101,7 @@ public class FacturaDao {
         return res;
     }
 
-    public int getcountCliente(int id_usuario) throws Exception {
+    public int getcountxusuario(int id_usuario) throws Exception {
         String strSQL = "SELECT COUNT(id) FROM " + ob + " WHERE id_usuario=?";
         int res = 0;
         ResultSet oResultSet = null;
@@ -127,14 +127,15 @@ public class FacturaDao {
     }
 
     public FacturaBean create(FacturaBean oFacturaBean) throws Exception {
-        String strSQL = "INSERT INTO " + ob + " ( " + ob + ".id,  " + ob + ".fecha,  " + ob + ".iva, " + ob + ".id_usuario) VALUES (NULL, ?,?,?); ";
+        //String strSQL = "INSERT INTO " + ob + " ( " + ob + ".id,  " + ob + ".fecha,  " + ob + ".iva, " + ob + ".id_usuario) VALUES (NULL, ?,?,?); ";
+        String strSQL = "INSERT INTO " + ob;
+        strSQL += "(" + oFacturaBean.getColumns() + ")";
+        strSQL += " VALUES ";
+        strSQL += "(" + oFacturaBean.getValues() + ")";
         ResultSet oResultSet = null;
         PreparedStatement oPreparedStatement = null;
         try {
             oPreparedStatement = oConnection.prepareStatement(strSQL);
-            oPreparedStatement.setString(1, oFacturaBean.getFecha());
-            oPreparedStatement.setDouble(2, oFacturaBean.getIva());
-            oPreparedStatement.setInt(3, oFacturaBean.getId_usuario());
             oPreparedStatement.executeUpdate();
             oResultSet = oPreparedStatement.getGeneratedKeys();
             if (oResultSet.next()) {
@@ -157,16 +158,13 @@ public class FacturaDao {
 
     public int update(FacturaBean oFacturaBean) throws Exception {
         int iResult = 0;
-        String strSQL = "UPDATE " + ob + " SET " + ob + ".fecha = ?, " + ob + ".iva = ?, " + ob + ".id_usuario=?  WHERE " + ob + ".id = ?;";
+        //String strSQL = "UPDATE " + ob + " SET " + ob + ".fecha = ?, " + ob + ".iva = ?, " + ob + ".id_usuario=?  WHERE " + ob + ".id = ?;";
+        String strSQL = "UPDATE " + ob + " SET ";
+        strSQL += oFacturaBean.getPairs();
         PreparedStatement oPreparedStatement = null;
         try {
             oPreparedStatement = oConnection.prepareStatement(strSQL);
-            oPreparedStatement.setString(1, oFacturaBean.getFecha());
-            oPreparedStatement.setDouble(2, oFacturaBean.getIva());
-            oPreparedStatement.setDouble(3, oFacturaBean.getIva());
-            oPreparedStatement.setDouble(4, oFacturaBean.getId_usuario());
             iResult = oPreparedStatement.executeUpdate();
-
         } catch (SQLException e) {
             throw new Exception("Error en Dao update de " + ob, e);
         } finally {
@@ -216,6 +214,7 @@ public class FacturaDao {
         strSQL += " WHERE id_usuario=" + id_usuario;
         strSQL += SqlBuilder.buildSqlOrder(hmOrder);
         ArrayList<FacturaBean> alFacturaBean;
+        boolean tieneFacturas = false;
         if (iRpp > 0 && iRpp < 100000 && iPage > 0 && iPage < 100000000) {
 
             strSQL += " LIMIT " + (iPage - 1) * iRpp + ", " + iRpp;
@@ -229,7 +228,20 @@ public class FacturaDao {
                     FacturaBean oFacturaBean = new FacturaBean();
                     oFacturaBean.fill(oResultSet, oConnection, expand);
                     alFacturaBean.add(oFacturaBean);
+                    tieneFacturas = true;
                 }
+                if (!tieneFacturas) {
+                    alFacturaBean = new ArrayList<FacturaBean>();
+                    FacturaBean oFacturaBean = new FacturaBean();
+                    oFacturaBean.setFecha(null);
+                    oFacturaBean.setId(0);
+                    oFacturaBean.setIva(0);
+                    oFacturaBean.setLink_linea(0);
+                    UsuarioDao oUsuarioDao = new UsuarioDao(oConnection, "usuario");
+                    oFacturaBean.setObj_usuario(oUsuarioDao.get(id_usuario, 0));
+                    alFacturaBean.add(oFacturaBean);
+                }
+
             } catch (SQLException e) {
                 throw new Exception("Error en Dao getpage de " + ob, e);
             } finally {

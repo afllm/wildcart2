@@ -11,6 +11,7 @@ import java.sql.ResultSet;
 
 import net.daw.dao.FacturaDao;
 import net.daw.dao.TipousuarioDao;
+import net.daw.helper.EncodingHelper;
 
 /**
  *
@@ -18,50 +19,48 @@ import net.daw.dao.TipousuarioDao;
  */
 public class UsuarioBean {
 
-
-
-	@Expose
-    private int id;    
-	@Expose
+    @Expose
+    private int id;
+    @Expose
     private String dni;
-	@Expose
+    @Expose
     private String nombre;
-	@Expose
+    @Expose
     private String ape1;
-	@Expose
+    @Expose
     private String ape2;
-	@Expose
+    @Expose
     private String login;
-	@Expose(serialize=false)
+    @Expose(serialize = false)
     private String pass;
-	@Expose(serialize=false)
-    private int id_tipoUsuario;    
-    @Expose(deserialize=false)
+    @Expose(serialize = false)
+    private int id_tipoUsuario;
+    @Expose(deserialize = false)
     private TipousuarioBean obj_tipoUsuario;
-    @Expose(deserialize=false)
+    @Expose(deserialize = false)
     private int link_factura;
-    
-	public int getLink_factura() {
-		return link_factura;
-	}
 
-	public void setLink_factura(int link_factura) {
-		this.link_factura = link_factura;
-	}
-	
+    public int getLink_factura() {
+        return link_factura;
+    }
+
+    public void setLink_factura(int link_factura) {
+        this.link_factura = link_factura;
+    }
+
     public int getId() {
         return id;
     }
 
     public TipousuarioBean getObj_tipoUsuario() {
-		return obj_tipoUsuario;
-	}
+        return obj_tipoUsuario;
+    }
 
-	public void setObj_tipoUsuario(TipousuarioBean obj_tipoUsuario) {
-		this.obj_tipoUsuario = obj_tipoUsuario;
-	}
+    public void setObj_tipoUsuario(TipousuarioBean obj_tipoUsuario) {
+        this.obj_tipoUsuario = obj_tipoUsuario;
+    }
 
-	public void setId(int id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -120,30 +119,65 @@ public class UsuarioBean {
     public void setId_tipoUsuario(int id_tipoUsuario) {
         this.id_tipoUsuario = id_tipoUsuario;
     }
-    
-    public UsuarioBean fill(ResultSet oResultSet, Connection oConnection, Integer expand) throws Exception{
-            this.setId(oResultSet.getInt("id"));
-            this.setDni(oResultSet.getString("dni"));
-            this.setNombre(oResultSet.getString("nombre"));
-            this.setApe1(oResultSet.getString("ape1"));
-            this.setApe2(oResultSet.getString("ape2"));
-            this.setLogin(oResultSet.getString("login"));
-            this.setPass(oResultSet.getString("pass"));
-            if(expand > 0){
-               TipousuarioDao oTipoUsuarioDao = new TipousuarioDao(oConnection, "tipousuario");
-               this.setObj_tipoUsuario(oTipoUsuarioDao.get(oResultSet.getInt("id_tipoUsuario"), expand - 1));
-            }else{
-                this.setId(oResultSet.getInt("id_tipoUsuario"));
-            }
-            
-           
-            FacturaDao oFacturaDao = new FacturaDao(oConnection, "factura");
-     
-            this.setLink_factura(oFacturaDao.getcountCliente(getId()));
-            
 
+    public UsuarioBean fill(ResultSet oResultSet, Connection oConnection, Integer expand) throws Exception {
+        this.setId(oResultSet.getInt("id"));
+        this.setDni(oResultSet.getString("dni"));
+        this.setNombre(oResultSet.getString("nombre"));
+        this.setApe1(oResultSet.getString("ape1"));
+        this.setApe2(oResultSet.getString("ape2"));
+        this.setLogin(oResultSet.getString("login"));
+        this.setPass(oResultSet.getString("pass"));
+        FacturaDao oFacturaDao = new FacturaDao(oConnection, "factura");
+        this.setLink_factura(oFacturaDao.getcountxusuario(this.getId()));
+        if (expand > 0) {
+            TipousuarioDao oTipousuarioDao = new TipousuarioDao(oConnection, "tipousuario");
+            this.setObj_tipoUsuario(oTipousuarioDao.get(oResultSet.getInt("id_tipoUsuario")));
+        } else {
+            this.setId_tipoUsuario(oResultSet.getInt("id_tipoUsuario"));
+        }
         return this;
-        
+    }
+
+    public String getColumns() {
+        String strColumns = "";
+        strColumns += "id,";
+        strColumns += "dni,";
+        strColumns += "nombre,";
+        strColumns += "ape1,";
+        strColumns += "ape2,";
+        strColumns += "login,";
+        strColumns += "pass,";
+        strColumns += "id_tipoUsuario";
+        return strColumns;
+    }
+
+    public String getValues() {
+        String strColumns = "";
+        strColumns += "null,";
+        strColumns += EncodingHelper.quotate(dni) + ",";
+        strColumns += EncodingHelper.quotate(nombre) + ",";
+        strColumns += EncodingHelper.quotate(ape1) + ",";
+        strColumns += EncodingHelper.quotate(ape2) + ",";
+        strColumns += EncodingHelper.quotate(login) + ",";
+        strColumns += EncodingHelper.quotate(pass) + ",";
+        strColumns += id_tipoUsuario;
+        return strColumns;
+    }
+
+    public String getPairs() {
+        String strPairs = "";
+        strPairs += "id=" + id + ",";
+        strPairs += "dni=" + EncodingHelper.quotate(dni) + ",";
+        strPairs += "nombre=" + EncodingHelper.quotate(nombre) + ",";
+        strPairs += "ape1=" + EncodingHelper.quotate(ape1) + ",";
+        strPairs += "ape2=" + EncodingHelper.quotate(ape2) + ",";
+        strPairs += "login=" + EncodingHelper.quotate(login) + ",";
+        strPairs += "pass=" + EncodingHelper.quotate(pass) + ",";
+        strPairs += "id_tipoUsuario=" + id_tipoUsuario;
+        strPairs += " WHERE id=" + id;
+        return strPairs;
+
     }
 
 }

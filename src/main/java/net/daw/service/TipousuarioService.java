@@ -48,7 +48,7 @@ public class TipousuarioService {
 			oConnectionPool = ConnectionFactory.getConnection(ConnectionConstants.connectionPool);
 			oConnection = oConnectionPool.newConnection();
 			TipousuarioDao oTipousuarioDao = new TipousuarioDao(oConnection, ob);
-			TipousuarioBean oTipousuarioBean = oTipousuarioDao.get(id,1);
+			TipousuarioBean oTipousuarioBean = oTipousuarioDao.get(id);
 			Gson oGson = new Gson();
 			oReplyBean = new ReplyBean(200, oGson.toJson(oTipousuarioBean));
 		} catch (Exception ex) {
@@ -173,7 +173,7 @@ public class TipousuarioService {
                 oConnectionPool = ConnectionFactory.getConnection(ConnectionConstants.connectionPool);
                 oConnection = oConnectionPool.newConnection();
                 TipousuarioDao oTipousuarioDao = new TipousuarioDao(oConnection, ob);
-                ArrayList<TipousuarioBean> alTipousuarioBean = oTipousuarioDao.getpage(iRpp, iPage, hmOrder, 1);
+                ArrayList<TipousuarioBean> alTipousuarioBean = oTipousuarioDao.getpage(iRpp, iPage, hmOrder);
                 Gson oGson = (new GsonBuilder()).excludeFieldsWithoutExposeAnnotation().create();
                 oReplyBean = new ReplyBean(200, oGson.toJson(alTipousuarioBean));
             } catch (Exception ex) {

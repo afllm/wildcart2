@@ -21,7 +21,7 @@ public class TipousuarioDao {
         this.ob = ob;
     }
 
-    public TipousuarioBean get(int id, int expand) throws Exception {
+    public TipousuarioBean get(int id) throws Exception {
         String strSQL = "SELECT * FROM " + ob + " WHERE id=?";
         TipousuarioBean oTipousuarioBean;
         ResultSet oResultSet = null;
@@ -32,7 +32,7 @@ public class TipousuarioDao {
             oResultSet = oPreparedStatement.executeQuery();
             if (oResultSet.next()) {
                 oTipousuarioBean = new TipousuarioBean();
-                oTipousuarioBean.fill(oResultSet, oConnection, expand);
+                oTipousuarioBean.fill(oResultSet, oConnection);
             } else {
                 oTipousuarioBean = null;
             }
@@ -139,7 +139,7 @@ public class TipousuarioDao {
         return iResult;
     }
 
-    public ArrayList<TipousuarioBean> getpage(int iRpp, int iPage, HashMap<String, String> hmOrder, int expand) throws Exception {
+    public ArrayList<TipousuarioBean> getpage(int iRpp, int iPage, HashMap<String, String> hmOrder) throws Exception {
         String strSQL = "SELECT * FROM " + ob;
         strSQL += SqlBuilder.buildSqlOrder(hmOrder);
         ArrayList<TipousuarioBean> alTipousuarioBean;
@@ -153,7 +153,7 @@ public class TipousuarioDao {
                 alTipousuarioBean = new ArrayList<TipousuarioBean>();
                 while (oResultSet.next()) {
                     TipousuarioBean oTipousuarioBean = new TipousuarioBean();
-                    oTipousuarioBean.fill(oResultSet, oConnection, expand);
+                    oTipousuarioBean.fill(oResultSet, oConnection);
                     alTipousuarioBean.add(oTipousuarioBean);
                 }
             } catch (SQLException e) {

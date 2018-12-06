@@ -8,6 +8,8 @@ package net.daw.bean;
 import com.google.gson.annotations.Expose;
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.sql.SQLException;
+import net.daw.helper.EncodingHelper;
 
 /**
  *
@@ -36,9 +38,31 @@ public class TipoproductoBean {
         this.desc = desc;
     }
 
-    public TipoproductoBean fill(ResultSet oResultSet, Connection oConnection, Integer expand) throws Exception {
+    public TipoproductoBean fill(ResultSet oResultSet, Connection connection) throws SQLException {
         this.setId(oResultSet.getInt("id"));
         this.setDesc(oResultSet.getString("desc"));
         return this;
+    }
+
+    public String getColumns() {
+        String strColumns = "";
+        strColumns += "id,";
+        strColumns += "tipoproducto.desc";
+        return strColumns;
+    }
+    
+    public String getValues(){
+        String strColumns="";
+        strColumns += "null,";
+        strColumns += EncodingHelper.quotate(desc);
+        return strColumns;
+    }
+    
+    public String getPairs(){
+        String strPairs = "";
+        strPairs += "id=" + id +",";
+        strPairs += "tipoproducto.desc='" + desc + "'";
+        strPairs += " WHERE id=" + id;
+        return strPairs;
     }
 }

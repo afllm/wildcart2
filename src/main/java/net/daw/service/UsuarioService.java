@@ -35,7 +35,6 @@ public class UsuarioService {
     public UsuarioService(HttpServletRequest oRequest) {
         super();
         this.oRequest = oRequest;
-        
         ob = oRequest.getParameter("ob");
     }
 
@@ -127,8 +126,8 @@ public class UsuarioService {
             try {
                 String strJsonFromClient = oRequest.getParameter("json");
                 Gson oGson = (new GsonBuilder()).excludeFieldsWithoutExposeAnnotation().create();
-                UsuarioBean oUsuarioBean = new UsuarioBean();
-                oUsuarioBean = oGson.fromJson(strJsonFromClient, UsuarioBean.class);
+                //UsuarioBean oUsuarioBean = new UsuarioBean();
+                UsuarioBean oUsuarioBean = oGson.fromJson(strJsonFromClient, UsuarioBean.class);
                 oConnectionPool = ConnectionFactory.getConnection(ConnectionConstants.connectionPool);
                 oConnection = oConnectionPool.newConnection();
                 UsuarioDao oUsuarioDao = new UsuarioDao(oConnection, ob);
@@ -154,8 +153,8 @@ public class UsuarioService {
             try {
                 String strJsonFromClient = oRequest.getParameter("json");
                 Gson oGson = (new GsonBuilder()).excludeFieldsWithoutExposeAnnotation().create();
-                UsuarioBean oUsuarioBean = new UsuarioBean();
-                oUsuarioBean = oGson.fromJson(strJsonFromClient, UsuarioBean.class);
+                //UsuarioBean oUsuarioBean = new UsuarioBean();
+                UsuarioBean oUsuarioBean = oGson.fromJson(strJsonFromClient, UsuarioBean.class);
                 oConnectionPool = ConnectionFactory.getConnection(ConnectionConstants.connectionPool);
                 oConnection = oConnectionPool.newConnection();
                 UsuarioDao oUsuarioDao = new UsuarioDao(oConnection, ob);
@@ -245,11 +244,11 @@ public class UsuarioService {
                 oRequest.getSession().setAttribute("user", oUsuarioBean);
                 Gson oGson = (new GsonBuilder()).excludeFieldsWithoutExposeAnnotation().create();
                 oReplyBean = new ReplyBean(200, oGson.toJson(oUsuarioBean));
-                
+
             } else {
                 //throw new Exception("ERROR Bad Authentication: Service level: get page: " + ob + " object");
                 oReplyBean = new ReplyBean(401, "Bad Authentication");
-                
+
             }
         } catch (Exception ex) {
             throw new Exception("ERROR: Service level: login method: " + ob + " object", ex);

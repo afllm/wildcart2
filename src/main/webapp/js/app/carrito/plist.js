@@ -21,7 +21,7 @@ moduleCarrito.controller('carritoPlistController', ['$scope', '$http', '$locatio
         }
 
         if (!$routeParams.rpp) {
-            $scope.rpp = 10;
+            $scope.rpp = '10';//String, para que aparezca al principio (by Carlos)
         } else {
             $scope.rpp = $routeParams.rpp;
         }

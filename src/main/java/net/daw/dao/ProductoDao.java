@@ -39,12 +39,12 @@ public class ProductoDao {
 			oResultSet = oPreparedStatement.executeQuery();
 			if (oResultSet.next()) {
 				oProductoBean = new ProductoBean();
-				oProductoBean.fill(oResultSet, oConnection, id);
+				oProductoBean.fill(oResultSet, oConnection, expand);
 			} else {
 				oProductoBean= null;
 			}
 		} catch (SQLException e) {
-			throw new Exception("Error en Dao get de " + ob+": "+e.getMessage(), e);
+			throw new Exception("Error en Dao get de " + ob, e);
 		} finally {
 			if (oResultSet != null) {
 				oResultSet.close();

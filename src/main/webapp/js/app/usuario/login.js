@@ -1,18 +1,15 @@
 'use strict'
 
-moduleUsuario.controller('usuarioLoginController', ['$scope', '$http', '$location', 'toolService', '$routeParams', '$window', 'sessionService',
-    function ($scope, $http, $location, toolService, $routeParams, $window, oSessionService) {
+moduleUsuario.controller('usuarioLoginController', ['$scope', '$window', '$http', '$location', 'toolService', '$routeParams', 'sessionService',
+    function ($scope, $window, $http, $location, toolService, $routeParams, oSessionService) {
 
-        $scope.totalPages = 1;
-        $scope.btnLogin = true;
+        
+        $scope.btnLogin = false;
         $scope.conectado = false;
-
-        $scope.goBack = function () {
-            $window.history.back();
-        };
-
+        
+        
         $scope.entrar = function () {
-            $scope.btnLogin = false;
+            $scope.btnLogin = true;
 
             var json = {
                 user: $scope.login,
@@ -29,11 +26,16 @@ moduleUsuario.controller('usuarioLoginController', ['$scope', '$http', '$locatio
                 $scope.resultado = "Bienvenido "+$scope.ajaxDataUsuarios.nombre;
                 oSessionService.setUserName(response.data.message.nombre + " " + response.data.message.ape1);
                 $scope.usuarioConectado = oSessionService.getUserName();
+                $scope.conectado = true;
             }, function (response) {
                 $scope.status = response.status;
                 $scope.ajaxDataUsuarios = response.data.message || 'Request failed';
                 $scope.resultado = "No se pudo conectar: "+$scope.ajaxDataUsuarios;
             });
+        };
+        
+        $scope.goBack = function () {
+            $window.history.back();
         };
 
         if (oSessionService.getUserName() !== "") {

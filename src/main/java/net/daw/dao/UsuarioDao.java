@@ -41,7 +41,7 @@ public class UsuarioDao {
             oResultSet = oPreparedStatement.executeQuery();
             if (oResultSet.next()) {
                 oUsuarioBean = new UsuarioBean();
-                oUsuarioBean.fill(oResultSet, oConnection, id);
+                oUsuarioBean.fill(oResultSet, oConnection, expand);
             } else {
                 oUsuarioBean = null;
             }
@@ -101,19 +101,14 @@ public class UsuarioDao {
     }
 
     public UsuarioBean create(UsuarioBean oUsuarioBean) throws Exception {
-        String strSQL = "INSERT INTO " + ob
-                + " (id,dni,nombre,ape1,ape2,login,pass,id_tipoUsuario) VALUES (NULL, ?,?,?,?,?,?,?); ";
+        String strSQL = "INSERT INTO " + ob;
+        strSQL += "(" + oUsuarioBean.getColumns() + ")";
+        strSQL += " VALUES ";
+        strSQL += "(" + oUsuarioBean.getValues() + ")";
         ResultSet oResultSet = null;
         PreparedStatement oPreparedStatement = null;
         try {
             oPreparedStatement = oConnection.prepareStatement(strSQL);
-            oPreparedStatement.setString(1, oUsuarioBean.getDni());
-            oPreparedStatement.setString(2, oUsuarioBean.getNombre());
-            oPreparedStatement.setString(3, oUsuarioBean.getApe1());
-            oPreparedStatement.setString(4, oUsuarioBean.getApe2());
-            oPreparedStatement.setString(5, oUsuarioBean.getLogin());
-            oPreparedStatement.setString(6, oUsuarioBean.getPass());
-            oPreparedStatement.setInt(7, oUsuarioBean.getId_tipoUsuario());
             oPreparedStatement.executeUpdate();
             oResultSet = oPreparedStatement.getGeneratedKeys();
             if (oResultSet.next()) {
@@ -138,23 +133,15 @@ public class UsuarioDao {
 
     public int update(UsuarioBean oUsuarioBean) throws Exception {
         int iResult = 0;
-        String strSQL = "UPDATE " + ob
-                + " SET dni = ?, nombre = ?, ape1 = ?, ape2 = ?, login = ?,id_tipoUsuario = ? WHERE id = ? ;";/* pass = ?, */
-
+        String strSQL = "UPDATE " + ob + " SET ";
+        strSQL += oUsuarioBean.getPairs();
         PreparedStatement oPreparedStatement = null;
         try {
             oPreparedStatement = oConnection.prepareStatement(strSQL);
-            oPreparedStatement.setString(1, oUsuarioBean.getDni());
-            oPreparedStatement.setString(2, oUsuarioBean.getNombre());
-            oPreparedStatement.setString(3, oUsuarioBean.getApe1());
-            oPreparedStatement.setString(4, oUsuarioBean.getApe2());
-            oPreparedStatement.setString(5, oUsuarioBean.getLogin());
-            oPreparedStatement.setInt(6, oUsuarioBean.getId_tipoUsuario());
-            oPreparedStatement.setInt(7, oUsuarioBean.getId());
             iResult = oPreparedStatement.executeUpdate();
 
         } catch (SQLException e) {
-            throw new Exception("Error en Dao update de " + ob + ": " + e.getMessage(), e);
+            throw new Exception("Error en Dao update de " + ob, e);
         } finally {
             if (oPreparedStatement != null) {
                 oPreparedStatement.close();
