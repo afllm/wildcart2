@@ -119,7 +119,7 @@ public class LineaService {
         ReplyBean oReplyBean;
         ConnectionInterface oConnectionPool = null;
         Connection oConnection;
-        if (this.checkPermission("getcountxusuario")) {
+        if (this.checkPermission("getcountxfactura")) {
             try {
                 Integer id_factura = Integer.parseInt(oRequest.getParameter("idfactura"));
                 oConnectionPool = ConnectionFactory.getConnection(ConnectionConstants.connectionPool);
@@ -148,8 +148,8 @@ public class LineaService {
             try {
                 String strJsonFromClient = oRequest.getParameter("json");
                 Gson oGson = new Gson();
-                LineaBean oLineaBean = new LineaBean();
-                oLineaBean = oGson.fromJson(strJsonFromClient, LineaBean.class);
+                //LineaBean oLineaBean = new LineaBean();
+                LineaBean oLineaBean = oGson.fromJson(strJsonFromClient, LineaBean.class);
                 oConnectionPool = ConnectionFactory.getConnection(ConnectionConstants.connectionPool);
                 oConnection = oConnectionPool.newConnection();
                 LineaDao oLineaDao = new LineaDao(oConnection, ob);
@@ -175,8 +175,8 @@ public class LineaService {
             try {
                 String strJsonFromClient = oRequest.getParameter("json");
                 Gson oGson = new Gson();
-                LineaBean oLineaBean = new LineaBean();
-                oLineaBean = oGson.fromJson(strJsonFromClient, LineaBean.class);
+                //LineaBean oLineaBean = new LineaBean();
+                LineaBean oLineaBean = oGson.fromJson(strJsonFromClient, LineaBean.class);
                 oConnectionPool = ConnectionFactory.getConnection(ConnectionConstants.connectionPool);
                 oConnection = oConnectionPool.newConnection();
                 LineaDao oLineaDao = new LineaDao(oConnection, ob);
@@ -223,7 +223,7 @@ public class LineaService {
         ReplyBean oReplyBean;
         ConnectionInterface oConnectionPool = null;
         Connection oConnection;
-        if (this.checkPermission("getpagexusuario")) {
+        if (this.checkPermission("getpagexfactura")) {
             try {
                 Integer iRpp = Integer.parseInt(oRequest.getParameter("rpp"));
                 Integer iPage = Integer.parseInt(oRequest.getParameter("page"));

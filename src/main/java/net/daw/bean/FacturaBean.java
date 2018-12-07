@@ -5,6 +5,7 @@
  */
 package net.daw.bean;
 
+import com.google.gson.annotations.Expose;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -24,17 +25,17 @@ import net.daw.helper.EncodingHelper;
  */
 public class FacturaBean {
 
-    //@Expose
+    @Expose
     private int id;
-    //@Expose
+    @Expose
     private Date fecha;
-    //@Expose
+    @Expose
     private double iva;
-    //@Expose(serialize = false)
+    @Expose(serialize = false)
     private int id_usuario;
-    //@Expose(deserialize = false)
+    @Expose(deserialize = false)
     private UsuarioBean obj_usuario;
-    //@Expose(deserialize = false)
+    @Expose(deserialize = false)
     private int link_linea;
 
     public int getId_usuario() {
@@ -94,7 +95,7 @@ public class FacturaBean {
         this.setFecha(date);
         this.setIva(oResultSet.getDouble("iva"));
         LineaDao oLineaDao = new LineaDao(oConnection, "linea");
-        this.setLink_linea(oLineaDao.getcountxlinea(this.getId()));
+        this.setLink_linea(oLineaDao.getcountxfactura(this.getId()));
         if(expand > 0){
             UsuarioDao oUsuarioDao = new UsuarioDao(oConnection, "usuario");
             this.setObj_usuario(oUsuarioDao.get(oResultSet.getInt("id_usuario"), expand));

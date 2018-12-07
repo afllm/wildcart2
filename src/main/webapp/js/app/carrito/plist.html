@@ -104,14 +104,14 @@
                     </tr>
                     <tr ng-repeat="fila in ajaxData">
                         <td>{{fila.desc}}</td>
-                        <td>{{fila.existencias}}</td>
+                        <td ng-class="{'alert alert-danger':(fila.existencias==sacaMuelas(fila.id))}">{{fila.existencias}}</td>
                         <td>{{fila.precio}}</td>
                         <td>{{fila.foto}}</td>
                         <td><a href="./tipoproducto/view/{{fila.obj_tipoProducto.id}}" >{{fila.obj_tipoProducto.desc}}</a></td>
                         <td>
                             <a href="producto/view/{{fila.id}}" class="btn btn-light fas fa-eye" role="button"></a>
-                            <button type="button" ng-click="add(fila.id)" class="btn btn-light fas fa-plus"></button>
-                            <button type="button" ng-click="reduce(fila.id)" class="btn btn-light fas fa-minus"></button>
+                            <button type="button" ng-click="add(fila.id)" class="btn btn-light fas fa-plus" ng-disabled="fila.existencias==sacaMuelas(fila.id)"></button>
+                            <button type="button" ng-click="reduce(fila.id)" class="btn btn-light fas fa-minus" ng-disabled="sacaMuelas(fila.id)==0"></button>
                             <span>{{sacaMuelas(fila.id)}}</span>
                         </td>
                     </tr>

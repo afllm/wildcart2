@@ -7,6 +7,7 @@ moduleCarrito.controller('carritoShowController', ['$scope', '$http', '$location
         $scope.conectado = false;
         $scope.ajaxDataCarrito;
         $scope.cart = false;
+        $scope.factura=false;
 
 
 
@@ -78,6 +79,26 @@ moduleCarrito.controller('carritoShowController', ['$scope', '$http', '$location
                 $scope.carritoVacio();
             });
         };
+        
+         $scope.buy = function () {
+            $http({
+                method: 'GET',
+                url: 'http://localhost:8081/trolleyes/json?ob=carrito&op=buy'
+            }).then(function (response) {
+                $scope.status = response.status;
+                $scope.msg_factura = response.data.message;
+                $scope.factura = true;
+                 $scope.facturaOK = "ok";
+                //show();
+            }, function (response) {
+                $scope.status = response.status;
+                $scope.msg_factura = response.data.message || 'Request failed';
+
+            });
+
+        };
+        
+        
 
         $scope.goBack = function () {
             $window.history.back();
@@ -86,6 +107,7 @@ moduleCarrito.controller('carritoShowController', ['$scope', '$http', '$location
 
         if (oSessionService.getUserName() !== "") {
             $scope.usuarioConectado = oSessionService.getUserName();
+            $scope.usuarioId = oSessionService.getUsuarioId();
             $scope.conectado = true;
         }
 

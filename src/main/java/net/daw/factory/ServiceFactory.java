@@ -138,6 +138,12 @@ public class ServiceFactory {
                     case "getpage":
                         oReplyBean = oLineaService.getpage();
                         break;
+                    case "getcountxfactura":
+                        oReplyBean = oLineaService.getcountxfactura();
+                        break;
+                    case "getpagexfactura":
+                        oReplyBean = oLineaService.getpagexfactura();
+                        break;
                     default:
                         oReplyBean = new ReplyBean(500, "Operation doesn't exist");
                         break;
@@ -199,7 +205,7 @@ public class ServiceFactory {
                         break;
                 }
                 break;
-                case "carrito":
+            case "carrito":
                 CarritoService oCarritoService = new CarritoService(oRequest);
                 switch (op) {
                     case "add":

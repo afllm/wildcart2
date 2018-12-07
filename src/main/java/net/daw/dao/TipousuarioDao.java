@@ -130,7 +130,7 @@ public class TipousuarioDao {
             iResult = oPreparedStatement.executeUpdate();
 
         } catch (SQLException e) {
-            throw new Exception("Error en Dao update de " + ob+": "+e.getMessage(), e);
+            throw new Exception("Error en Dao update de " + ob, e);
         } finally {
             if (oPreparedStatement != null) {
                 oPreparedStatement.close();

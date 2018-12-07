@@ -214,7 +214,7 @@ public class LineaDao {
         strSQL += " WHERE id_factura=?";
         strSQL += SqlBuilder.buildSqlOrder(hmOrder);
         ArrayList<LineaBean> alLineaBean;
-        boolean tieneFacturas = false;
+        //boolean tieneFacturas = false;
         if (iRpp > 0 && iRpp < 100000 && iPage > 0 && iPage < 100000000) {
 
             strSQL += " LIMIT " + (iPage - 1) * iRpp + ", " + iRpp;
@@ -229,17 +229,17 @@ public class LineaDao {
                     LineaBean oLineaBean = new LineaBean();
                     oLineaBean.fill(oResultSet, oConnection, expandProducto, expandFactura);
                     alLineaBean.add(oLineaBean);
-                    tieneFacturas = true;
+                    //tieneFacturas = true;
                 }
-                if (!tieneFacturas) {
-                    alLineaBean = new ArrayList<LineaBean>();
-                    LineaBean oLineaBean = new LineaBean();
-                    oLineaBean.setCantidad(0);
-                    oLineaBean.setObj_Producto(null);
-                    FacturaDao oFacturaDao = new FacturaDao(oConnection, "factura");
-                    oLineaBean.setObj_Factura(oFacturaDao.get(id_factura, 1));
-                    alLineaBean.add(oLineaBean);     
-                }
+//                if (!tieneFacturas) {
+//                    alLineaBean = new ArrayList<LineaBean>();
+//                    LineaBean oLineaBean = new LineaBean();
+//                    oLineaBean.setCantidad(0);
+//                    oLineaBean.setObj_Producto(null);
+//                    FacturaDao oFacturaDao = new FacturaDao(oConnection, "factura");
+//                    oLineaBean.setObj_Factura(oFacturaDao.get(id_factura, 1));
+//                    alLineaBean.add(oLineaBean);     
+//                }
                 
             } catch (SQLException e) {
                 throw new Exception("Error en Dao getpage de " + ob, e);

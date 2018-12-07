@@ -214,7 +214,7 @@ public class FacturaDao {
         strSQL += " WHERE id_usuario=" + id_usuario;
         strSQL += SqlBuilder.buildSqlOrder(hmOrder);
         ArrayList<FacturaBean> alFacturaBean;
-        boolean tieneFacturas = false;
+        //boolean tieneFacturas = false;
         if (iRpp > 0 && iRpp < 100000 && iPage > 0 && iPage < 100000000) {
 
             strSQL += " LIMIT " + (iPage - 1) * iRpp + ", " + iRpp;
@@ -228,19 +228,19 @@ public class FacturaDao {
                     FacturaBean oFacturaBean = new FacturaBean();
                     oFacturaBean.fill(oResultSet, oConnection, expand);
                     alFacturaBean.add(oFacturaBean);
-                    tieneFacturas = true;
+                    //tieneFacturas = true;
                 }
-                if (!tieneFacturas) {
-                    alFacturaBean = new ArrayList<FacturaBean>();
-                    FacturaBean oFacturaBean = new FacturaBean();
-                    oFacturaBean.setFecha(null);
-                    oFacturaBean.setId(0);
-                    oFacturaBean.setIva(0);
-                    oFacturaBean.setLink_linea(0);
-                    UsuarioDao oUsuarioDao = new UsuarioDao(oConnection, "usuario");
-                    oFacturaBean.setObj_usuario(oUsuarioDao.get(id_usuario, 0));
-                    alFacturaBean.add(oFacturaBean);
-                }
+//                if (!tieneFacturas) {
+//                    alFacturaBean = new ArrayList<FacturaBean>();
+//                    FacturaBean oFacturaBean = new FacturaBean();
+//                    oFacturaBean.setFecha(null);
+//                    oFacturaBean.setId(0);
+//                    oFacturaBean.setIva(0);
+//                    oFacturaBean.setLink_linea(0);
+//                    UsuarioDao oUsuarioDao = new UsuarioDao(oConnection, "usuario");
+//                    oFacturaBean.setObj_usuario(oUsuarioDao.get(id_usuario, 0));
+//                    alFacturaBean.add(oFacturaBean);
+//                }
 
             } catch (SQLException e) {
                 throw new Exception("Error en Dao getpage de " + ob, e);

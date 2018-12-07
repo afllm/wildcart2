@@ -6,7 +6,7 @@ moduleCarrito.controller('carritoPlistController', ['$scope', '$http', '$locatio
         $scope.totalPages = 1;
         $scope.conectado = false;
         $scope.ajaxDataAddRed;
-
+        $scope.stock = true;
 
 
 
@@ -58,6 +58,9 @@ moduleCarrito.controller('carritoPlistController', ['$scope', '$http', '$locatio
             }).then(function (response) {
                 $scope.status = response.status;
                 $scope.ajaxDataAddRed = response.data.message;
+                if ($scope.status == 400) {
+                    $scope.stock = false;
+                }
             }, function (response) {
                 $scope.status = response.status;
                 $scope.ajaxDataAddRed = response.data.message || 'Request failed';
@@ -154,6 +157,7 @@ moduleCarrito.controller('carritoPlistController', ['$scope', '$http', '$locatio
 
         if (oSessionService.getUserName() !== "") {
             $scope.usuarioConectado = oSessionService.getUserName();
+            $scope.usuarioId = oSessionService.getUsuarioId();
             $scope.conectado = true;
         }
 
@@ -166,8 +170,8 @@ moduleCarrito.controller('carritoPlistController', ['$scope', '$http', '$locatio
             //si lo encuentro entonces devolver la cantidad
             var arrayLength = $scope.ajaxDataAddRed.length;
             for (var i = 0; i < arrayLength; i++) {
-                if ($scope.ajaxDataAddRed !== null && $scope.ajaxDataAddRed !=="Carrito vacio") {
-                    if ($scope.ajaxDataAddRed[i].obj_producto.id === idProd) {
+                if ($scope.ajaxDataAddRed !== null && $scope.ajaxDataAddRed !== "Carrito vacio") {
+                    if ($scope.ajaxDataAddRed[i].obj_producto.id !== null && $scope.ajaxDataAddRed[i].obj_producto.id === idProd) {
                         return $scope.ajaxDataAddRed[i].cantidad;
                     }
                 }
