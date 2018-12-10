@@ -30,6 +30,8 @@ moduleUsuario.controller('usuarioViewController', ['$scope', '$http', '$location
         
         if (oSessionService.getUserName() !== "") {
             $scope.usuarioConectado = oSessionService.getUserName();
+            $scope.usuarioId = oSessionService.getUsuarioId();
+            $scope.id_tiposusario = oSessionService.getId_tipousuario();
             $scope.conectado = true;
         }
 

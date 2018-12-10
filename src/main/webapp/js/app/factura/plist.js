@@ -6,6 +6,7 @@ moduleFactura.controller('facturaPlistController', ['$scope', '$http', '$locatio
         
         $scope.totalPages = 1;
         $scope.conectado = false;
+        $scope.ob = "factura";
         
         if (!$routeParams.order) {
             $scope.orderURLServidor = "";
@@ -16,7 +17,7 @@ moduleFactura.controller('facturaPlistController', ['$scope', '$http', '$locatio
         }
 
         if (!$routeParams.rpp) {
-            $scope.rpp = 10;
+            $scope.rpp = '10';
         } else {
             $scope.rpp = $routeParams.rpp;
         }
@@ -71,7 +72,7 @@ moduleFactura.controller('facturaPlistController', ['$scope', '$http', '$locatio
            url: 'json?ob=factura&op=getpage&rpp=' + $scope.rpp + '&page=' + $scope.page + $scope.orderURLServidor
         }).then(function (response) {
             $scope.status = response.status;
-            $scope.ajaxDataUsuarios = response.data.message;
+            $scope.ajaxData = response.data.message;
         }, function (response) {
             $scope.status = response.status;
             $scope.ajaxDataUsuarios = response.data.message || 'Request failed';
@@ -105,8 +106,10 @@ moduleFactura.controller('facturaPlistController', ['$scope', '$http', '$locatio
             }
         }
         
-        if (oSessionService.getUserName() !== "") {
+      if (oSessionService.getUserName() !== "") {
             $scope.usuarioConectado = oSessionService.getUserName();
+            $scope.usuarioId = oSessionService.getUsuarioId();
+            $scope.id_tiposusario = oSessionService.getId_tipousuario();
             $scope.conectado = true;
         }
 

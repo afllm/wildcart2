@@ -30,12 +30,14 @@ moduleProducto.controller('productoViewController', ['$scope', '$http', '$locati
             $window.history.back();
         };
         
-        if (oSessionService.getUserName() !== "") {
+       if (oSessionService.getUserName() !== "") {
             $scope.usuarioConectado = oSessionService.getUserName();
+            $scope.usuarioId = oSessionService.getUsuarioId();
+            $scope.id_tiposusario = oSessionService.getId_tipousuario();
             $scope.conectado = true;
         }
-        
-        $scope.isActive = toolService.isActive;
+
+$scope.isActive = toolService.isActive;
 
         
 

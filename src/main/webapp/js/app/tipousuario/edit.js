@@ -52,9 +52,11 @@ moduleTipousuario.controller('tipousuarioEditController', ['$scope', '$http', '$
                 $scope.resultado = "No se pudo actualizar";
             });
         };
-        
+
         if (oSessionService.getUserName() !== "") {
             $scope.usuarioConectado = oSessionService.getUserName();
+            $scope.usuarioId = oSessionService.getUsuarioId();
+            $scope.id_tiposusario = oSessionService.getId_tipousuario();
             $scope.conectado = true;
         }
 

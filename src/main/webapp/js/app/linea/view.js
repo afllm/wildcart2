@@ -1,13 +1,10 @@
 'use strict'
 
-moduleLinea.controller("lineaViewController", ['$scope', '$http', '$routeParams', '$window','sessionService',
-    function ($scope, $http, $routeParams, $window,oSessionService) {
+moduleLinea.controller("lineaViewController", ['$scope', '$http', '$routeParams', '$window', 'sessionService',
+    function ($scope, $http, $routeParams, $window, oSessionService) {
 
         $scope.ob = "linea";
-        if (oSessionService.getUserName() !== "") {
-            $scope.nombre = oSessionService.getUserName();
-            $scope.validlog = true;
-        }
+        $scope.conectado = false;
 
         if (!$routeParams.id) {
             $scope.id = 1;
@@ -31,7 +28,16 @@ moduleLinea.controller("lineaViewController", ['$scope', '$http', '$routeParams'
         $scope.volver = function () {
             $window.history.back();
         };
-       
+
+        if (oSessionService.getUserName() !== "") {
+            $scope.usuarioConectado = oSessionService.getUserName();
+            $scope.usuarioId = oSessionService.getUsuarioId();
+            $scope.id_tiposusario = oSessionService.getId_tipousuario();
+            $scope.conectado = true;
+        }
+
+        $scope.isActive = toolService.isActive;
+
     }
 
 ]);

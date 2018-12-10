@@ -6,18 +6,18 @@ moduleTipousuario.controller('tipousuarioNewController', ['$scope', '$http', '$l
         $scope.totalPages = 1;
         $scope.btnNew = true;
         $scope.conectado = false;
-      
+
 
         $scope.goBack = function () {
             $window.history.back();
         };
-        
+
         $scope.nuevo = function () {
             $scope.btnNew = false;
             $http({
                 method: 'POST',
                 url: 'json?ob=tipousuario&op=create',
-                params: {desc:$scope.desc}
+                params: {desc: $scope.desc}
             }).then(function (response) {
                 $scope.status = response.status;
                 $scope.ajaxDataTipousuarios = response.data.message;
@@ -28,12 +28,14 @@ moduleTipousuario.controller('tipousuarioNewController', ['$scope', '$http', '$l
                 $scope.resultado = "No se pudo crear";
             });
         };
-        
+
         if (oSessionService.getUserName() !== "") {
             $scope.usuarioConectado = oSessionService.getUserName();
+            $scope.usuarioId = oSessionService.getUsuarioId();
+            $scope.id_tiposusario = oSessionService.getId_tipousuario();
             $scope.conectado = true;
         }
-        
+
         $scope.isActive = toolService.isActive;
 
 

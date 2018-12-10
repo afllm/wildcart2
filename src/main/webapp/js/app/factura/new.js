@@ -3,19 +3,12 @@
 
 moduleFactura.controller('facturaNewController', ['$scope', '$http', '$location', 'toolService', '$routeParams', '$window', 'sessionService',
     function ($scope, $http, $location, toolService, $routeParams, $window, oSessionService) {
-        if (oSessionService.getUserName() !== "") {
-            $scope.nombre = oSessionService.getUserName();
-            $scope.validlog = true;
-        }
-        $scope.ob = "factura";
-        $scope.id = null;
-        //$scope.id_usuario = "320";
-
-        $scope.isActive = toolService.isActive;
-
+        
+         $scope.btnNew = true;
+        $scope.conectado = false;
+        
         $scope.update = function () {
-            $scope.visualizar = false;
-            $scope.error = false;
+             $scope.btnNew = false;
             var json = {
                 id: null,
                 fecha: $scope.fecha,
@@ -24,25 +17,33 @@ moduleFactura.controller('facturaNewController', ['$scope', '$http', '$location'
             };
 
             $http({
-                method: 'GET',
-                header: {
-                    'Content-Type': 'application/json;charset=utf-8'
-                },
-                url: 'json?ob=' + $scope.ob + '&op=create',
+                method: 'POST',
+                url: 'json?ob=factura&op=create',
                 params: {json: JSON.stringify(json)}
             }).then(function (response) {
-                console.log(response);
-                $scope.visualizar = true;
+                $scope.status = response.status;
+                $scope.ajaxDataUsuarios = response.data.message;
+                $scope.resultado = "Creada";
             }), function (response) {
-                console.log(response);
-                $scope.error = true;
+                $scope.status = response.status;
+                $scope.ajaxDataUsuarios = response.data.message || 'Request failed';
+                $scope.resultado = "No se pudo crear";
             }
         }
 
-        $scope.volver = function () {
+        $scope.goBack = function () {
             $window.history.back();
         };
-       
+
+        if (oSessionService.getUserName() !== "") {
+            $scope.usuarioConectado = oSessionService.getUserName();
+            $scope.usuarioId = oSessionService.getUsuarioId();
+            $scope.id_tiposusario = oSessionService.getId_tipousuario();
+            $scope.conectado = true;
+        }
+
+        $scope.isActive = toolService.isActive;
+
 
     }
 ]);

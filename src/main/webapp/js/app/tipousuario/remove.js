@@ -4,9 +4,9 @@ moduleTipousuario.controller('tipousuarioRemoveController', ['$scope', '$http', 
     function ($scope, $http, $location, toolService, $routeParams, $window, oSessionService) {
 
         $scope.totalPages = 1;
-        $scope.btnBorrar=true;
+        $scope.btnBorrar = true;
         $scope.conectado = false;
-        
+
         if (!$routeParams.id) {
             $scope.idError = true;
         } else {
@@ -28,31 +28,33 @@ moduleTipousuario.controller('tipousuarioRemoveController', ['$scope', '$http', 
         $scope.goBack = function () {
             $window.history.back();
         };
-        
-        $scope.borrar = function(){
-            $scope.btnBorrar=false;
+
+        $scope.borrar = function () {
+            $scope.btnBorrar = false;
             $http({
                 method: 'GET',
                 url: 'json?ob=tipousuario&op=remove&id=' + $scope.id
             }).then(function (response) {
                 $scope.status = response.status;
                 $scope.ajaxDataTipousuario = response.data.message;
-                $scope.resultado="Eliminado con éxito";
+                $scope.resultado = "Eliminado con éxito";
             }, function (response) {
                 $scope.status = response.status;
                 $scope.ajaxDataTipousuario = response.data.message || 'Request failed';
-                $scope.resultado="No se pudo eliminar";
+                $scope.resultado = "No se pudo eliminar";
             });
         };
-        
+
         if (oSessionService.getUserName() !== "") {
             $scope.usuarioConectado = oSessionService.getUserName();
+            $scope.usuarioId = oSessionService.getUsuarioId();
+            $scope.id_tiposusario = oSessionService.getId_tipousuario();
             $scope.conectado = true;
         }
-        
+
         $scope.isActive = toolService.isActive;
 
-        
+
 
     }
 

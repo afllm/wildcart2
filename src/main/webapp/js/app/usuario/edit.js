@@ -66,13 +66,33 @@ moduleUsuario.controller('usuarioEditController', ['$scope', '$http', '$location
             });
         };
         
-        if (oSessionService.getUserName() !==""){
+        $scope.tipoUsuarioRefresh = function (f, consultar) {
+            var form = f;
+            if (consultar) {
+                $http({
+                    method: 'GET',
+                    url: 'json?ob=tipousuario&op=get&id=' + $scope.obj_tipoUsuario.id
+                }).then(function (response) {
+                    $scope.obj_tipoUsuario = response.data.message;
+                    form.userForm.obj_tipousuario.$setValidity('valid', true);
+                }, function (response) {
+                    //$scope.status = response.status;
+                    form.userForm.obj_tipousuario.$setValidity('valid', false);
+                });
+            } else {
+                form.userForm.obj_tipousuario.$setValidity('valid', true);
+            }
+        }
+
+        if (oSessionService.getUserName() !== "") {
             $scope.usuarioConectado = oSessionService.getUserName();
+            $scope.usuarioId = oSessionService.getUsuarioId();
+            $scope.id_tiposusario = oSessionService.getId_tipousuario();
             $scope.conectado = true;
         }
 
         $scope.isActive = toolService.isActive;
-        
+
     }
 
 

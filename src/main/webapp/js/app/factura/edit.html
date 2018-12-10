@@ -9,10 +9,8 @@
       </div>
       <div class="row">
         <div class="col-3 mx-auto">
-               <div class="alert alert-success" role="alert" ng-show="(visualizar)">
-                Factura modificada correctamente.
-            </div>
-          <form name="userForm" ng-show="(!visualizar)">
+            
+          <form name="userForm" ng-show="btnUpdate && !idError">
             <div class="form-group">
               <label>ID</label>
               <input type="text" class="form-control" id="id" name="id" ng-disabled="true" ng-model="id" />
@@ -36,14 +34,13 @@
               <label>Usuario</label>
                   <input type="text" class="form-control" id="obj_usuario_id" name="obj_usuario_id" ng-model="obj_usuario_id"/>
             </div>
-            <button ng-click="editar()" type="button" class="btn btn-primary btn-block" ng-disabled="userForm.$invalid">Modificar factura</button>
+            <button ng-show="btnUpdate" ng-click="editar()" type="button" class="btn btn-primary btn-block" ng-disabled="userForm.$invalid">Modificar factura</button>
           </form>  
-              <div class="alert alert-danger" role="alert" ng-show="(error)">
-                Error al editar la factura.
+              <div ng-class="res" role="alert" >
+                {{resultado}}
             </div>
-            <button type="button" class="btn btn-primary btn-block mt-2" ng-click="volver()">Volver</button>
-
-          
+            <div ng-show="idError" class="alert alert-danger">Error: No se encuentra al usuario</div>
+            <button type="button" class="btn btn-primary btn-block mt-2" ng-click="goBack()">Volver</button>
         </div>
       </div>
     </div>

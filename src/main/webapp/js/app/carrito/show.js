@@ -83,7 +83,7 @@ moduleCarrito.controller('carritoShowController', ['$scope', '$http', '$location
          $scope.buy = function () {
             $http({
                 method: 'GET',
-                url: 'http://localhost:8081/trolleyes/json?ob=carrito&op=buy'
+                url: 'json?ob=carrito&op=buy'
             }).then(function (response) {
                 $scope.status = response.status;
                 $scope.msg_factura = response.data.message;
@@ -108,6 +108,7 @@ moduleCarrito.controller('carritoShowController', ['$scope', '$http', '$location
         if (oSessionService.getUserName() !== "") {
             $scope.usuarioConectado = oSessionService.getUserName();
             $scope.usuarioId = oSessionService.getUsuarioId();
+            $scope.id_tiposusario = oSessionService.getId_tipousuario();
             $scope.conectado = true;
         }
 

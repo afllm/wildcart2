@@ -27,15 +27,17 @@ moduleTipousuario.controller('tipousuarioViewController', ['$scope', '$http', '$
         $scope.goBack = function () {
             $window.history.back();
         };
-        
+
         if (oSessionService.getUserName() !== "") {
             $scope.usuarioConectado = oSessionService.getUserName();
+            $scope.usuarioId = oSessionService.getUsuarioId();
+            $scope.id_tiposusario = oSessionService.getId_tipousuario();
             $scope.conectado = true;
         }
 
         $scope.isActive = toolService.isActive;
 
-        
+
 
     }
 

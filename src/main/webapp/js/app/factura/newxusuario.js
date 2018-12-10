@@ -42,12 +42,12 @@ moduleFactura.controller('facturanewxusuarioController', ['$scope', '$http', '$l
             }).then(function (response) {
                 console.log(response);
                 $scope.status = response.status;
-                $scope.ajaxDataUsuarios = response.data.message;
+                $scope.ajaxData = response.data.message;
                 $scope.resultado = "Creado";
             }), function (response) {
                 console.log(response);
                 $scope.status = response.status;
-                $scope.ajaxDataUsuarios = response.data.message || 'Request failed';
+                $scope.ajaxData = response.data.message || 'Request failed';
                 $scope.resultado = "No se pudo crear: "+$scope.ajaxDataUsuarios;
             }
         }
@@ -58,6 +58,8 @@ moduleFactura.controller('facturanewxusuarioController', ['$scope', '$http', '$l
         
          if (oSessionService.getUserName() !== "") {
             $scope.usuarioConectado = oSessionService.getUserName();
+            $scope.usuarioId = oSessionService.getUsuarioId();
+            $scope.id_tiposusario = oSessionService.getId_tipousuario();
             $scope.conectado = true;
         }
 

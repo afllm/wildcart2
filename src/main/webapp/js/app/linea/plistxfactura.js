@@ -1,11 +1,21 @@
 'use strict'
-
-moduleLinea.controller('lineaPlistController', ['$scope', '$http', '$location', 'toolService', '$routeParams','sessionService',
-    function ($scope, $http, $location, toolService, $routeParams,oSessionService) {
+//http://localhost:8081/json?ob=usuario&op=login&user=ddd&pass=pass
+//http://localhost:8081/trolleyes/json?ob=linea&op=getpagexusuario&rpp=10&page=1&idfactura=3
+//http://localhost:8081/trolleyes/json?ob=linea&op=getcountxusuario&idfactura=1
+moduleLinea.controller('lineaplistxfacturaController', ['$scope', '$http', '$location', 'toolService', '$routeParams', 'sessionService',
+    function ($scope, $http, $location, toolService, $routeParams, oSessionService) {
 
         $scope.ob = "linea";
         $scope.totalPages = 1;
-        
+        $scope.conectado = false;
+
+        if (!$routeParams.id) {
+            $scope.id = 1;
+        } else {
+            $scope.id = $routeParams.id;
+        }
+
+
         if (!$routeParams.order) {
             $scope.orderURLServidor = "";
             $scope.orderURLCliente = "";
@@ -15,7 +25,7 @@ moduleLinea.controller('lineaPlistController', ['$scope', '$http', '$location', 
         }
 
         if (!$routeParams.rpp) {
-            $scope.rpp = '10';
+            $scope.rpp = "10";
         } else {
             $scope.rpp = $routeParams.rpp;
         }
@@ -32,7 +42,7 @@ moduleLinea.controller('lineaPlistController', ['$scope', '$http', '$location', 
 
 
         $scope.resetOrder = function () {
-            $location.url($scope.ob + `/plist/` + $scope.rpp + `/` + $scope.page);
+            $location.url($scope.ob + `/plistxfactura/` + $scope.rpp + `/` + $scope.page + `/` + $scope.id);
         }
 
         $scope.view = function (id) {
@@ -55,13 +65,13 @@ moduleLinea.controller('lineaPlistController', ['$scope', '$http', '$location', 
                 $scope.orderURLServidor = $scope.orderURLServidor + "-" + order + "," + align;
                 $scope.orderURLCliente = $scope.orderURLCliente + "-" + order + "," + align;
             }
-            $location.url($scope.ob + `/plist/` + $scope.rpp + `/` + $scope.page + `/` + $scope.orderURLCliente);
+            $location.url($scope.ob + `/plistxfactura/` + $scope.rpp + `/` + $scope.page + `/` + $scope.id + `/` + $scope.orderURLCliente);
         }
 
         //getcount
         $http({
             method: 'GET',
-            url: 'json?ob=' + $scope.ob + '&op=getcount'
+            url: 'json?ob=' + $scope.ob + '&op=getcountxfactura&idfactura=' + $scope.id
         }).then(function (response) {
             $scope.status = response.status;
             $scope.ajaxDataUsuariosNumber = response.data.message;
@@ -76,21 +86,36 @@ moduleLinea.controller('lineaPlistController', ['$scope', '$http', '$location', 
             $scope.status = response.status;
         });
 
+
+
+
+
         $http({
             method: 'GET',
-            url: 'json?ob=' + $scope.ob + '&op=getpage&rpp=' + $scope.rpp + '&page=' + $scope.page + $scope.orderURLServidor
+            url: 'json?ob=' + $scope.ob + '&op=getpagexfactura&rpp=' + $scope.rpp + '&page=' + $scope.page + '&idfactura=' + $scope.id + $scope.orderURLServidor
         }).then(function (response) {
             $scope.status = response.status;
             $scope.ajaxDataUsuarios = response.data.message;
+
         }, function (response) {
             $scope.status = response.status;
             $scope.ajaxDataUsuarios = response.data.message || 'Request failed';
         });
 
+        $http({
+            method: 'GET',
+            url: 'json?ob=factura&op=get&id=' + $scope.id
+        }).then(function (response) {
+            $scope.status = response.status;
+            $scope.idfactura = response.data.message.id;
 
+        }, function (response) {
+            $scope.status = response.status;
+
+        });
 
         $scope.update = function () {
-            $location.url($scope.ob + `/plist/` + $scope.rpp + `/` + $scope.page + '/' + $scope.orderURLCliente);
+            $location.url($scope.ob + `/plistxfactura/` + $scope.rpp + `/` + $scope.page + `/` + $scope.id + `/` + $scope.orderURLCliente);
         }
 
 
@@ -121,9 +146,10 @@ moduleLinea.controller('lineaPlistController', ['$scope', '$http', '$location', 
             $scope.id_tiposusario = oSessionService.getId_tipousuario();
             $scope.conectado = true;
         }
-        
+
         $scope.isActive = toolService.isActive;
-        
-       
+
+
+
     }
 ]);

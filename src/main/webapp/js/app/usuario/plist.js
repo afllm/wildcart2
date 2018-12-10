@@ -83,7 +83,9 @@ moduleUsuario.controller('usuarioPlistController', ['$scope', '$http', '$locatio
         };
 
 
-
+        $scope.factura = function (id) {
+            $location.url(`factura/plistxusuario/10/1/${id}`);
+        };
 
         //paginacion neighbourhood
         function pagination2() {
@@ -107,12 +109,10 @@ moduleUsuario.controller('usuarioPlistController', ['$scope', '$http', '$locatio
 
         if (oSessionService.getUserName() !== "") {
             $scope.usuarioConectado = oSessionService.getUserName();
+            $scope.usuarioId = oSessionService.getUsuarioId();
+            $scope.id_tiposusario = oSessionService.getId_tipousuario();
             $scope.conectado = true;
         }
-
-        $scope.factura = function (id) {
-            $location.url(`factura/plistxusuario/10/1/${id}`);
-        };
 
         $scope.isActive = toolService.isActive;
 

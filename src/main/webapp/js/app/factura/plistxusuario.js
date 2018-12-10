@@ -5,6 +5,7 @@ moduleFactura.controller('facturaplistxusuarioController', ['$scope', '$http', '
 
         $scope.totalPages = 1;
         $scope.conectado = false;
+        $scope.ob = "factura";
         
         
         
@@ -24,7 +25,7 @@ moduleFactura.controller('facturaplistxusuarioController', ['$scope', '$http', '
         }
 
         if (!$routeParams.rpp) {
-            $scope.rpp = 10;
+            $scope.rpp = '10';
         } else {
             $scope.rpp = $routeParams.rpp;
         }
@@ -127,8 +128,10 @@ moduleFactura.controller('facturaplistxusuarioController', ['$scope', '$http', '
             }
         }
         
-        if (oSessionService.getUserName() !== "") {
+       if (oSessionService.getUserName() !== "") {
             $scope.usuarioConectado = oSessionService.getUserName();
+            $scope.usuarioId = oSessionService.getUsuarioId();
+            $scope.id_tiposusario = oSessionService.getId_tipousuario();
             $scope.conectado = true;
         }
 

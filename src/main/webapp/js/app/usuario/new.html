@@ -6,10 +6,10 @@
                 <h1 class="h2">Nuevo usuario</h1>
 
             </div>
-            <div class="form-responsive container" >
-                <h3 ng-show="btnNew">Datos del nuevo usuario</h3>
+            <div class="form-responsive container" ng-show="btnNew">
+                <h3>Datos del nuevo usuario</h3>
 
-                <form name="userForm" ng-show="btnNew">
+                <ng-form name="userForm" class="form" ng-show="result == null">
                     <div class="form-group" ng-class="{ 'has-error' : userForm.dni.$invalid && !userForm.dni.$pristine }">
                         <label>DNI</label>
                         <input type="text" class="form-control" id="dni" name="dni" ng-model="dni" ng-required="true" ng-pattern="/^[0-9]{8}[TRWAGMYFPDXBNJZSQVHLCKET]$/"
@@ -57,13 +57,48 @@
                             Contraseña obligatoria
                         </div>
                     </div>
-<!--                    <div class="form-group">
-                        <label>Tipo usuario</label>
-                        <input type="text" class="form-control" id="obj_tipoUsuario_desc" name="obj_tipoUsuario_desc" ng-disabled="true" ng-model="obj_tipoUsuario_desc"
-                               />
-                    </div>-->
+                    <label for="obj_tipousuario">Tipo de usuario:</label>
+                        <div class="form-group row ml-3">
+                            <tipousuario-selection 
+                                class="modal fade" 
+                                id="cadd-location-modal" 
+                                obj="obj_tipoUsuario"
+                                on-tipousuario-set="tipoUsuarioRefresh(this,false)">                          
+                            </tipousuario-selection>
+
+                            <div class="control">
+                                <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"
+                                              data-toggle="modal"
+                                              data-target="#cadd-location-modal">
+                                            <span class="fas fa-search"></span>
+                                        </span>
+                                    </div>
+                                    <input ng-model="obj_tipoUsuario.id"
+                                           ng-change="tipoUsuarioRefresh(this, true)"
+                                           aria-describedby="basic-addon2"
+                                           class="form-control col-sm-2"
+                                           id="obj_tipousuario"
+                                           name="obj_tipousuario"
+                                           type="text"
+                                           ng-required
+                                           ng-model-options="{debounce: 1000}"
+                                           maxlength="2" />
+                                    <div class="input-group-append">
+                                        <span class="input-group-text">
+                                            <a href="tipousuario/view/{{obj_tipoUsuario.id}}">
+                                                <span class="p-2 bd-highlight"><i class="fas fa-users fa-1x"></i></span>
+                                                Tipo de usuario: {{obj_tipoUsuario.desc}}
+                                            </a>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div ng-show="!userForm.obj_tipousuario.$valid">Tipo de usuario no válido</div>
+                            </div>
+                        </div>
                     <button ng-show="!idError && btnNew" type="button" class="btn btn-light" ng-click="nuevo()" ng-disabled="userForm.$invalid">Confirmar nuevo usuario</button>
-                </form>
+                </ng-form>
                 <h3 ng-show="idError">Ha habido un error. vuelva a intentarlo</h3>
                 <h3>{{resultado}}</h3>
                 <button type="button" class="btn btn-light" ng-click="goBack()">Volver</button>

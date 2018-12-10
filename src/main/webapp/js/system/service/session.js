@@ -24,7 +24,7 @@ moduleService.service('sessionService', ['$location', function ($location) {
                 isSessionActive = false;
                 userName="";
                 usuarioId="";
-                var id_tipousuario = "";
+                id_tipousuario = "";
             },
             setUsuarioId: function (id) {
                 usuarioId = id;

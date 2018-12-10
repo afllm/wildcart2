@@ -6,7 +6,7 @@ moduleCarrito.controller('carritoPlistController', ['$scope', '$http', '$locatio
         $scope.totalPages = 1;
         $scope.conectado = false;
         $scope.ajaxDataAddRed;
-        $scope.stock = true;
+        //$scope.stock = true;
 
 
 
@@ -58,9 +58,9 @@ moduleCarrito.controller('carritoPlistController', ['$scope', '$http', '$locatio
             }).then(function (response) {
                 $scope.status = response.status;
                 $scope.ajaxDataAddRed = response.data.message;
-                if ($scope.status == 400) {
-                    $scope.stock = false;
-                }
+//                if ($scope.status == 400) {
+//                    $scope.stock = false;
+//                }
             }, function (response) {
                 $scope.status = response.status;
                 $scope.ajaxDataAddRed = response.data.message || 'Request failed';
@@ -158,6 +158,7 @@ moduleCarrito.controller('carritoPlistController', ['$scope', '$http', '$locatio
         if (oSessionService.getUserName() !== "") {
             $scope.usuarioConectado = oSessionService.getUserName();
             $scope.usuarioId = oSessionService.getUsuarioId();
+            $scope.id_tiposusario = oSessionService.getId_tipousuario();
             $scope.conectado = true;
         }
 

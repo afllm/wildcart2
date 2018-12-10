@@ -5,6 +5,7 @@ moduleFactura.controller("facturaEditController", ['$scope', '$http', '$location
 
         $scope.btnUpdate = true;
         $scope.conectado = false;
+        
         if (!$routeParams.id) {
             $scope.idError = true;
         } else {
@@ -44,12 +45,16 @@ moduleFactura.controller("facturaEditController", ['$scope', '$http', '$location
                 params: {json: JSON.stringify(json)}
             }).then(function (response) {
                 $scope.status = response.status;
-                $scope.ajaxDataUsuarios = response.data.message;
+                $scope.ajaxData = response.data.message;
                 $scope.resultado = "Actualizado";
+                $scope.correcto=true;
+                $scope.res="alert alert-info";
             }), function (response) {
                 $scope.status = response.status;
-                $scope.ajaxDataUsuarios = response.data.message || 'Request failed';
+                $scope.ajaxData = response.data.message || 'Request failed';
                 $scope.resultado = "No se pudo actualizar: "+$scope.ajaxDataUsuarios;
+                $scope.correcto=false;
+                $scope.res="alert alert-danger";
             }
         }
 
@@ -57,8 +62,10 @@ moduleFactura.controller("facturaEditController", ['$scope', '$http', '$location
             $window.history.back();
         }
 
-         if (oSessionService.getUserName() !==""){
+         if (oSessionService.getUserName() !== "") {
             $scope.usuarioConectado = oSessionService.getUserName();
+            $scope.usuarioId = oSessionService.getUsuarioId();
+            $scope.id_tiposusario = oSessionService.getId_tipousuario();
             $scope.conectado = true;
         }
         

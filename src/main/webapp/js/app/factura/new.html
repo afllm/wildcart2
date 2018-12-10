@@ -9,15 +9,7 @@
       </div>
      <div class="row">
         <div class="col-3 mx-auto">
-               <div class="alert alert-success" role="alert" ng-show="(visualizar)">
-                Factura creada correctamente.
-            </div>
-          <form name="userForm" ng-show="(!visualizar)">
-            <div class="form-group">
-              <label>ID</label>
-              <input type="text" class="form-control" id="id" name="id" ng-disabled="true" ng-model="id" />
-            </div>
-     
+          <form name="userForm" ng-show="btnNew">
             <div class="form-group">
               <label>Fecha</label>
               <input type="text" class="form-control" id="fecha" name="fecha" ng-model="fecha" ng-required="true" placeholder="Fecha" />
@@ -38,10 +30,8 @@
             </div>
             <button ng-click="update()" type="button" class="btn btn-primary btn-block" ng-disabled="userForm.$invalid">Crear nueva factura</button>
           </form> 
-                <div class="alert alert-danger" role="alert" ng-show="(error)">
-                Error al crear la factura.
-            </div>
-            <button type="button" class="btn btn-primary btn-block mt-2" ng-click="volver()">Volver</button>
+                <h3>{{resultado}}</h3>   
+            <button type="button" class="btn btn-primary btn-block mt-2" ng-click="goBack()">Volver</button>
 
           
         </div>

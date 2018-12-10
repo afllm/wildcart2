@@ -5,7 +5,7 @@ moduleFactura.controller("facturaRemoveController", ['$scope', '$http', '$routeP
         
         $scope.btnBorrar=true;
         $scope.conectado = false;
-
+        
         if (!$routeParams.id) {
             $scope.idError = true;
         } else {
@@ -25,6 +25,7 @@ moduleFactura.controller("facturaRemoveController", ['$scope', '$http', '$routeP
         });
         
         $scope.borrar = function () {
+            $scope.btnBorrar=false;
             $http({
                 method: "GET",
                 url: 'json?ob=factura&op=remove&id=' + $scope.id
@@ -43,8 +44,10 @@ moduleFactura.controller("facturaRemoveController", ['$scope', '$http', '$routeP
             $window.history.back();
         }
         
-        if (oSessionService.getUserName() !== "") {
+       if (oSessionService.getUserName() !== "") {
             $scope.usuarioConectado = oSessionService.getUserName();
+            $scope.usuarioId = oSessionService.getUsuarioId();
+            $scope.id_tiposusario = oSessionService.getId_tipousuario();
             $scope.conectado = true;
         }
        

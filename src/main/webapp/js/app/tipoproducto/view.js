@@ -21,22 +21,24 @@ moduleTipoproducto.controller('tipoproductoViewController', ['$scope', '$http', 
             }, function (response) {
                 $scope.status = response.status;
                 $scope.ajaxDataTipoProductos = response.data.message || 'Request failed';
-                $scope.resultado="Error: "+$scope.ajaxDataTipoProductos;
+                $scope.resultado = "Error: " + $scope.ajaxDataTipoProductos;
             });
         }
 
         $scope.goBack = function () {
             $window.history.back();
         };
-        
+
         if (oSessionService.getUserName() !== "") {
             $scope.usuarioConectado = oSessionService.getUserName();
+            $scope.usuarioId = oSessionService.getUsuarioId();
+            $scope.id_tiposusario = oSessionService.getId_tipousuario();
             $scope.conectado = true;
         }
 
         $scope.isActive = toolService.isActive;
 
-        
+
 
     }
 

@@ -7,13 +7,10 @@ moduleLinea.controller("lineaEditController", [
     "toolService",
     "$window",
     'sessionService',
-    function ($scope, $http, $routeParams, toolService, $window,oSessionService) {
+    function ($scope, $http, $routeParams, toolService, $window, oSessionService) {
 
         $scope.ob = "linea";
-        if (oSessionService.getUserName() !== "") {
-            $scope.nombre = oSessionService.getUserName();
-            $scope.validlog = true;
-        }
+
 
 
         if (!$routeParams.id) {
@@ -70,6 +67,15 @@ moduleLinea.controller("lineaEditController", [
         $scope.volver = function () {
             $window.history.back();
         }
-      
+
+        if (oSessionService.getUserName() !== "") {
+            $scope.usuarioConectado = oSessionService.getUserName();
+            $scope.usuarioId = oSessionService.getUsuarioId();
+            $scope.id_tiposusario = oSessionService.getId_tipousuario();
+            $scope.conectado = true;
+        }
+
+        $scope.isActive = toolService.isActive;
+
     }
 ]);

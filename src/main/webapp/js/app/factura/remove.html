@@ -12,16 +12,16 @@
                     <div class="table-responsive" ng-show="!idError && btnBorrar">
                         <table class="table table-striped table-sm">
                             <tr>
-                                <th>Id de factura</th><td>{{ajaxDataUsuarios.id}}</td>
+                                <th>Id de factura</th><td>{{ajaxData.id}}</td>
                             </tr>
                             <tr>
-                                <th>Fecha </th><td>{{ajaxDataUsuarios.fecha}}</td>
+                                <th>Fecha </th><td>{{ajaxData.fecha}}</td>
                             </tr>
                             <tr>
-                                <th>IVA</th><td>{{ajaxDataUsuarios.iva}}</td>
+                                <th>IVA</th><td>{{ajaxData.iva}}</td>
                             </tr>
                             <tr>
-                                <th>Usuario</th><td><a class="page-link" href="usuario/view/{{ajaxDataUsuarios.obj_usuario.id}}">{{ajaxDataUsuarios.obj_usuario.nombre}} {{ajaxDataUsuarios.obj_usuario.ape1}} {{ajaxDataUsuarios.obj_usuario.ape2}}</a></td>
+                                <th>Usuario</th><td><a class="page-link" href="usuario/view/{{ajaxData.obj_usuario.id}}">{{ajaxData.obj_usuario.nombre}} {{ajaxData.obj_usuario.ape1}} {{ajaxData.obj_usuario.ape2}}</a></td>
                             </tr>
 
                         </table>
