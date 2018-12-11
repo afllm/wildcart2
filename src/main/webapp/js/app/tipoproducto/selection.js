@@ -15,14 +15,14 @@ function cController($http) {
     self.page = 1;
     self.totalPages = 1;
     self.orderURLServidor = "";
-    self.rpp = 10;
+    self.rpp = "10";
 //    self.id = 1;
 
 
 
     $http({
         method: 'GET',
-        url: 'http://localhost:8081/trolleyes/json?ob=' + self.ob + '&op=getcount'
+        url: 'json?ob=' + self.ob + '&op=getcount'
     }).then(function (response) {
         self.status = response.status;
         self.ajaxDataUsuariosNumber = response.data.message;
@@ -37,7 +37,7 @@ function cController($http) {
 
     $http({
         method: 'GET',
-        url: 'http://localhost:8081/trolleyes/json?ob=' + self.ob + '&op=getpage&rpp=' + self.rpp + '&page=' + self.page + self.orderURLServidor
+        url: 'json?ob=' + self.ob + '&op=getpage&rpp=' + self.rpp + '&page=' + self.page + self.orderURLServidor
     }).then(function (response) {
         self.status = response.status;
         self.data = response.data.message;

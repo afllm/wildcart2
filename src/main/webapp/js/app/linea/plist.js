@@ -1,11 +1,17 @@
 'use strict'
-
+//http://localhost:8081/json?ob=usuario&op=login&user=ddd&pass=pass
 moduleLinea.controller('lineaPlistController', ['$scope', '$http', '$location', 'toolService', '$routeParams','sessionService',
-    function ($scope, $http, $location, toolService, $routeParams,oSessionService) {
+    function ($scope, $http, $location, toolService, $routeParams,sessionService) {
 
         $scope.ob = "linea";
         $scope.totalPages = 1;
-        
+//       if (sessionService.getUserName() !== "") {
+//            $scope.loggeduser = sessionService.getUserName();
+//            $scope.loggeduserid = sessionService.getId();
+//            $scope.logged = true;
+//            $scope.tipousuarioID = sessionService.getTypeUserID();
+//        }
+
         if (!$routeParams.order) {
             $scope.orderURLServidor = "";
             $scope.orderURLCliente = "";
@@ -15,7 +21,7 @@ moduleLinea.controller('lineaPlistController', ['$scope', '$http', '$location', 
         }
 
         if (!$routeParams.rpp) {
-            $scope.rpp = '10';
+            $scope.rpp = "10";
         } else {
             $scope.rpp = $routeParams.rpp;
         }
@@ -115,15 +121,10 @@ moduleLinea.controller('lineaPlistController', ['$scope', '$http', '$location', 
             }
         }
 
-        if (oSessionService.getUserName() !== "") {
-            $scope.usuarioConectado = oSessionService.getUserName();
-            $scope.usuarioId = oSessionService.getUsuarioId();
-            $scope.id_tiposusario = oSessionService.getId_tipousuario();
-            $scope.conectado = true;
-        }
-        
         $scope.isActive = toolService.isActive;
-        
+        $scope.openModal = function () {
+
+        }
        
     }
 ]);

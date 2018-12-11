@@ -1,18 +1,19 @@
 'use strict'
 
-moduleFactura.controller("facturaViewController", ['$scope', '$http', '$routeParams', 'toolService', '$window', 'sessionService',
-    function ($scope, $http, $routeParams, toolService, $window, oSessionService) {
-
-        $scope.conectado = false;
-
-
+moduleFactura.controller("facturaViewController", ['$scope', '$http', '$routeParams', '$window', 'sessionService',
+    function ($scope, $http, $routeParams, $window, sessionService) {
+//    if (sessionService.getUserName() !== "") {
+//            $scope.loggeduser = sessionService.getUserName();
+//            $scope.loggeduserid = sessionService.getId();
+//            $scope.logged = true;
+//            $scope.tipousuarioID = sessionService.getTypeUserID();
+//        }
         $scope.ob = "factura";
 
         if (!$routeParams.id) {
-            $scope.idError=true;
+            $scope.id = 1;
         } else {
             $scope.id = $routeParams.id;
-            $scope.idError=false;
         }
 
         $http({
@@ -28,18 +29,10 @@ moduleFactura.controller("facturaViewController", ['$scope', '$http', '$routePar
 
 
 
-        $scope.goBack = function () {
+        $scope.volver = function () {
             $window.history.back();
         };
-
-        if (oSessionService.getUserName() !== "") {
-            $scope.usuarioConectado = oSessionService.getUserName();
-            $scope.usuarioId = oSessionService.getUsuarioId();
-            $scope.id_tiposusario = oSessionService.getId_tipousuario();
-            $scope.conectado = true;
-        }
-
-        $scope.isActive = toolService.isActive;
+       
 
     }
 

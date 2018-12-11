@@ -1,7 +1,5 @@
 'use strict'
-//http://localhost:8081/json?ob=usuario&op=login&user=ddd&pass=pass
-//http://localhost:8081/trolleyes/json?ob=linea&op=getpagexusuario&rpp=10&page=1&idfactura=3
-//http://localhost:8081/trolleyes/json?ob=linea&op=getcountxusuario&idfactura=1
+
 moduleLinea.controller('lineaplistxfacturaController', ['$scope', '$http', '$location', 'toolService', '$routeParams', 'sessionService',
     function ($scope, $http, $location, toolService, $routeParams, oSessionService) {
 

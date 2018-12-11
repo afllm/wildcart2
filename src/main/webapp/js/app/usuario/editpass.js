@@ -6,16 +6,16 @@ moduleUsuario.controller("usuarioEditpassController", [
     "$routeParams",
     "toolService",
     "sessionService",
-    function ($scope, $http, $routeParams, toolService, oSessionService) {
+    function ($scope, $http, $routeParams, toolService, sessionService) {
         $scope.edited = true;
         $scope.error = true;
-        $scope.conectado = false;
+        $scope.logged = false;
 
-        if (!$routeParams.id) {
+       if (!$routeParams.id) {
             $scope.id = 1;
         } else {
             $scope.id = $routeParams.id;
-        }
+} 
 
         $scope.mostrar = false;
         $scope.activar = true;
@@ -30,7 +30,7 @@ moduleUsuario.controller("usuarioEditpassController", [
 
         $http({
             method: "GET",
-            url: 'http://localhost:8081/trolleyes/json?ob=' + $scope.ob + '&op=get&id=' + $scope.id
+            url: 'json?ob='+$scope.ob+'&op=get&id=' + $scope.id
         }).then(function (response) {
             $scope.id = response.data.message.id;
             $scope.dni = response.data.message.dni;
@@ -46,35 +46,38 @@ moduleUsuario.controller("usuarioEditpassController", [
         }), function () {
         };
 
+        $scope.isActive = toolService.isActive;
+       
+
         $scope.update = function () {
+            
+            if ($scope.pass===$scope.passNew){
 
-            if ($scope.pass === $scope.passNew) {
-
-                var json = {
-                    id: $scope.id,
-                    dni: $scope.dni,
-                    nombre: $scope.nombre,
-                    ape1: $scope.ape1,
-                    ape2: $scope.ape2,
-                    login: $scope.login,
-                    pass: forge_sha256($scope.pass),
-                    id_tipoUsuario: $scope.obj_tipoUsuario.id
-                }
-                $http({
-                    method: 'GET',
-                    header: {
-                        'Content-Type': 'application/json;charset=utf-8'
-                    },
-                    url: 'json?ob=usuario&op=update',
-                    params: {json: JSON.stringify(json)}
-                }).then(function () {
-                    $scope.edited = false;
-                })
-            } else {
-                $scope.edited = true;
-                $scope.error = false;
-
+            var json = {
+                id: $scope.id,
+                dni: $scope.dni,
+                nombre: $scope.nombre,
+              ape1: $scope.ape1,
+                ape2: $scope.ape2,
+                login: $scope.login,
+                pass: forge_sha256($scope.pass),
+              id_tipoUsuario: $scope.obj_tipoUsuario.id
             }
+            $http({
+                method: 'GET',
+                header: {
+                    'Content-Type': 'application/json;charset=utf-8'
+                },
+                url: 'json?ob=usuario&op=update',
+                params: {json: JSON.stringify(json)}
+            }).then(function () {
+                $scope.edited = false;
+            })
+        } else {
+            $scope.edited = true;
+            $scope.error = false;
+            
+        }
         }
 
         $scope.tipoUsuarioRefresh = function (f, consultar) {
@@ -94,7 +97,7 @@ moduleUsuario.controller("usuarioEditpassController", [
                 form.userForm.obj_tipousuario.$setValidity('valid', true);
             }
         }
-
+        
         $scope.back = function () {
             window.history.back();
         };
@@ -102,17 +105,16 @@ moduleUsuario.controller("usuarioEditpassController", [
             $location.path('/home');
         };
         $scope.plist = function () {
-            $location.path('/' + $scope.ob + '/plist');
+            $location.path('/'+$scope.ob+'/plist');
         };
 
-        if (oSessionService.getUserName() !== "") {
-            $scope.usuarioConectado = oSessionService.getUserName();
-            $scope.usuarioId = oSessionService.getUsuarioId();
-            $scope.id_tiposusario = oSessionService.getId_tipousuario();
-            $scope.conectado = true;
-        }
+//        if (sessionService.getUserName() !== "") {
+//            $scope.loggeduser = sessionService.getUserName();
+//            $scope.loggeduserid = sessionService.getId();
+//            $scope.logged = true;
+//            $scope.tipousuarioID = sessionService.getTypeUserID();
+//        }
 
-        $scope.isActive = toolService.isActive;
 
     }
 ]);

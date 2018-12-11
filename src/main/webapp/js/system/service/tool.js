@@ -8,20 +8,17 @@ moduleService.service('toolService', ['$location', function ($location) {
             isActive: function (p) {
                 return $location.path().startsWith(p);
             },
-            
             goBack: function (){
-               window.history.back(); 
+                window.history.back();
             },
-            
             objects: {
                 usuario: 'usuario',
                 tipousuario: 'tipousuario',
                 producto: 'producto',
                 tipoproducto: 'tipoproducto',
                 factura: 'factura',
-                linea: 'linea',
-                carrito: 'carrito'
+                linea: 'linea'
             }
         }
 
-    }]);
+}]);

@@ -1,15 +1,16 @@
-<header ng-include="'js/app/header.html'"></header>
+<header-component></header-component>
 <div class="container-fluid">
     <div class="row">
-        <main role="main" class="col-md-9 ml-sm-auto col-lg-12 px-4" style="margin-top: 90px">
+               <main role="main" class="col-md-12 ml-sm-auto col-lg-12 px-4" style="margin-top: 50px">
             <div class="d-flex justify-content-between flex-wrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                <h1 class="h2"><i class="fas fa-box-open fa-2x pr-2"></i>Productos</h1>                
+                <h1 class="h2">Productos disponibles</h1>
                 <div class="btn-toolbar mb-2 mb-md-0">
-                    <button type="button" class="btn btn-light" ng-click="resetOrder()">
-                        <i class="fa fa-sync"></i>
-                    </button>
-                    <a href="carrito/show" ng-if="ajaxDataAddRed !== 'Carrito vacio'" class="btn btn-light fas fa-shopping-cart" role="button"></a>
-
+        
+                   <a href="carrito/carrito" class="btn-lg btn-light fas fa-shopping-cart red-bar" role="button" ng-if="ajaxDataAdd!='Carrito vacio'" ng-if="showRed"></a>
+                    
+                </div>
+                <div class="btn-toolbar mb-2 mb-md-0">
+                     
                     <div class="btn-group" style="width:400px;">
                         <p class="mt-2" style="width:200px;">Selecciona RPP: </p>
                         <select class="form-control" 
@@ -23,102 +24,53 @@
                     </div>
                 </div>
             </div>
-            <div>
-                <div class="col-md-12 ml-sm-auto col-lg-12">
-                    <div class="row d-flex justify-content-center flex-wrap">
-                        <nav aria-label="paginacion">
-                            <ul class="pagination">
-                                <li class="page-item">
-                                    <a class="page-link" ng-show="page > 2" href="carrito/plist/{{rpp}}/1/{{order}}/{{align}}">First</a>
-                                </li>
-                                <li class="page-item">
-                                    <a class="page-link" ng-show="page > 1" href="carrito/plist/{{rpp}}/{{page - 1}}/{{order}}/{{align}}">Previous</a>
-                                </li>
-                                <li class="page-item" ng-class="{'active':(p == page), 'disabled': p === '...'}" ng-repeat="p in list2 track by $index">
-                                    <a class="page-link" href="carrito/plist/{{rpp}}/{{p}}/{{order}}/{{align}}">{{p}}</a>
-                                </li>
-                                <li class="page-item">
-                                    <a class="page-link" ng-show="page != totalPages" href="carrito/plist/{{rpp}}/{{page--1}}/{{order}}/{{align}}">Next</a>
-                                </li>
-                                <li class="page-item">
-                                    <a class="page-link" ng-show="page != totalPages - 1 && page != totalPages" href="carrito/plist/{{rpp}}/{{totalPages}}/{{order}}/{{align}}">Last</a>
-                                </li>
-                            </ul>
-                        </nav>
-                    </div>
-                </div>
+            
+        
+                <div class="row d-flex justify-content-between flex-wrap align-items-center">
+                <nav aria-label="paginacion">
+                    <ul class="pagination">
+                        <li class="page-item">
+                            <a class="page-link" ng-show="page > 2" href="carrito/plist/{{rpp}}/1/{{order}}/{{align}}">First</a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link" ng-show="page > 1" href="carrito/plist/{{rpp}}/{{page - 1}}/{{order}}/{{align}}">Previous</a>
+                        </li>
+                        <li class="page-item" ng-class="{'active':(p == page), 'disabled': p === '...'}" ng-repeat="p in list2 track by $index">
+                            <a class="page-link" href="carrito/plist/{{rpp}}/{{p}}/{{order}}/{{align}}">{{p}}</a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link" ng-show="page != totalPages" href="carrito/plist/{{rpp}}/{{page--1}}/{{order}}/{{align}}">Next</a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link" ng-show="page != totalPages - 1 && page != totalPages" href="carrito/plist/{{rpp}}/{{totalPages}}/{{order}}/{{align}}">Last</a>
+                        </li>
+                    </ul>
+                </nav>
             </div>
-            <div class="table-responsive">
-                <table class="table table-striped table-sm">
-                    <tr>
-
-                        <th>
-                            Descripción
-                            <button type="button" class="btn btn-light" ng-click="ordena('desc', 'asc')">
-                                <a class="fas fa-long-arrow-alt-up" ></a>
-
-                            </button>
-                            <button type="button" class="btn btn-light" ng-click="ordena('desc', 'desc')">
-                                <i class="fas fa-long-arrow-alt-down"></i>
-                            </button>
-                        </th>
-                        <th>
-                            Existencias
-                            <button type="button" class="btn btn-light" ng-click="ordena('existencias', 'asc')">
-                                <i class="fas fa-long-arrow-alt-up"></i>
-                            </button>
-                            <button type="button" class="btn btn-light" ng-click="ordena('existencias', 'desc')">
-                                <i class="fas fa-long-arrow-alt-down"></i>
-                            </button>
-                        </th>
-                        <th>
-                            Precio
-                            <button type="button" class="btn btn-light" ng-click="ordena('precio', 'asc')">
-                                <i class="fas fa-long-arrow-alt-up"></i>
-                            </button>
-                            <button type="button" class="btn btn-light" ng-click="ordena('precio', 'desc')">
-                                <i class="fas fa-long-arrow-alt-down"></i>
-                            </button>
-                        </th>
-                        <th>
-                            Foto
-                            <button type="button" class="btn btn-light" ng-click="ordena('foto', 'asc')">
-                                <i class="fas fa-long-arrow-alt-up"></i>
-                            </button>
-                            <button type="button" class="btn btn-light" ng-click="ordena('foto', 'desc')">
-                                <i class="fas fa-long-arrow-alt-down"></i>
-                            </button>
-                        </th>
-                        <th>
-                            Tipo de producto
-                            <button type="button" class="btn btn-light" ng-click="ordena('id_tipoProducto', 'asc')">
-                                <i class="fas fa-long-arrow-alt-up"></i>
-                            </button>
-                            <button type="button" class="btn btn-light" ng-click="ordena('id_tipoProducto', 'desc')">
-                                <i class="fas fa-long-arrow-alt-down"></i>
-                            </button>
-                        </th>
-                        <th>
-                            Operaciones
-                        </th>
-                    </tr>
-                    <tr ng-repeat="fila in ajaxData">
-                        <td>{{fila.desc}}</td>
-                        <td ng-class="{'alert alert-danger':(fila.existencias==sacaMuelas(fila.id))}">{{fila.existencias}}</td>
-                        <td>{{fila.precio}}</td>
-                        <td>{{fila.foto}}</td>
-                        <td><a href="./tipoproducto/view/{{fila.obj_tipoProducto.id}}" >{{fila.obj_tipoProducto.desc}}</a></td>
-                        <td>
-                            <a href="producto/view/{{fila.id}}" class="btn btn-light fas fa-eye" role="button"></a>
-                            <button type="button" ng-click="add(fila.id)" class="btn btn-light fas fa-plus" ng-disabled="fila.existencias==sacaMuelas(fila.id)"></button>
-                            <button type="button" ng-click="reduce(fila.id)" class="btn btn-light fas fa-minus" ng-disabled="sacaMuelas(fila.id)==0"></button>
-                            <span>{{sacaMuelas(fila.id)}}</span>
-                        </td>
-                    </tr>
-                </table>
+          
+      
+          
+            <div class="row d-flex justify-content-center flex-wrap align-items-center ml-5">
+    <div ng-repeat="fila in ajaxData" class="contenido border border-secundary rounded">
+            <div class="arriba"><img src="https://www.dickson-constant.com/medias/images/catalogue/api/m654-grey-680.jpg" class="img-fluid img-thumbnail" style="width: 97%; height: 100%; margin-top: 3%;" alt="producto 1"></div>
+            <div class="centro">{{fila.desc}}</div>
+            <div class="abajo">
+            <a href="producto/view/{{fila.id}}" class="btn btn-light fas fa-eye" role="button"></a>
+                           <button type="button" ng-click="add(fila.id)" ng-click="showRed=true" class="btn btn-light fas fa-plus" ng-disabled="fila.existencias===existencias(fila.id)"></button>
+                           <button type="button" ng-click="reduce(fila.id)" class="btn btn-light fas fa-minus" ng-disabled="existencias(fila.id)===0"></button>
+                                      <span class="btn btn-light" ng-style="fila.existencias===existencias(fila.id) && {'background-color':'#dc3545'}">{{existencias(fila.id)}}</span>
             </div>
+       
+    </div>
+</div>
+            
+            
+            
+            
+            
+            
         </main>
-
+        
     </div>
 </div>
 <footer class="footer" ng-include="'js/app/footer.html'"></footer>

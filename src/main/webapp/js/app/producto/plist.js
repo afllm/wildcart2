@@ -2,10 +2,15 @@
 'use strict'
 
 moduleProducto.controller('productoPlistController', ['$scope', '$http', '$location', 'toolService', '$routeParams', 'sessionService',
-    function ($scope, $http, $location, toolService, $routeParams, oSessionService) {
+    function ($scope, $http, $location, toolService, $routeParams, sessionService) {
         $scope.ob = "producto";
         $scope.totalPages = 1;
-        $scope.conectado = false;
+//      if (sessionService.getUserName() !== "") {
+//            $scope.loggeduser = sessionService.getUserName();
+//            $scope.loggeduserid = sessionService.getId();
+//            $scope.logged = true;
+//            $scope.tipousuarioID = sessionService.getTypeUserID();
+//        }
 
         if (!$routeParams.order) {
             $scope.orderURLServidor = "";
@@ -109,17 +114,8 @@ moduleProducto.controller('productoPlistController', ['$scope', '$http', '$locat
         $scope.edit = function (id) {
             $location.url($scope.ob + `/edit/${id}`);
         }
-
-
-        if (oSessionService.getUserName() !== "") {
-            $scope.usuarioConectado = oSessionService.getUserName();
-            $scope.usuarioId = oSessionService.getUsuarioId();
-            $scope.id_tiposusario = oSessionService.getId_tipousuario();
-            $scope.conectado = true;
-        }
-
         $scope.isActive = toolService.isActive;
-
+        
     }
 
 

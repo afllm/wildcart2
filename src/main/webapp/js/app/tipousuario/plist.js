@@ -1,10 +1,16 @@
 'use strict'
 
-moduleTipousuario.controller('tipousuarioPlistController', ['$scope', '$http', '$location', 'toolService', '$routeParams', 'sessionService',
-    function ($scope, $http, $location, toolService, $routeParams, oSessionService) {
+moduleTipousuario.controller('tipousuarioPlistController', ['$scope', '$http', '$location', 'toolService', '$routeParams','sessionService',
+    function ($scope, $http, $location, toolService, $routeParams, sessionService) {
 
+        $scope.ob = "tipousuario";
         $scope.totalPages = 1;
-        $scope.conectado = false;
+//       if (sessionService.getUserName() !== "") {
+//            $scope.loggeduser = sessionService.getUserName();
+//            $scope.loggeduserid = sessionService.getId();
+//            $scope.logged = true;
+//            $scope.tipousuarioID = sessionService.getTypeUserID();
+//        }
 
         if (!$routeParams.order) {
             $scope.orderURLServidor = "";
@@ -15,7 +21,7 @@ moduleTipousuario.controller('tipousuarioPlistController', ['$scope', '$http', '
         }
 
         if (!$routeParams.rpp) {
-            $scope.rpp = '10';
+            $scope.rpp = "10";
         } else {
             $scope.rpp = $routeParams.rpp;
         }
@@ -32,7 +38,19 @@ moduleTipousuario.controller('tipousuarioPlistController', ['$scope', '$http', '
 
 
         $scope.resetOrder = function () {
-            $location.url(`tipousuario/plist/` + $scope.rpp + `/` + $scope.page);
+            $location.url($scope.ob + `/plist/` + $scope.rpp + `/` + $scope.page);
+        }
+
+        $scope.view = function (id) {
+            $location.url($scope.ob + `/view/${id}`);
+        }
+
+        $scope.remove = function (id) {
+            $location.url($scope.ob + `/remove/${id}`);
+        }
+
+        $scope.edit = function (id) {
+            $location.url($scope.ob + `/edit/${id}`);
         }
 
 
@@ -44,43 +62,44 @@ moduleTipousuario.controller('tipousuarioPlistController', ['$scope', '$http', '
                 $scope.orderURLServidor = $scope.orderURLServidor + "-" + order + "," + align;
                 $scope.orderURLCliente = $scope.orderURLCliente + "-" + order + "," + align;
             }
-            $location.url(`tipousuario/plist/` + $scope.rpp + `/` + $scope.page + `/` + $scope.orderURLCliente);
+            $location.url($scope.ob + `/plist/` + $scope.rpp + `/` + $scope.page + `/` + $scope.orderURLCliente);
         }
+
 
         //getcount
         $http({
             method: 'GET',
-            url: 'json?ob=tipousuario&op=getcount'
+            url: 'json?ob=' + $scope.ob + '&op=getcount'
         }).then(function (response) {
             $scope.status = response.status;
-            $scope.ajaxDataTipousuariosNumber = response.data.message;
-            $scope.totalPages = Math.ceil($scope.ajaxDataTipousuariosNumber / $scope.rpp);
+            $scope.ajaxDataUsuariosNumber = response.data.message;
+            $scope.totalPages = Math.ceil($scope.ajaxDataUsuariosNumber / $scope.rpp);
             if ($scope.page > $scope.totalPages) {
                 $scope.page = $scope.totalPages;
                 $scope.update();
             }
             pagination2();
         }, function (response) {
-            $scope.ajaxDataTipousuariosNumber = response.data.message || 'Request failed';
+            $scope.ajaxDataUsuariosNumber = response.data.message || 'Request failed';
             $scope.status = response.status;
         });
 
         $http({
             method: 'GET',
-            url: 'json?ob=tipousuario&op=getpage&rpp=' + $scope.rpp + '&page=' + $scope.page + $scope.orderURLServidor
+            url: 'json?ob=' + $scope.ob + '&op=getpage&rpp=' + $scope.rpp + '&page=' + $scope.page + $scope.orderURLServidor
         }).then(function (response) {
             $scope.status = response.status;
-            $scope.ajaxDataTipousuarios = response.data.message;
+            $scope.ajaxDataUsuarios = response.data.message;
         }, function (response) {
             $scope.status = response.status;
-            $scope.ajaxDataTipousuarios = response.data.message || 'Request failed';
+            $scope.ajaxDataUsuarios = response.data.message || 'Request failed';
         });
 
 
 
         $scope.update = function () {
-            $location.url(`tipousuario/plist/` + $scope.rpp + `/` + $scope.page + '/' + $scope.orderURLCliente);
-        };
+            $location.url($scope.ob + `/plist/` + $scope.rpp + `/` + $scope.page + '/' + $scope.orderURLCliente);
+        }
 
 
 
@@ -104,20 +123,7 @@ moduleTipousuario.controller('tipousuarioPlistController', ['$scope', '$http', '
             }
         }
 
-
-        if (oSessionService.getUserName() !== "") {
-            $scope.usuarioConectado = oSessionService.getUserName();
-            $scope.usuarioId = oSessionService.getUsuarioId();
-            $scope.id_tiposusario = oSessionService.getId_tipousuario();
-            $scope.conectado = true;
-        }
-
         $scope.isActive = toolService.isActive;
-
-
-
+       
     }
-
-
-
 ]);

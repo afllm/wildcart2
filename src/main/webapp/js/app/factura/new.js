@@ -1,48 +1,96 @@
 "use strict";
 
+moduleFactura.controller("facturaNewController", [
+    "$scope",
+    "$http",
+    "$routeParams",
+    "toolService",
+    "$window",
+    'sessionService',
+    function ($scope, $http, $routeParams, toolService, $window, sessionService) {
 
-moduleFactura.controller('facturaNewController', ['$scope', '$http', '$location', 'toolService', '$routeParams', '$window', 'sessionService',
-    function ($scope, $http, $location, toolService, $routeParams, $window, oSessionService) {
-        
-         $scope.btnNew = true;
-        $scope.conectado = false;
-        
+        $scope.edited = true;
+        $scope.ob = "factura";
+        $scope.id = null;
+        $scope.obj = null;
+
+        $scope.op = 'create';
+        $scope.result = null;
+        $scope.title = "Crear factura";
+        $scope.icon = "fa-file-text-o";
+
+//
+//        if (sessionService.getUserName() !== "") {
+//            $scope.loggeduser = sessionService.getUserName();
+//            $scope.loggeduserid = sessionService.getId();
+//            $scope.logged = true;
+//            $scope.tipousuarioID = sessionService.getTypeUserID();
+//        }
+
+     
+
+        $scope.obj_usuario = {
+            id: null,
+ 
+        }
+
+
+        $scope.isActive = toolService.isActive;
+
         $scope.update = function () {
-             $scope.btnNew = false;
+
             var json = {
                 id: null,
-                fecha: $scope.fecha,
+                fecha: $scope.myDate,
                 iva: $scope.iva,
-                id_usuario: $scope.obj_usuario_id
-            };
+                id_usuario: $scope.obj_usuario.id
 
+            }
             $http({
-                method: 'POST',
-                url: 'json?ob=factura&op=create',
+                method: 'GET',
+                header: {
+                    'Content-Type': 'application/json;charset=utf-8'
+                },
+                url: 'json?ob=' + $scope.ob + '&op=create',
                 params: {json: JSON.stringify(json)}
-            }).then(function (response) {
-                $scope.status = response.status;
-                $scope.ajaxDataUsuarios = response.data.message;
-                $scope.resultado = "Creada";
-            }), function (response) {
-                $scope.status = response.status;
-                $scope.ajaxDataUsuarios = response.data.message || 'Request failed';
-                $scope.resultado = "No se pudo crear";
+            }).then(function () {
+                $scope.edited = false;
+            })
+        }
+
+        $scope.usuarioRefresh = function (f, consultar) {
+            var form = f;
+            if (consultar) {
+                $http({
+                    method: 'GET',
+                    url: 'json?ob=usuario&op=get&id=' + $scope.obj_usuario.id
+                }).then(function (response) {
+                    $scope.obj_usuario = response.data.message;
+                    form.userForm.obj_usuario.$setValidity('valid', true);
+                }, function (response) {
+                    form.userForm.obj_usuario.$setValidity('valid', false);
+                });
+            } else {
+                form.userForm.obj_usuario.$setValidity('valid', true);
             }
         }
 
-        $scope.goBack = function () {
-            $window.history.back();
+        $scope.back = function () {
+            window.history.back();
+        };
+        $scope.close = function () {
+            $location.path('/home');
+        };
+        $scope.plist = function () {
+            $location.path('/' + $scope.ob + '/plist');
         };
 
-        if (oSessionService.getUserName() !== "") {
-            $scope.usuarioConectado = oSessionService.getUserName();
-            $scope.usuarioId = oSessionService.getUsuarioId();
-            $scope.id_tiposusario = oSessionService.getId_tipousuario();
-            $scope.conectado = true;
+
+
+        $scope.volver = function () {
+            $window.history.back();
         }
 
-        $scope.isActive = toolService.isActive;
 
 
     }

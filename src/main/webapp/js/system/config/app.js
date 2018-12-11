@@ -10,10 +10,11 @@ var wildcart = angular.module('MyApp', [
     'tipoproductoControllers',
     'facturaControllers',
     'productoControllers',
-    'directives',
     'lineaControllers',
     'carritoControllers',
-    'ngMaterial'
+    'ngMaterial',
+    'Directives'
+    
 ]).config(function ($mdDateLocaleProvider) {
     // Example of a Spanish localization.
     $mdDateLocaleProvider.months = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
@@ -40,14 +41,14 @@ var wildcart = angular.module('MyApp', [
 });
 
 
-var moduleCommon = angular.module('commonControllers', []);
-var moduleService = angular.module('services', []);
-var moduleComponent = angular.module('components', []);
-var moduleDirectives = angular.module('directives', []);
-var moduleTipousuario = angular.module('tipousuarioControllers', []);
-var moduleUsuario = angular.module('usuarioControllers', []);
-var moduleProducto = angular.module('productoControllers', []);
-var moduleFactura = angular.module('facturaControllers', []);
-var moduleTipoproducto = angular.module('tipoproductoControllers', []);
-var moduleLinea = angular.module('lineaControllers', []);
-var moduleCarrito = angular.module('carritoControllers', []);
+var moduleCommon = angular.module ('commonControllers',[]);
+var moduleService = angular.module ('services',[]);
+var moduleComponent = angular.module ('components',[]);
+var moduleTipousuario = angular.module ('tipousuarioControllers',[]);
+var moduleUsuario = angular.module ('usuarioControllers',[]);
+var moduleProducto = angular.module ('productoControllers',[]);
+var moduleFactura = angular.module ('facturaControllers',[]);
+var moduleTipoproducto = angular.module('tipoproductoControllers',[]);
+var moduleLinea = angular.module('lineaControllers',[]);
+var moduleCarrito = angular.module('carritoControllers',[]);
+var moduloDirectivas = angular.module('Directives', []);

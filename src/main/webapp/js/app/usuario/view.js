@@ -1,49 +1,41 @@
 'use strict'
 
-moduleUsuario.controller('usuarioViewController', ['$scope', '$http', '$location', 'toolService', '$routeParams', '$window', 'sessionService',
-    function ($scope, $http, $location, toolService, $routeParams, $window, oSessionService) {
+moduleUsuario.controller('usuarioViewController', ['$scope', '$http', '$location', 'toolService', '$routeParams','sessionService', "$window",
+    function ($scope, $http, $location, toolService, $routeParams,sessionService, $window) {
 
-        $scope.totalPages = 1;
-        $scope.conectado = false;
-
+        $scope.ob="usuario";
+        
         if (!$routeParams.id) {
-            $scope.idError = true;
+            $scope.id = 1;
         } else {
-            $scope.idError = false;
             $scope.id = $routeParams.id;
-
-            $http({
-                method: 'GET',
-                url: 'json?ob=usuario&op=get&id=' + $scope.id
-            }).then(function (response) {
-                $scope.status = response.status;
-                $scope.ajaxDataUsuarios = response.data.message;
-            }, function (response) {
-                $scope.status = response.status;
-                $scope.ajaxDataUsuarios = response.data.message || 'Request failed';
-            });
         }
+        
+//           if (sessionService.getUserName() !== "") {
+//            $scope.loggeduser = sessionService.getUserName();
+//            $scope.loggeduserid = sessionService.getId();
+//            $scope.logged = true;
+//            $scope.tipousuarioID = sessionService.getTypeUserID();
+//        }
 
-        $scope.goBack = function () {
+        $http({
+            method: 'GET',
+            url: 'json?ob='+$scope.ob+'&op=get&id=' + $scope.id
+        }).then(function (response) {
+            $scope.status = response.status;
+            $scope.ajaxDataUsuarios = response.data.message;
+        }, function (response) {
+            $scope.status = response.status;
+            $scope.ajaxDataUsuarios = response.data.message || 'Request failed';
+        });
+        
+        
+               
+          $scope.volver = function () {
             $window.history.back();
-        };
+            };
         
-        if (oSessionService.getUserName() !== "") {
-            $scope.usuarioConectado = oSessionService.getUserName();
-            $scope.usuarioId = oSessionService.getUsuarioId();
-            $scope.id_tiposusario = oSessionService.getId_tipousuario();
-            $scope.conectado = true;
-        }
-
-
-        $scope.isActive = toolService.isActive;
-
-        
-
-    }
-
-
+   
+ }
 
 ]);
-
-

@@ -6,22 +6,22 @@ moduleProducto.controller("productoEditController", [
     "$routeParams",
     "toolService",
     'sessionService',
-    function ($scope, $http, $routeParams, toolService, oSessionService) {
+    function ($scope, $http, $routeParams, toolService, sessionService) {
 
         $scope.edited = true;
-        $scope.conectado = false;
+        $scope.logged = false;
 
-        if (!$routeParams.id) {
+       if (!$routeParams.id) {
             $scope.id = 1;
         } else {
             $scope.id = $routeParams.id;
-        }
+} 
 
         $scope.mostrar = false;
         $scope.activar = true;
         $scope.ajaxData = "";
 
-
+  
 
         $http({
             method: "GET",
@@ -44,8 +44,10 @@ moduleProducto.controller("productoEditController", [
             console.log(response);
         };
 
-        $scope.update = function () {
+        $scope.isActive = toolService.isActive;
 
+        $scope.update = function () {
+          
             var json = {
                 id: $scope.id,
                 codigo: $scope.codigo,
@@ -55,7 +57,7 @@ moduleProducto.controller("productoEditController", [
                 foto: $scope.foto,
                 id_tipoProducto: $scope.obj_tipoProducto.id
             }
-
+            
             $http({
                 method: 'GET',
                 header: {
@@ -85,7 +87,7 @@ moduleProducto.controller("productoEditController", [
                 form.userForm.obj_tipoProducto.$setValidity('valid', true);
             }
         }
-
+        
         $scope.back = function () {
             window.history.back();
         };
@@ -93,18 +95,16 @@ moduleProducto.controller("productoEditController", [
             $location.path('/home');
         };
         $scope.plist = function () {
-            $location.path('/' + $scope.ob + '/plist');
+            $location.path('/'+$scope.ob+'/plist');
         };
 
-
-        if (oSessionService.getUserName() !== "") {
-            $scope.usuarioConectado = oSessionService.getUserName();
-            $scope.usuarioId = oSessionService.getUsuarioId();
-            $scope.id_tiposusario = oSessionService.getId_tipousuario();
-            $scope.conectado = true;
-        }
-
-        $scope.isActive = toolService.isActive;
+//
+//         if (sessionService.getUserName() !== "") {
+//            $scope.loggeduser = sessionService.getUserName();
+//            $scope.loggeduserid = sessionService.getId();
+//            $scope.logged = true;
+//            $scope.tipousuarioID = sessionService.getTypeUserID();
+//        }
 
 
     }

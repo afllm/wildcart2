@@ -2,17 +2,25 @@
 
 
 moduleFactura.controller('facturanewxusuarioController', ['$scope', '$http', '$location', 'toolService', '$routeParams', '$window', 'sessionService',
-    function ($scope, $http, $location, toolService, $routeParams, $window, oSessionService) {
-        
-        $scope.btnNew = true;
-        $scope.conectado = false;
-        $scope.id = null;
+    function ($scope, $http, $location, toolService, $routeParams, $window, sessionService) {
+//      if (sessionService.getUserName() !== "") {
+//            $scope.loggeduser = sessionService.getUserName();
+//            $scope.loggeduserid = sessionService.getId();
+//            $scope.logged = true;
+//            $scope.tipousuarioID = sessionService.getTypeUserID();
+//        }
         
         if (!$routeParams.id) {
             $scope.id_usuario= 0;  
         } else {
             $scope.id_usuario= $routeParams.id;
         }
+        
+        $scope.ob = "factura";
+        $scope.id = null;
+ 
+
+        $scope.isActive = toolService.isActive;
         
            $http({
             method: 'GET',
@@ -27,43 +35,35 @@ moduleFactura.controller('facturanewxusuarioController', ['$scope', '$http', '$l
         });
 
         $scope.update = function () {
-            $scope.btnNew = false;
-            
+            $scope.visualizar = false;
+            $scope.error = false;
             var json = {
-                fecha: $scope.fecha,
+                id: null,
+                 fecha: $scope.myDate,
                 iva: $scope.iva,
                 id_usuario: $scope.id_usuario
             };
 
             $http({
-                method: 'POST',
-                url: 'json?ob=factura&op=create',
+                method: 'GET',
+                header: {
+                    'Content-Type': 'application/json;charset=utf-8'
+                },
+                url: 'json?ob=' + $scope.ob + '&op=create',
                 params: {json: JSON.stringify(json)}
             }).then(function (response) {
                 console.log(response);
-                $scope.status = response.status;
-                $scope.ajaxData = response.data.message;
-                $scope.resultado = "Creado";
+                $scope.visualizar = true;
             }), function (response) {
                 console.log(response);
-                $scope.status = response.status;
-                $scope.ajaxData = response.data.message || 'Request failed';
-                $scope.resultado = "No se pudo crear: "+$scope.ajaxDataUsuarios;
+                $scope.error = true;
             }
         }
 
-        $scope.goBack = function () {
+        $scope.volver = function () {
             $window.history.back();
         };
-        
-         if (oSessionService.getUserName() !== "") {
-            $scope.usuarioConectado = oSessionService.getUserName();
-            $scope.usuarioId = oSessionService.getUsuarioId();
-            $scope.id_tiposusario = oSessionService.getId_tipousuario();
-            $scope.conectado = true;
-        }
 
-         $scope.isActive = toolService.isActive;
-         
+
     }
 ]);

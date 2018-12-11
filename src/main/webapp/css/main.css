@@ -1,35 +1,20 @@
 /* Sticky footer styles
 -------------------------------------------------- */
-*{
-    box-sizing: border-box;
-    font-family: Arial, Helvetica, sans-serif;
-}
 html {
   position: relative;
   min-height: 100%;
 }
-
-body, html{
-    heigt:100%;
-    width: 100%;
-    color: dimgray;
-    background-color: floralwhite;
-}
 body {
   /* Margin bottom by footer height */
- margin-bottom: 60px;
- margin: 0 auto;
- 
+  margin-bottom: 60px;
 }
 .footer {
-  position: fixed;/*antes absolute*/
+  position: fixed;
   bottom: 0;
   width: 100%;
   /* Set the fixed height of the footer here */
-  height: 60px;
-  line-height: 60px; 
-  /* Vertically center the text there */
-  text-align: center;
+  height: 30px;
+  line-height: 30px; /* Vertically center the text there */
   background-color: #f5f5f5;
 }
 
@@ -57,6 +42,7 @@ th {
 .btn.btn-light {
    height: 35px;
    width: 35px;
+  
    
 }
 .btn.btn-light.icon{
@@ -71,3 +57,77 @@ th {
     color:red;
     
 }
+.caja {
+    display: flex;
+    flex-wrap: wrap;
+   
+}
+.carrito{
+    background-color: #f5f5ef;
+    border: 5px;
+    border-color: #d8d8c0;
+    height: 200px;
+    width: 300px;
+    display: grid; 
+  margin: 0 auto;
+   grid-gap: 20px;
+    padding: 10px;
+  grid-template-columns: auto;
+  grid-template-rows: 50% 10% 40%;
+  grid-gap: 20px;
+  grid-template-areas: "arriba"
+                       "centro"
+                       "abajo";
+}
+
+.contenido {
+     background-color: #f5f5ef;
+  
+    height: 200px;
+    width: 250px;
+    display: grid; 
+  margin: 20px;
+   grid-gap: 20px;
+    padding: 10px;
+  grid-template-columns: 100%;
+  grid-template-rows: 55% 5% 40%;
+
+  grid-template-areas: "arriba"
+                       "centro"
+                       "abajo";
+}  
+    
+
+
+
+.centro {
+    font-size: 12px;
+     font-weight: bold;
+    grid-area: centro;
+    text-align: center;
+}
+.arriba {
+    grid-area: arriba;
+}
+.abajo {
+    margin-left: 20%;
+    grid-area: abajo;
+}
+
+.red-bar{
+
+ background-color:#FFFF99;
+}
+
+.red-bar.ng-enter {
+ animation-name: cambiarImagenDos;
+ animation-duration: 1s;
+ animation-timing-function: linear;
+}
+
+@keyframes cambiarImagenDos {
+0% {transform: scale(0.4);transform: translate(100px,50px); transform: rotate(20deg);}
+33% {transform: scale(0.8);}
+66% { transform: scale(1.2);}
+100% { transform: scale(1.4); background-color:#FFFF66;}
+ }

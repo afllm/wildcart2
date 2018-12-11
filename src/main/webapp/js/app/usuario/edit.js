@@ -1,46 +1,54 @@
-'use strict'
+"use strict";
 
-moduleUsuario.controller('usuarioEditController', ['$scope', '$http', '$location', 'toolService', '$routeParams', '$window', 'sessionService',
-    function ($scope, $http, $location, toolService, $routeParams, $window, oSessionService) {
+moduleUsuario.controller("usuarioEditController", [
+    "$scope",
+    "$http",
+    "$routeParams",
+    "toolService",
+    "sessionService",
+    function ($scope, $http, $routeParams, toolService, sessionService) {
+        $scope.edited = true;
+        $scope.logged = false;
 
-        $scope.totalPages = 1;
-        $scope.btnUpdate = true;
-        $scope.conectado = false;
-        $scope.resultado = "---";
-
-        if (!$routeParams.id) {
-            $scope.idError = true;
+       if (!$routeParams.id) {
+            $scope.id = 1;
         } else {
-            $scope.idError = false;
             $scope.id = $routeParams.id;
+} 
 
-            $http({
-                method: 'GET',
-                url: 'json?ob=usuario&op=get&id=' + $scope.id
-            }).then(function (response) {
-                $scope.status = response.status;
-                $scope.id = response.data.message.id;
-                $scope.nombre = response.data.message.nombre;
-                $scope.dni = response.data.message.dni;
-                $scope.ape1 = response.data.message.ape1;
-                $scope.ape2 = response.data.message.ape2;
-                $scope.login = response.data.message.login;
-                //$scope.pass = ""; (si lo pongo, encriptar)
-                $scope.obj_tipoUsuario_desc = response.data.message.obj_tipoUsuario.desc;
-                $scope.obj_tipoUsuario_id = response.data.message.obj_tipoUsuario.id;
-            }, function (response) {
-                $scope.status = response.status;
-                $scope.ajaxDataUsuarios = response.data.message || 'Request failed';
-            });
-        }
+        $scope.mostrar = false;
+        $scope.activar = true;
+        $scope.ajaxData = "";
 
-        $scope.goBack = function () {
-            $window.history.back();
+        $scope.obj = null;
+        $scope.ob = 'usuario';
+        $scope.op = 'edit';
+        $scope.result = null;
+        $scope.title = "Edición de usuario";
+        $scope.icon = "fa-file-text-o";
+
+        $http({
+            method: "GET",
+            url: 'json?ob='+$scope.ob+'&op=get&id=' + $scope.id
+        }).then(function (response) {
+            $scope.id = response.data.message.id;
+            $scope.dni = response.data.message.dni;
+            $scope.nombre = response.data.message.nombre;
+            $scope.ape1 = response.data.message.ape1;
+            $scope.ape2 = response.data.message.ape2;
+            $scope.login = response.data.message.login;
+            $scope.pass = 'pass';
+            $scope.obj_tipoUsuario = {
+                id: response.data.message.obj_tipoUsuario.id,
+                desc: response.data.message.obj_tipoUsuario.desc
+            }
+        }), function () {
         };
 
-        $scope.editar = function () {
-            $scope.btnUpdate = false;
+        $scope.isActive = toolService.isActive;
 
+        $scope.update = function () {
+           
             var json = {
                 id: $scope.id,
                 dni: $scope.dni,
@@ -48,24 +56,21 @@ moduleUsuario.controller('usuarioEditController', ['$scope', '$http', '$location
                 ape1: $scope.ape1,
                 ape2: $scope.ape2,
                 login: $scope.login,
-                id_tipoUsuario: $scope.obj_tipoUsuario_id
+                pass: $scope.pass,
+                id_tipoUsuario: $scope.obj_tipoUsuario.id
             }
-
             $http({
-                method: 'POST',
+                method: 'GET',
+                header: {
+                    'Content-Type': 'application/json;charset=utf-8'
+                },
                 url: 'json?ob=usuario&op=update',
                 params: {json: JSON.stringify(json)}
-            }).then(function (response) {
-                $scope.status = response.status;
-                $scope.ajaxDataUsuarios = response.data.message;
-                $scope.resultado = "Actualizado";
-            }, function (response) {
-                $scope.status = response.status;
-                $scope.ajaxDataUsuarios = response.data.message || 'Request failed';
-                $scope.resultado = "No se pudo actualizar";
-            });
-        };
-        
+            }).then(function () {
+                $scope.edited = false;
+            })
+        }
+
         $scope.tipoUsuarioRefresh = function (f, consultar) {
             var form = f;
             if (consultar) {
@@ -83,23 +88,25 @@ moduleUsuario.controller('usuarioEditController', ['$scope', '$http', '$location
                 form.userForm.obj_tipousuario.$setValidity('valid', true);
             }
         }
+        
+        $scope.back = function () {
+            window.history.back();
+        };
+        $scope.close = function () {
+            $location.path('/home');
+        };
+        $scope.plist = function () {
+            $location.path('/'+$scope.ob+'/plist');
+        };
 
-        if (oSessionService.getUserName() !== "") {
-            $scope.usuarioConectado = oSessionService.getUserName();
-            $scope.usuarioId = oSessionService.getUsuarioId();
-            $scope.id_tiposusario = oSessionService.getId_tipousuario();
-            $scope.conectado = true;
-        }
 
-        $scope.isActive = toolService.isActive;
+//             if (sessionService.getUserName() !== "") {
+//            $scope.loggeduser = sessionService.getUserName();
+//            $scope.loggeduserid = sessionService.getId();
+//            $scope.logged = true;
+//            $scope.tipousuarioID = sessionService.getTypeUserID();
+//        }
+
 
     }
-
-
-
 ]);
-
-
-
-
-

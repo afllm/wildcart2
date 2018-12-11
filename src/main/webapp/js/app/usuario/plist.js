@@ -1,11 +1,20 @@
 'use strict'
-
-moduleUsuario.controller('usuarioPlistController', ['$scope', '$http', '$location', 'toolService', '$routeParams', 'sessionService',
-    function ($scope, $http, $location, toolService, $routeParams, oSessionService) {
-
+//http://localhost:8081/json?ob=usuario&op=login&user=ddd&pass=pass
+moduleUsuario.controller('usuarioPlistController', ['$scope', '$http', '$location', 'toolService', '$routeParams','sessionService', "$window",
+    function ($scope, $http, $location, toolService, $routeParams,sessionService, $window) {
+        
+        $scope.ob="usuario";
         $scope.totalPages = 1;
-        $scope.conectado = false;
 
+//         if (sessionService.getUserName() !== "") {
+//            $scope.loggeduser = sessionService.getUserName();
+//            $scope.loggeduserid = sessionService.getId();
+//            $scope.logged = true;
+//            $scope.tipousuarioID = sessionService.getTypeUserID();
+//        }
+
+        $scope.isActive = toolService.isActive;
+        
         if (!$routeParams.order) {
             $scope.orderURLServidor = "";
             $scope.orderURLCliente = "";
@@ -15,7 +24,7 @@ moduleUsuario.controller('usuarioPlistController', ['$scope', '$http', '$locatio
         }
 
         if (!$routeParams.rpp) {
-            $scope.rpp = 10;
+            $scope.rpp = "10";
         } else {
             $scope.rpp = $routeParams.rpp;
         }
@@ -32,9 +41,22 @@ moduleUsuario.controller('usuarioPlistController', ['$scope', '$http', '$locatio
 
 
         $scope.resetOrder = function () {
-            $location.url(`usuario/plist/` + $scope.rpp + `/` + $scope.page);
+            $location.url($scope.ob +`/plist/` + $scope.rpp + `/` + $scope.page);
         }
 
+        $scope.view = function (id) {
+            $location.url($scope.ob +`/view/${id}`);
+        }
+        $scope.factura = function (id) {
+            $location.url(`factura/plistxusuario/10/1/${id}`);
+        }
+        $scope.remove= function (id) {
+            $location.url($scope.ob +`/remove/${id}`);
+        }
+
+        $scope.edit= function (id) {
+            $location.url($scope.ob +`/edit/${id}`);
+        }
 
         $scope.ordena = function (order, align) {
             if ($scope.orderURLServidor == "") {
@@ -44,13 +66,13 @@ moduleUsuario.controller('usuarioPlistController', ['$scope', '$http', '$locatio
                 $scope.orderURLServidor = $scope.orderURLServidor + "-" + order + "," + align;
                 $scope.orderURLCliente = $scope.orderURLCliente + "-" + order + "," + align;
             }
-            $location.url(`usuario/plist/` + $scope.rpp + `/` + $scope.page + `/` + $scope.orderURLCliente);
+            $location.url($scope.ob +`/plist/` + $scope.rpp + `/` + $scope.page + `/` + $scope.orderURLCliente);
         }
 
         //getcount
         $http({
             method: 'GET',
-            url: 'json?ob=usuario&op=getcount'
+            url: 'json?ob='+$scope.ob+'&op=getcount'
         }).then(function (response) {
             $scope.status = response.status;
             $scope.ajaxDataUsuariosNumber = response.data.message;
@@ -67,7 +89,7 @@ moduleUsuario.controller('usuarioPlistController', ['$scope', '$http', '$locatio
 
         $http({
             method: 'GET',
-            url: 'json?ob=usuario&op=getpage&rpp=' + $scope.rpp + '&page=' + $scope.page + $scope.orderURLServidor
+            url: 'json?ob='+$scope.ob+'&op=getpage&rpp=' + $scope.rpp + '&page=' + $scope.page + $scope.orderURLServidor
         }).then(function (response) {
             $scope.status = response.status;
             $scope.ajaxDataUsuarios = response.data.message;
@@ -77,15 +99,9 @@ moduleUsuario.controller('usuarioPlistController', ['$scope', '$http', '$locatio
         });
 
 
-
         $scope.update = function () {
-            $location.url(`usuario/plist/` + $scope.rpp + `/` + $scope.page + '/' + $scope.orderURLCliente);
-        };
-
-
-        $scope.factura = function (id) {
-            $location.url(`factura/plistxusuario/10/1/${id}`);
-        };
+            $location.url($scope.ob +`/plist/` + $scope.rpp + `/` + $scope.page + '/' + $scope.orderURLCliente);
+        }
 
         //paginacion neighbourhood
         function pagination2() {
@@ -106,20 +122,5 @@ moduleUsuario.controller('usuarioPlistController', ['$scope', '$http', '$locatio
             }
         }
 
-
-        if (oSessionService.getUserName() !== "") {
-            $scope.usuarioConectado = oSessionService.getUserName();
-            $scope.usuarioId = oSessionService.getUsuarioId();
-            $scope.id_tiposusario = oSessionService.getId_tipousuario();
-            $scope.conectado = true;
-        }
-
-        $scope.isActive = toolService.isActive;
-
-
-
     }
-
-
-
 ]);

@@ -1,52 +1,53 @@
-'use strict'
+"use strict";
 
-moduleTipoproducto.controller('tipoproductoNewController', ['$scope', '$http', '$location', 'toolService', '$routeParams', '$window', 'sessionService',
-    function ($scope, $http, $location, toolService, $routeParams, $window, oSessionService) {
+moduleTipoproducto.controller("tipoproductoNewController", [
+    "$scope",
+    "$http",
+    "$routeParams",
+    "toolService",
+    "$window",
+    'sessionService',
+    function ($scope, $http, $routeParams, toolService, $window,sessionService) {
 
-        $scope.totalPages = 1;
-        $scope.btnNew = true;
-        $scope.conectado = false;
-
-
-        $scope.goBack = function () {
-            $window.history.back();
-        };
-
-        $scope.nuevo = function () {
-            $scope.btnNew = false;
-            $http({
-                method: 'POST',
-                url: 'json?ob=tipoproducto&op=create',
-                params: {json: JSON.stringify({desc: $scope.desc})}
-            }).then(function (response) {
-                $scope.status = response.status;
-                $scope.ajaxDataTipoproductos = response.data.message;
-                $scope.resultado = "Creado";
-            }, function (response) {
-                $scope.status = response.status;
-                $scope.ajaxDataTipoproductos = response.data.message || 'Request failed';
-                $scope.resultado = "No se pudo crear";
-            });
-        };
-
-        if (oSessionService.getUserName() !== "") {
-            $scope.usuarioConectado = oSessionService.getUserName();
-            $scope.usuarioId = oSessionService.getUsuarioId();
-            $scope.id_tiposusario = oSessionService.getId_tipousuario();
-            $scope.conectado = true;
-        }
+        $scope.ob = "tipoproducto";
+        $scope.id = null;
+//          if (sessionService.getUserName() !== "") {
+//            $scope.loggeduser = sessionService.getUserName();
+//            $scope.loggeduserid = sessionService.getId();
+//            $scope.logged = true;
+//            $scope.tipousuarioID = sessionService.getTypeUserID();
+//        }
 
         $scope.isActive = toolService.isActive;
 
+        $scope.update = function () {
+            $scope.visualizar = false;
+            $scope.error = false;
+            var json = {
+                id: null,
+                desc: $scope.desc,
 
+            };
 
+            $http({
+                method: 'GET',
+                header: {
+                    'Content-Type': 'application/json;charset=utf-8'
+                },
+                url: 'json?ob=' + $scope.ob + '&op=create',
+                params: {json: JSON.stringify(json)}
+            }).then(function (response) {
+                console.log(response);
+                $scope.visualizar = true;
+            }), function (response) {
+                console.log(response);
+                $scope.error = true;
+            }
+        }
+
+        $scope.volver = function () {
+            $window.history.back();
+        };
+       
     }
-
-
-
 ]);
-
-
-
-
-

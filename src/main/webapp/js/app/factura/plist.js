@@ -1,13 +1,18 @@
 'use strict'
-
+//http://localhost:8081/json?ob=usuario&op=login&user=ddd&pass=pass
 moduleFactura.controller('facturaPlistController', ['$scope', '$http', '$location', 'toolService', '$routeParams', 'sessionService',
-    function ($scope, $http, $location, toolService, $routeParams, oSessionService) {
+    function ($scope, $http, $location, toolService, $routeParams, sessionService) {
 
-        
-        $scope.totalPages = 1;
-        $scope.conectado = false;
         $scope.ob = "factura";
+        $scope.totalPages = 1;
         
+        
+//       if (sessionService.getUserName() !== "") {
+//            $scope.loggeduser = sessionService.getUserName();
+//            $scope.loggeduserid = sessionService.getId();
+//            $scope.logged = true;
+//            $scope.tipousuarioID = sessionService.getTypeUserID();
+//        }
         if (!$routeParams.order) {
             $scope.orderURLServidor = "";
             $scope.orderURLCliente = "";
@@ -17,7 +22,7 @@ moduleFactura.controller('facturaPlistController', ['$scope', '$http', '$locatio
         }
 
         if (!$routeParams.rpp) {
-            $scope.rpp = '10';
+            $scope.rpp = "10";
         } else {
             $scope.rpp = $routeParams.rpp;
         }
@@ -34,7 +39,19 @@ moduleFactura.controller('facturaPlistController', ['$scope', '$http', '$locatio
 
 
         $scope.resetOrder = function () {
-            $location.url(`factura/plist/` + $scope.rpp + `/` + $scope.page);
+            $location.url($scope.ob + `/plist/` + $scope.rpp + `/` + $scope.page);
+        }
+
+        $scope.view = function (id) {
+            $location.url($scope.ob + `/view/${id}`);
+        }
+
+        $scope.remove = function (id) {
+            $location.url($scope.ob + `/remove/${id}`);
+        }
+
+        $scope.edit = function (id) {
+            $location.url($scope.ob + `/edit/${id}`);
         }
 
         $scope.ordena = function (order, align) {
@@ -45,13 +62,13 @@ moduleFactura.controller('facturaPlistController', ['$scope', '$http', '$locatio
                 $scope.orderURLServidor = $scope.orderURLServidor + "-" + order + "," + align;
                 $scope.orderURLCliente = $scope.orderURLCliente + "-" + order + "," + align;
             }
-            $location.url(`factura/plist/` + $scope.rpp + `/` + $scope.page + `/` + $scope.orderURLCliente);
+            $location.url($scope.ob + `/plist/` + $scope.rpp + `/` + $scope.page + `/` + $scope.orderURLCliente);
         }
 
         //getcount
         $http({
             method: 'GET',
-            url: 'json?ob=factura&op=getcount'
+            url: 'json?ob=' + $scope.ob + '&op=getcount'
         }).then(function (response) {
             $scope.status = response.status;
             $scope.ajaxDataUsuariosNumber = response.data.message;
@@ -66,13 +83,17 @@ moduleFactura.controller('facturaPlistController', ['$scope', '$http', '$locatio
             $scope.status = response.status;
         });
         
+     
+        
+        
+        
         $http({
             method: 'GET',
  
-           url: 'json?ob=factura&op=getpage&rpp=' + $scope.rpp + '&page=' + $scope.page + $scope.orderURLServidor
+           url: 'json?ob=' + $scope.ob + '&op=getpage&rpp=' + $scope.rpp + '&page=' + $scope.page + $scope.orderURLServidor
         }).then(function (response) {
             $scope.status = response.status;
-            $scope.ajaxData = response.data.message;
+            $scope.ajaxDataUsuarios = response.data.message;
         }, function (response) {
             $scope.status = response.status;
             $scope.ajaxDataUsuarios = response.data.message || 'Request failed';
@@ -81,7 +102,7 @@ moduleFactura.controller('facturaPlistController', ['$scope', '$http', '$locatio
 
 
         $scope.update = function () {
-            $location.url(`factura/plist/` + $scope.rpp + `/` + $scope.page + '/' + $scope.orderURLCliente);
+            $location.url($scope.ob + `/plist/` + $scope.rpp + `/` + $scope.page + '/' + $scope.orderURLCliente);
         }
 
 
@@ -105,16 +126,11 @@ moduleFactura.controller('facturaPlistController', ['$scope', '$http', '$locatio
                 }
             }
         }
-        
-      if (oSessionService.getUserName() !== "") {
-            $scope.usuarioConectado = oSessionService.getUserName();
-            $scope.usuarioId = oSessionService.getUsuarioId();
-            $scope.id_tiposusario = oSessionService.getId_tipousuario();
-            $scope.conectado = true;
-        }
 
         $scope.isActive = toolService.isActive;
-      
+        $scope.openModal = function () {
+
+        }
 
        
 

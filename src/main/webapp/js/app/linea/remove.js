@@ -1,13 +1,18 @@
 'use strict'
 
-moduleLinea.controller("lineaRemoveController", ['$scope', '$http', '$routeParams', '$window', 'sessionService',
-    function ($scope, $http, $routeParams, $window, sessionService) {
+moduleLinea.controller("lineaRemoveController", ['$scope', '$http', '$routeParams', '$window','sessionService',
+    function ($scope, $http, $routeParams, $window,sessionService) {
 
         $scope.ob = "linea";
-        $scope.tabla = true;
+            $scope.tabla = true;
         $scope.msgopcioneliminar = true;
-        $scope.conectado = false;
-
+        
+//     if (sessionService.getUserName() !== "") {
+//            $scope.loggeduser = sessionService.getUserName();
+//            $scope.loggeduserid = sessionService.getId();
+//            $scope.logged = true;
+//            $scope.tipousuarioID = sessionService.getTypeUserID();
+//        }
         if (!$routeParams.id) {
             $scope.id = 1;
         } else {
@@ -25,7 +30,7 @@ moduleLinea.controller("lineaRemoveController", ['$scope', '$http', '$routeParam
             $scope.ajaxDataUsuarios = response.data.message || 'Request failed';
         });
 
-        $scope.eliminar = function (accion) {
+          $scope.eliminar = function (accion) {
             if (accion === "eliminar") {
                 $http({
                     method: 'GET',
@@ -53,16 +58,7 @@ moduleLinea.controller("lineaRemoveController", ['$scope', '$http', '$routeParam
         $scope.volver = function () {
             $window.history.back();
         }
-
-        if (oSessionService.getUserName() !== "") {
-            $scope.usuarioConectado = oSessionService.getUserName();
-            $scope.usuarioId = oSessionService.getUsuarioId();
-            $scope.id_tiposusario = oSessionService.getId_tipousuario();
-            $scope.conectado = true;
-        }
-
-        $scope.isActive = toolService.isActive;
-
+       
     }
 
 ]);
