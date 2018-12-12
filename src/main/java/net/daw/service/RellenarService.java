@@ -10,7 +10,7 @@ public class RellenarService {
         String[] codigo = {"56TT","GTE4","K8J6","JKK1","EEP9","TTP9","YHG5","NH6Y","9IOK","LLIU"};
         String[] desc = { "Util", "utensilio", "aparejo", "instrumento", "aparato", "artefacto", "material",
 				"trebejo", "mecanismo", "chirimbolo" };
-        String[] desc2 = {"para cortar","para romper","para unir","para copiar","para untar","para colar","para diseñar","para corrosionar","para digitalizar","para mezclar"};
+        String[] desc2 = {"para cortar","para romper","para unir","para copiar","para untar","para colar","para disenar","para corrosionar","para digitalizar","para mezclar"};
         String foto = "Foto";
         int[] id_tipoProducto = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
         int[] existencias = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};

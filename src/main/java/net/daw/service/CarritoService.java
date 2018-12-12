@@ -1,14 +1,24 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package net.daw.service;
 
-import com.google.gson.Gson;
 import java.io.Serializable;
-
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+
+import org.omg.CORBA.Request;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 import net.daw.bean.CarritoBean;
 import net.daw.bean.FacturaBean;
 import net.daw.bean.LineaBean;
@@ -20,41 +30,49 @@ import net.daw.constant.ConnectionConstants;
 import net.daw.dao.FacturaDao;
 import net.daw.dao.LineaDao;
 import net.daw.dao.ProductoDao;
+import net.daw.dao.UsuarioDao;
 import net.daw.factory.ConnectionFactory;
 import net.daw.helper.EncodingHelper;
 
-public class CarritoService implements Serializable {
+public class CarritoService implements Serializable{
 
-    HttpServletRequest oRequest;
-    String ob = null;
-    Gson oGson = new Gson();
-    ReplyBean oReplyBean;
-    ArrayList<CarritoBean> carrito = null;
+	  HttpServletRequest oRequest;
+	    String ob = null;
+	    Gson oGson = new Gson();
+	   
+	ArrayList<CarritoBean> carrito = null;
 
     public CarritoService(HttpServletRequest oRequest) {
         super();
         this.oRequest = oRequest;
         ob = oRequest.getParameter("ob");
     }
-
-    //Sirve para añadir  al carrito
-    //La informacion del carrito de compras se guarda en una sesion
+    
+    protected Boolean checkPermission(String strMethodName) {
+        UsuarioBean oUsuarioBean = (UsuarioBean) oRequest.getSession().getAttribute("user");
+        return oUsuarioBean != null;
+}
+    
+    
     public ReplyBean add() throws Exception {
+    	 ReplyBean oReplyBean;
+            
+        if (checkPermission("add")) {
+        	
         ConnectionInterface oConnectionPool = null;
-        //Obtenemos la sesion actual
-        HttpSession sesion = oRequest.getSession();
-
+        HttpSession sesion = oRequest.getSession();	
+        	
         try {
             Connection oConnection;
 
-            //Si no existe en la sesion creamos al carrito
+            //Si no existe la sesion creamos al carrito
             if (sesion.getAttribute("carrito") == null) {
                 carrito = new ArrayList<CarritoBean>();
             } else {
                 carrito = (ArrayList<CarritoBean>) sesion.getAttribute("carrito");
             }
 
-            //Obtenemos el producto que deseamos agregar al carrito
+            //Obtenemos el producto que deseamos a�adir al carrito
             Integer id = Integer.parseInt(oRequest.getParameter("prod"));
             oConnectionPool = ConnectionFactory.getConnection(ConnectionConstants.connectionPool);
             oConnection = oConnectionPool.newConnection();
@@ -79,8 +97,6 @@ public class CarritoService implements Serializable {
                     oCarritoBean.setObj_producto(oProductoBean);
                     oCarritoBean.setCantidad(1);
                     carrito.add(oCarritoBean);
-                }else {
-                    oReplyBean = new ReplyBean(400, oGson.toJson(carrito));
                 }
             } else {
                 //Si es otro valor es porque el producto esta en el carrito
@@ -88,8 +104,6 @@ public class CarritoService implements Serializable {
                 Integer cantidad = carrito.get(indice).getCantidad() + 1;
                 if (oProductoBean.getExistencias() >= cantidad) {
                     carrito.get(indice).setCantidad(cantidad);
-                } else {
-                    oReplyBean = new ReplyBean(400, oGson.toJson(carrito));
                 }
             }
             //Actualizamos la sesion del carrito de compras
@@ -98,16 +112,22 @@ public class CarritoService implements Serializable {
             oReplyBean = new ReplyBean(200, oGson.toJson(carrito));
 
         } catch (Exception ex) {
-            //Logger.getLogger(CarritoService.class.getName()).log(Level.SEVERE, null, ex);
+           // Logger.getLogger(CarritoService.class.getName()).log(Level.SEVERE, null, ex);
             oReplyBean = new ReplyBean(500, "Error en add carrito: " + ex.getMessage());
-        } finally {
+        }
+        finally {
             oConnectionPool.disposeConnection();
         }
+        
+        } else {
+        	oReplyBean = new ReplyBean(401, "Unauthorized");
+        }	
         return oReplyBean;
     }
 
     public ReplyBean show() {
-        //Obtenemos la sesion actual
+   ReplyBean oReplyBean;
+    	if (checkPermission("reduce")) {
         HttpSession sesion = oRequest.getSession();
 
         if (sesion.getAttribute("carrito") == null) {
@@ -116,24 +136,34 @@ public class CarritoService implements Serializable {
             oReplyBean = new ReplyBean(200, oGson.toJson(sesion.getAttribute("carrito")));
         }
 
+        } else {
+            oReplyBean = new ReplyBean(401, "Unauthorized");
+        }
         return oReplyBean;
-    }
-
+}
+    
     public ReplyBean empty() {
+    	  ReplyBean oReplyBean;
+    	if (checkPermission("empty")) {
         HttpSession sesion = oRequest.getSession();
 
         if (sesion.getAttribute("carrito") == null) {
-            oReplyBean = new ReplyBean(200, EncodingHelper.quotate("El carrito ya estaba vacio"));
+            oReplyBean = new ReplyBean(200, EncodingHelper.quotate("El carrito ya esta vacio"));
         } else {
             sesion.setAttribute("carrito", null);
             oReplyBean = new ReplyBean(200, EncodingHelper.quotate("Carrito vacio"));
         }
 
+        } else {
+            oReplyBean = new ReplyBean(401, "Unauthorized");
+        }
         return oReplyBean;
-    }
+}
 
     public ReplyBean reduce() {
-
+    	ReplyBean oReplyBean;
+    	if (checkPermission("reduce")) {
+ 
         HttpSession sesion = oRequest.getSession();
 
         if (sesion.getAttribute("carrito") == null) {
@@ -141,41 +171,49 @@ public class CarritoService implements Serializable {
         } else {
             carrito = (ArrayList<CarritoBean>) sesion.getAttribute("carrito");
             Integer id = Integer.parseInt(oRequest.getParameter("prod"));
-
-            int indice = -1;
-
+           
+            
+            int indice=-1;
+            
             for (int i = 0; i < carrito.size(); i++) {
                 if (id == carrito.get(i).getObj_producto().getId()) {
                     indice = i;
                     break;
                 }
             }
-
+            
             if (indice == -1) {
                 oReplyBean = new ReplyBean(200, EncodingHelper.quotate("El producto no esta en el carrito"));
             } else {
                 int cantidad = carrito.get(indice).getCantidad();
-                if (carrito.get(indice).getCantidad() > 1) {
-                    carrito.get(indice).setCantidad(cantidad - 1);
-                } else {
-                    carrito.remove(indice);
-                }
-
-                if (carrito.size() < 1) {
-                    sesion.setAttribute("carrito", null);
-                    oReplyBean = new ReplyBean(200, EncodingHelper.quotate("Carrito vacio"));
-
-                } else {
+                if (carrito.get(indice).getCantidad()>1 ) {
+                    carrito.get(indice).setCantidad(cantidad-1);
                     sesion.setAttribute("carrito", carrito);
                     oReplyBean = new ReplyBean(200, oGson.toJson(carrito));
+                }else{
+                   carrito.remove(indice);
                 }
+                   
+                
+                if (carrito.size()<1) {
+                   	sesion.setAttribute("carrito", null);
+                       oReplyBean = new ReplyBean(200, EncodingHelper.quotate("Carrito vacio"));
+                       
+                   } else {
+                	   sesion.setAttribute("carrito", carrito);
+                       oReplyBean = new ReplyBean(200, oGson.toJson(carrito));
+                   }
+                
             }
-
+        }
+        } else {
+            oReplyBean = new ReplyBean(401, "Unauthorized");
         }
         return oReplyBean;
-    }
-
+}   
+    
     public ReplyBean buy() throws Exception {
+    	 ReplyBean oReplyBean;
         ConnectionInterface oConnectionPool = null;
         //Obtenemos la sesion actual
         HttpSession sesion = oRequest.getSession();
@@ -192,13 +230,14 @@ public class CarritoService implements Serializable {
             Date fechaHoraAhora = new Date();
             oFacturaBean.setId_usuario(id);
             oFacturaBean.setFecha(fechaHoraAhora);
-            oFacturaBean.setIva(21.0F);//¿IVA fijo?
+            oFacturaBean.setIva(21.0F);
+
 
             FacturaDao oFacturaDao = new FacturaDao(oConnection, "factura");
 
             FacturaBean oFacturaBeanCreada = oFacturaDao.create(oFacturaBean);
             int id_factura = oFacturaBeanCreada.getId();
-
+      
             LineaDao oLineaDao;
             LineaBean oLineaBean;
             ProductoDao oProductoDao = new ProductoDao(oConnection, "producto");
@@ -207,6 +246,7 @@ public class CarritoService implements Serializable {
 
             for (CarritoBean ib : carrito) {
 
+             
                 int cant = ib.getCantidad();
 
                 oLineaBean = new LineaBean();
@@ -217,6 +257,7 @@ public class CarritoService implements Serializable {
 
                 oLineaDao.create(oLineaBean);
 
+             
                 oProductoBean = new ProductoBean();
                 oProductoBean.setId(ib.getObj_producto().getId());
                 oProductoBean = ib.getObj_producto();
@@ -230,14 +271,14 @@ public class CarritoService implements Serializable {
             carrito.clear();
             sesion.setAttribute("carrito", carrito);
 
-            oReplyBean = new ReplyBean(200, EncodingHelper.quotate("Factura  " + id_factura + " creada"));
+            oReplyBean = new ReplyBean(200, oGson.toJson(id_factura));
 
         } catch (Exception e) {
 
             try {
                 oConnection.rollback();
-            } catch (SQLException ex) {
-                oReplyBean = new ReplyBean(500, "Error en buy carritoService: " + ex.getMessage());
+            } catch (SQLException excep) {
+
             }
 
             oReplyBean = new ReplyBean(500, "Error en buy carritoService: " + e.getMessage());

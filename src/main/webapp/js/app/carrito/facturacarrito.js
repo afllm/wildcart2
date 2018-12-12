@@ -1,5 +1,5 @@
 'use strict'
-//http://localhost:8081/json?ob=usuario&op=login&user=ddd&pass=pass
+
 moduleFactura.controller('facturaCarritoController', ['$scope', '$http', '$location', 'toolService', '$routeParams', 'sessionService',
     function ($scope, $http, $location, toolService, $routeParams, sessionService) {
 
@@ -50,6 +50,8 @@ moduleFactura.controller('facturaCarritoController', ['$scope', '$http', '$locat
   $scope.volver = function () {
              $location.url(`carrito/plist/`);
         }
+        
+        
        
 
     }

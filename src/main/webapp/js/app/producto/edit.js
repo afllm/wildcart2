@@ -10,19 +10,15 @@ moduleProducto.controller("productoEditController", [
 
         $scope.edited = true;
         $scope.logged = false;
-
-       if (!$routeParams.id) {
+        if (!$routeParams.id) {
             $scope.id = 1;
         } else {
             $scope.id = $routeParams.id;
-} 
+        }
 
         $scope.mostrar = false;
         $scope.activar = true;
         $scope.ajaxData = "";
-
-  
-
         $http({
             method: "GET",
             url: 'json?ob=producto&op=get&id=' + $scope.id
@@ -43,21 +39,27 @@ moduleProducto.controller("productoEditController", [
         }), function (response) {
             console.log(response);
         };
-
         $scope.isActive = toolService.isActive;
-
         $scope.update = function () {
-          
+
+            var nombreFoto;
+            if ($scope.myFile !== undefined) {
+                nombreFoto = $scope.foto;
+                uploadPhoto(nombreFoto);
+            } else {
+                nombreFoto = $scope.foto;
+            }
+            console.log(nombreFoto);
             var json = {
                 id: $scope.id,
                 codigo: $scope.codigo,
                 desc: $scope.desc,
                 existencias: $scope.existencias,
                 precio: $scope.precio,
-                foto: $scope.foto,
+                foto: nombreFoto,
                 id_tipoProducto: $scope.obj_tipoProducto.id
             }
-            
+
             $http({
                 method: 'GET',
                 header: {
@@ -69,6 +71,35 @@ moduleProducto.controller("productoEditController", [
                 $scope.edited = false;
             })
         }
+
+        function uploadPhoto(name) {
+            //Solucion mas cercana
+            //https://stackoverflow.com/questions/37039852/send-formdata-with-other-field-in-angular
+            var file = $scope.myFile;
+            //Cambiar el nombre del archivo
+            //https://stackoverflow.com/questions/30733904/renaming-a-file-object-in-javascript
+            file = new File([file], name, {type: file.type});
+            console.log(file)
+            //Api FormData 
+            //https://developer.mozilla.org/es/docs/Web/API/XMLHttpRequest/FormData
+            var oFormData = new FormData();
+            oFormData.append('file', file);
+            $http({
+                headers: {'Content-Type': undefined},
+                method: 'POST',
+                data: oFormData,
+                url: `json?ob=producto&op=addimage`
+            }).then(function (response) {
+                console.log(response);
+            }, function (response) {
+                console.log(response);
+            });
+        }
+
+
+
+
+
 
         $scope.tipoProductoRefresh = function (f, consultar) {
             var form = f;
@@ -87,7 +118,7 @@ moduleProducto.controller("productoEditController", [
                 form.userForm.obj_tipoProducto.$setValidity('valid', true);
             }
         }
-        
+
         $scope.back = function () {
             window.history.back();
         };
@@ -95,9 +126,8 @@ moduleProducto.controller("productoEditController", [
             $location.path('/home');
         };
         $scope.plist = function () {
-            $location.path('/'+$scope.ob+'/plist');
+            $location.path('/' + $scope.ob + '/plist');
         };
-
 //
 //         if (sessionService.getUserName() !== "") {
 //            $scope.loggeduser = sessionService.getUserName();
@@ -108,4 +138,17 @@ moduleProducto.controller("productoEditController", [
 
 
     }
-]);
+]).directive('fileModel', ['$parse', function ($parse) {
+        return {
+            restrict: 'A',
+            link: function (scope, element, attrs) {
+                var model = $parse(attrs.fileModel);
+                var modelSetter = model.assign;
+                element.bind('change', function () {
+                    scope.$apply(function () {
+                        modelSetter(scope, element[0].files[0]);
+                    });
+                });
+            }
+        }
+    }]);

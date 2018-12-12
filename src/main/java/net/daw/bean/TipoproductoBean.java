@@ -5,21 +5,22 @@
  */
 package net.daw.bean;
 
-import com.google.gson.annotations.Expose;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+
+import com.google.gson.annotations.Expose;
+
 import net.daw.helper.EncodingHelper;
 
 /**
  *
- * @author a044531896d
+ * @author Jesus
  */
 public class TipoproductoBean {
-    
-    @Expose
+	@Expose
     private int id;
-    @Expose
+	@Expose
     private String desc;
 
     public int getId() {
@@ -65,4 +66,5 @@ public class TipoproductoBean {
         strPairs += " WHERE id=" + id;
         return strPairs;
     }
+
 }

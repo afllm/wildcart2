@@ -9,25 +9,24 @@ package net.daw.bean;
 import com.google.gson.annotations.Expose;
 import java.sql.Connection;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import net.daw.dao.FacturaDao;
 import net.daw.dao.ProductoDao;
 
 public class LineaBean {
 
-    //@Expose
+	@Expose
     private int id;
-    //@Expose
+    @Expose
     private int cantidad;
-    //@Expose(serialize = false)
+    @Expose(serialize = false)
     private int id_producto;
-    //@Expose(serialize = false)
+    @Expose(serialize = false)
     private int id_factura;
-    //@Expose(deserialize = false)
+    @Expose(deserialize = false)
     private ProductoBean obj_Producto;
-    //@Expose(deserialize = false)
+    @Expose(deserialize = false)
     private FacturaBean obj_Factura;
-
+    
     public ProductoBean getObj_Producto() {
         return obj_Producto;
     }
@@ -76,47 +75,25 @@ public class LineaBean {
         this.id_factura = id_factura;
     }
 
-    public LineaBean fill(ResultSet oResultSet, Connection oConnection, Integer expandProducto, Integer expandFactura) throws SQLException, Exception {
+    public LineaBean fill(ResultSet oResultSet, Connection oConnection, Integer expand) throws Exception {
+
         this.setId(oResultSet.getInt("id"));
         this.setCantidad(oResultSet.getInt("cantidad"));
-        if (expandProducto > 0) {
+
+        if (expand > 0) {
             ProductoDao oProductoDao = new ProductoDao(oConnection, "producto");
-            this.setObj_Producto(oProductoDao.get(oResultSet.getInt("id_producto"), expandProducto));
+            this.setObj_Producto(oProductoDao.get(oResultSet.getInt("id_producto"), expand - 1));
+        } else {
+            this.setId_producto(oResultSet.getInt("id_producto"));
         }
-        if (expandFactura > 0) {
+        if (expand > 0) {
             FacturaDao oFacturaDao = new FacturaDao(oConnection, "factura");
-            this.setObj_Factura(oFacturaDao.get(oResultSet.getInt("id_factura"), expandFactura));
+            this.setObj_Factura(oFacturaDao.get(oResultSet.getInt("id_factura"), expand - 1));
+        } else {
+            this.setId_factura(oResultSet.getInt("id_factura"));
         }
 
         return this;
-    }
-
-    public String getColumns() {
-        String strColumns = "";
-        strColumns += "id,";
-        strColumns += "cantidad,";
-        strColumns += "id_producto,";
-        strColumns += "id_factura";
-        return strColumns;
-    }
-
-    public String getValues() {
-        String strColumns = "";
-        strColumns += "null,";
-        strColumns += cantidad + ",";
-        strColumns += id_producto + ",";
-        strColumns += id_factura;
-        return strColumns;
-    }
-
-    public String getPairs() {
-        String strPairs = "";
-        strPairs += "id=" + id + ",";
-        strPairs += "cantidad=" + cantidad + ",";
-        strPairs += "id_producto=" + id_producto + ",";
-        strPairs += "id_factura=" + id_factura;
-        strPairs += " WHERE id=" + id;
-        return strPairs;
     }
 
 }

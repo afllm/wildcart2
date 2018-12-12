@@ -27,7 +27,6 @@ public class ProductoService {
         super();
         this.oRequest = oRequest;
         ob = oRequest.getParameter("ob");
-        
     }
     protected Boolean checkPermission(String strMethodName) {
         UsuarioBean oUsuarioBean = (UsuarioBean) oRequest.getSession().getAttribute("user");
@@ -47,9 +46,10 @@ public class ProductoService {
             oConnectionPool = ConnectionFactory.getConnection(ConnectionConstants.connectionPool);
             oConnection = oConnectionPool.newConnection();
             ProductoDao oProductoDao = new ProductoDao(oConnection, ob);
-            ProductoBean oProductoBean = oProductoDao.get(id, 1);//solo tiene una expansion
+            ProductoBean oProductoBean = oProductoDao.get(id, 2);
             Gson oGson = new Gson();
             oReplyBean = new ReplyBean(200, oGson.toJson(oProductoBean));
+        
         } catch (Exception ex) {
             throw new Exception("ERROR: Service level: get method: " + ob + " object", ex);
         } finally {
@@ -136,29 +136,30 @@ public class ProductoService {
 
     public ReplyBean update() throws Exception {
         int iRes = 0;
-        ReplyBean oReplyBean = null;
+        ReplyBean oReplyBean;
         ConnectionInterface oConnectionPool = null;
         Connection oConnection;
-        if (this.checkPermission("update")) {
-        try {
-            String strJsonFromClient = oRequest.getParameter("json");
-            Gson oGson = (new GsonBuilder()).excludeFieldsWithoutExposeAnnotation().create();
-           //ProductoBean oProductoBean = new ProductoBean();
-            ProductoBean oProductoBean = oGson.fromJson(strJsonFromClient, ProductoBean.class);
-            oConnectionPool = ConnectionFactory.getConnection(ConnectionConstants.connectionPool);
-            oConnection = oConnectionPool.newConnection();
-            ProductoDao oProductoDao = new ProductoDao(oConnection, ob);
-            iRes = oProductoDao.update(oProductoBean);
-            oReplyBean = new ReplyBean(200, Integer.toString(iRes));
-        } catch (Exception ex) {
-            throw new Exception("ERROR: Service level: update method: " + ob + " object", ex);
-        } finally {
-            oConnectionPool.disposeConnection();
-        }
-    } else {
-        oReplyBean = new ReplyBean(401, "Unauthorized");
-    }
-    return oReplyBean;
+       // if (this.checkPermission("update")) {
+            try {
+                String strJsonFromClient = oRequest.getParameter("json");
+                Gson oGson = (new GsonBuilder()).excludeFieldsWithoutExposeAnnotation().create();
+                ProductoBean oProductoBean = new ProductoBean();
+                oProductoBean = oGson.fromJson(strJsonFromClient, ProductoBean.class);
+                oConnectionPool = ConnectionFactory.getConnection(ConnectionConstants.connectionPool);
+                oConnection = oConnectionPool.newConnection();
+                ProductoDao oProductoDao = new ProductoDao(oConnection, ob);
+                iRes = oProductoDao.update(oProductoBean);
+                oReplyBean = new ReplyBean(200, Integer.toString(iRes));
+            } catch (Exception ex) {
+                oReplyBean = new ReplyBean(500,
+                        "ERROR: " + EncodingHelper.escapeQuotes(EncodingHelper.escapeLine(ex.getMessage())));
+            } finally {
+                oConnectionPool.disposeConnection();
+            }
+      //  } else {
+           // oReplyBean = new ReplyBean(401, "Unauthorized");
+       // }
+        return oReplyBean;
 }
 
     public ReplyBean getpage() throws Exception {

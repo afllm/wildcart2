@@ -51,13 +51,20 @@ moduleProducto.controller("productoNewController", [
 
         $scope.update = function () {
 
+            var nombreFoto;
+            if ($scope.myFile === undefined) {
+                nombreFoto = 'deafult';
+            } else {
+                nombreFoto = $scope.myFile.name;
+            }
+
             var json = {
                 id: null,
                 codigo: $scope.codigo,
                 desc: $scope.desc,
                 existencias: $scope.existencias,
                 precio: $scope.precio,
-                foto: $scope.foto,
+                foto: nombreFoto,
                 id_tipoProducto: $scope.obj_tipoProducto.id
             }
 
@@ -110,5 +117,40 @@ moduleProducto.controller("productoNewController", [
 //        }
 
 
+    function uploadPhoto() {
+            //Solucion mas cercana
+            //https://stackoverflow.com/questions/37039852/send-formdata-with-other-field-in-angular
+            var file = $scope.myFile;
+            //Api FormData 
+            //https://developer.mozilla.org/es/docs/Web/API/XMLHttpRequest/FormData
+            var oFormData = new FormData();
+            oFormData.append('file', file);
+            $http({
+                headers: { 'Content-Type': undefined },
+                method: 'POST',
+                data: oFormData,
+                url: `json?ob=producto&op=addimage`
+            }).then(function (response) {
+                console.log(response);
+            }, function (response) {
+                console.log(response)
+            });
+        }
+
+        $scope.atras = toolService.goBack;
     }
-]);
+]).directive('fileModel', ['$parse', function ($parse) {
+    return {
+        restrict: 'A',
+        link: function (scope, element, attrs) {
+            var model = $parse(attrs.fileModel);
+            var modelSetter = model.assign;
+
+            element.bind('change', function () {
+                scope.$apply(function () {
+                    modelSetter(scope, element[0].files[0]);
+                });
+            });
+        }
+    }
+}]);

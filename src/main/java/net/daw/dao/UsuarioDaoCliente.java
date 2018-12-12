@@ -19,20 +19,22 @@ import net.daw.helper.SqlBuilder;
  *
  * @author Ram�n
  */
-public class UsuarioDao {
+public class UsuarioDaoCliente {
 
 	Connection oConnection;
 	String ob = null;
 
-	public UsuarioDao(Connection oConnection, String ob) {
+	public UsuarioDaoCliente(Connection oConnection, String ob) {
 		super();
 		this.oConnection = oConnection;
 		this.ob = ob;
 	}
 
-	public UsuarioBean get(int id, int expand) throws Exception {
-		String strSQL = "SELECT * FROM " + ob + " WHERE id=?";
-		UsuarioBean oUsuarioBean;
+	public UsuarioBean get(int id, int expand, int idSessionUser) throws Exception {
+            UsuarioBean oUsuarioBean=new UsuarioBean();
+            if(idSessionUser==id){
+               String strSQL = "SELECT * FROM " + ob + " WHERE id=?";
+		
 		ResultSet oResultSet = null;
 		PreparedStatement oPreparedStatement = null;
 		try {
@@ -55,7 +57,12 @@ public class UsuarioDao {
 				oPreparedStatement.close();
 			}
 		}
-		return oUsuarioBean;
+		
+            }else{
+                oUsuarioBean.setId(0);
+            }
+            return oUsuarioBean; 
+		
 	}
 
 	public int remove(int id) throws Exception {
