@@ -49,10 +49,10 @@
             </div>
           
       
-                   
+          
             <div class="row d-flex justify-content-center flex-wrap align-items-center ml-5">
     <div ng-repeat="fila in ajaxData" class="contenido border border-secundary rounded">
-            <div class="arriba"><img src="images/default.jpeg" class="img-fluid img-thumbnail" style="width: 300px; height: 300px; margin-top: 3%;" alt="{{fila.foto}}"></div>
+            <div class="arriba"><img src="images/default.jpeg" class="img-fluid img-thumbnail" style="width: 220px; height: 100px; margin-top: 3%;" alt="producto 1"></div>
             <div class="centro">{{fila.desc}}</div>
             <div class="abajo">
             <a href="producto/view/{{fila.id}}" class="btn btn-light fas fa-eye" role="button"></a>
@@ -60,7 +60,6 @@
                            <button type="button" ng-click="reduce(fila.id)" class="btn btn-light fas fa-minus" ng-disabled="existencias(fila.id)===0"></button>
                                       <span class="btn btn-light" ng-style="fila.existencias===existencias(fila.id) && {'background-color':'#dc3545'}">{{existencias(fila.id)}}</span>
             </div>
-       
     </div>
 </div>
             

@@ -47,7 +47,7 @@
                                 <a class="page-link" ng-show="page > 2" href="{{ob}}/plistxusuario/{{rpp}}/1/{{id}}/{{order}}/{{align}}">First</a>
                             </li>
                             <li class="page-item">
-                                <a class="page-link" ng-show="page > 1" href="{{ob}}/plistxusuario/{{rpp}}/{{page - 1}}/{{id}}/{{order}}/{{align}}">Previous</a>
+                                <a class="page-link" ng-show="page > 1" href="{{ob}}/plistxusuario/{{rpp}}/{{id}}/{{page - 1}}/{{order}}/{{align}}">Previous</a>
                             </li>
                             <li class="page-item" ng-class="{'active':(p == page), 'disabled': p === '...'}" ng-repeat="p in list2 track by $index">
                                 <a class="page-link" href="{{ob}}/plistxusuario/{{rpp}}/{{p}}/{{id}}/{{order}}/{{align}}">{{p}}</a>
@@ -125,7 +125,7 @@
     <div class="col-md-1 ml-sm-auto col-lg-1">
             
                   
-                    <button type="button" class="btn btn-primary btn-block mt-2" onclick="window.history.back()">Volver</button>
+                    <button type="button" class="btn btn-primary btn-block mt-2 mb-5 mr-1" onclick="window.history.back()">Volver</button>
              
         </div>
             </div>

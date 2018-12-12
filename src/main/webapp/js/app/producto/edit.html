@@ -42,21 +42,18 @@
                                 precio obligatorio
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-12">
-                                <div class="form-group">
-                                    <div class="row">
-                                        <div class="col-8">
-                                            <label for="exampleFormControlFile1">Foto</label>
-                                            <input type="file" class="form-control-file" file-model="myFile">
-                                        </div>
-                                        <div class="col-4">
-                                            <image style="width:50xp;height:50px" src="http://localhost:8081/images_server/{{foto}}" />
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                        <div class="form-group">
+                            <label>Foto</label>
+                            <!-- <input type="text" class="form-control" id="foto" name="foto" ng-model="ajaxDatoProducto.foto" ng-required="true" />
+                             <div ng-show="!userForm.foto.$valid" class="alert alert-danger" role="alert">
+                                 Foto obligatoria
+                             </div>-->
+                            <input type="file" file-model="foto"/>
                         </div>
+
+
+
+
                         <label for="obj_tipoProducto">Tipo de producto:</label>
                         <div class="form-group row ml-3">
                             <tipoproducto-selection 
@@ -87,7 +84,7 @@
                                            maxlength="2" />
                                     <div class="input-group-append">
                                         <span class="input-group-text">
-                                            <a href="tipoproducto/view/{{obj_tipoProducto.id}}">
+                                            <a href="../tipoproducto/view/{{obj_tipoProducto.id}}">
                                                 <span class="p-2 bd-highlight"><i class="fas fa-users fa-1x"></i></span>
                                                 Tipo de producto: {{obj_tipoProducto.desc}}
                                             </a>
